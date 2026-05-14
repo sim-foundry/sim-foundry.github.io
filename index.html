@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sim Foundry — Research</title>
+<meta name="description" content="Sim Foundry research: scalable real-to-sim pipelines for robot learning." />
+<meta property="og:title" content="Sim Foundry — Research" />
+<meta property="og:description" content="Scalable real-to-sim pipelines for robot learning." />
+<meta property="og:type" content="website" />
+
+<link rel="icon" href="static/images/favicon.png" type="image/png" />
+
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="static/css/index.css" />
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+
+<!-- ========================= HERO ========================= -->
+<section class="hero">
+  <div class="hero-inner">
+    <h1 class="publication-title">
+      SIMFOUNDRY: Modular and Automated Scene Generation for Policy Learning and Evaluation<br />
+      <span class="subtitle">A Concise Descriptive Subtitle for the Work</span>
+    </h1>
+
+    <div class="publication-authors">
+      <span class="author-block"><a href="#" target="_blank" rel="noopener">Author One</a><sup>1</sup>,</span>
+      <span class="author-block"><a href="#" target="_blank" rel="noopener">Author Two</a><sup>1</sup>,</span>
+      <span class="author-block"><a href="#" target="_blank" rel="noopener">Author Three</a><sup>2</sup>,</span>
+      <span class="author-block"><a href="#" target="_blank" rel="noopener">Author Four</a><sup>1,*</sup></span>
+    </div>
+
+    <div class="affiliation">
+      <sup>1</sup>Affiliation One &nbsp; <sup>2</sup>Affiliation Two
+    </div>
+    <div class="affiliation-note">
+      <sup>*</sup>Corresponding author
+    </div>
+
+    <div class="publication-venue">Venue / Year (e.g., CoRL 2026)</div>
+
+    <div class="button-row">
+      <a class="btn" href="#" target="_blank" rel="noopener">
+        <span class="btn-icon">PDF</span>
+      </a>
+      <a class="btn" href="#" target="_blank" rel="noopener">
+        <span class="btn-icon">arXiv</span>
+      </a>
+      <a class="btn" href="#" target="_blank" rel="noopener">
+        <span class="btn-icon">Video</span>
+      </a>
+      <a class="btn" href="https://github.com/sim-foundry" target="_blank" rel="noopener">
+        <span class="btn-icon">Code</span>
+      </a>
+      <a class="btn" href="#bibtex">
+        <span class="btn-icon">BibTeX</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= TEASER ========================= -->
+<section class="section teaser">
+  <div class="container">
+    <figure class="teaser-figure">
+      <!-- Replace src with your teaser video / image -->
+      <div class="teaser-placeholder" aria-label="Teaser placeholder">
+        <span>Teaser video or image goes here</span>
+      </div>
+    </figure>
+    <p class="figure-caption">
+      One-sentence elevator pitch describing the project, with a forward-looking framing of the contribution.
+    </p>
+  </div>
+</section>
+
+<!-- ========================= ABSTRACT ========================= -->
+<section class="section" id="abstract">
+  <div class="container narrow">
+    <h2 class="section-title">Abstract</h2>
+    <div class="content">
+      <p>
+        Write your abstract here. Describe the motivation, the problem, the
+        approach, the headline result, and the broader impact. Keep it tight
+        and concrete — a reader should know within three sentences what the
+        paper does and why it matters.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= WALKTHROUGH VIDEO ========================= -->
+<section class="section" id="walkthrough">
+  <div class="container">
+    <h2 class="section-title">Walkthrough Video</h2>
+    <div class="video-embed">
+      <!-- Replace with your YouTube embed URL -->
+      <div class="video-placeholder" aria-label="Walkthrough video placeholder">
+        <span>YouTube embed goes here</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= INTERACTIVE 3D SCENES ========================= -->
+<section class="section" id="scene-viewer">
+  <div class="container">
+    <h2 class="section-title">Reconstructed Scenes</h2>
+    <p class="section-lead">
+      Explore the reconstructed 3D scenes interactively. Drag to rotate, scroll to zoom.
+    </p>
+
+    <div class="viewer-controls">
+      <label class="viewer-label" for="scene-select">Scene:</label>
+      <select id="scene-select" class="viewer-select">
+        <option value="scene-01">Scene 1</option>
+        <option value="scene-02">Scene 2</option>
+        <option value="scene-03">Scene 3</option>
+        <option value="scene-04">Scene 4</option>
+      </select>
+    </div>
+
+    <div class="viewer-grid viewer-grid--single">
+      <div class="viewer-card">
+        <div class="viewer-card-title">3D Gaussian Splat Reconstruction</div>
+        <div class="viewer-container" id="scene-splat-viewer" data-viewer-type="splat" data-src="">
+          <div class="viewer-loading">Loading viewer…</div>
+        </div>
+        <div class="viewer-hint">Drag and scroll to rotate and zoom.</div>
+      </div>
+    </div>
+
+    <p class="viewer-note">
+      <strong>Note:</strong> 3D viewers are not supported on mobile. Please visit on desktop for the interactive experience.
+    </p>
+  </div>
+</section>
+
+<!-- ========================= RECONSTRUCTED OBJECTS ========================= -->
+<section class="section" id="object-viewer">
+  <div class="container">
+    <h2 class="section-title">Reconstructed Objects</h2>
+    <p class="section-lead">
+      Physics-ready object meshes recovered from real-world captures.
+    </p>
+
+    <div class="viewer-controls">
+      <label class="viewer-label" for="object-select">Object:</label>
+      <select id="object-select" class="viewer-select">
+        <option value="object-01">Object 1</option>
+        <option value="object-02">Object 2</option>
+        <option value="object-03">Object 3</option>
+        <option value="object-04">Object 4</option>
+      </select>
+    </div>
+
+    <div class="viewer-grid viewer-grid--dual">
+      <div class="viewer-card">
+        <div class="viewer-card-title">Real Capture</div>
+        <div class="viewer-container viewer-container--image">
+          <div class="viewer-loading">Object image goes here</div>
+        </div>
+      </div>
+      <div class="viewer-card">
+        <div class="viewer-card-title">Reconstructed Mesh</div>
+        <div class="viewer-container" id="object-mesh-viewer" data-viewer-type="mesh" data-src="">
+          <div class="viewer-loading">Loading viewer…</div>
+        </div>
+        <div class="viewer-hint">Drag and scroll to rotate and zoom.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= QUALITATIVE RESULTS ========================= -->
+<section class="section" id="results">
+  <div class="container">
+    <h2 class="section-title">Qualitative Results</h2>
+    <p class="section-lead">
+      Selected results across diverse scenes and tasks.
+    </p>
+
+    <div class="results-grid">
+      <figure class="result-card">
+        <div class="result-placeholder"><span>Result 1</span></div>
+        <figcaption>Result caption one.</figcaption>
+      </figure>
+      <figure class="result-card">
+        <div class="result-placeholder"><span>Result 2</span></div>
+        <figcaption>Result caption two.</figcaption>
+      </figure>
+      <figure class="result-card">
+        <div class="result-placeholder"><span>Result 3</span></div>
+        <figcaption>Result caption three.</figcaption>
+      </figure>
+      <figure class="result-card">
+        <div class="result-placeholder"><span>Result 4</span></div>
+        <figcaption>Result caption four.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= BIBTEX ========================= -->
+<section class="section" id="bibtex">
+  <div class="container narrow">
+    <h2 class="section-title">BibTeX</h2>
+    <pre class="bibtex-block"><code>@inproceedings{yourkey2026,
+  title     = {Project Title Goes Here},
+  author    = {Last, First and Last, First and Last, First},
+  booktitle = {Proceedings of the Venue},
+  year      = {2026}
+}</code></pre>
+  </div>
+</section>
+
+<!-- ========================= FOOTER ========================= -->
+<footer class="site-footer">
+  <div class="container narrow">
+    <p>
+      Website source on
+      <a href="https://github.com/sim-foundry" target="_blank" rel="noopener">GitHub</a>.
+      Template inspired by
+      <a href="https://point-world.github.io" target="_blank" rel="noopener">PointWorld</a>
+      and
+      <a href="https://polaris-evals.github.io" target="_blank" rel="noopener">PolaRiS</a>.
+    </p>
+  </div>
+</footer>
+
+<script type="module" src="static/js/viewers.js"></script>
+</body>
+</html>
