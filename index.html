@@ -191,23 +191,279 @@
       Selected results across diverse scenes and tasks.
     </p>
 
-    <div class="results-grid">
-      <figure class="result-card">
-        <div class="result-placeholder"><span>Result 1</span></div>
-        <figcaption>Result caption one.</figcaption>
-      </figure>
-      <figure class="result-card">
-        <div class="result-placeholder"><span>Result 2</span></div>
-        <figcaption>Result caption two.</figcaption>
-      </figure>
-      <figure class="result-card">
-        <div class="result-placeholder"><span>Result 3</span></div>
-        <figcaption>Result caption three.</figcaption>
-      </figure>
-      <figure class="result-card">
-        <div class="result-placeholder"><span>Result 4</span></div>
-        <figcaption>Result caption four.</figcaption>
-      </figure>
+    <div class="qualitative-results" data-qualitative-results>
+      <div class="qualitative-group is-active" data-result-group="bathroom-1">
+        <div class="qualitative-pair">
+          <figure class="qualitative-panel">
+            <div class="qualitative-media qualitative-media--image">
+              <img src="static/images/bathroom_1_frame_0001.png" alt="Bathroom scene capture" />
+            </div>
+            <figcaption>Input image</figcaption>
+          </figure>
+
+          <figure class="qualitative-panel">
+            <div class="qualitative-media">
+              <video autoplay muted loop controls playsinline preload="metadata">
+                <source src="static/videos/bathroom_1_demo_+-20.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>Reconstructed twins</figcaption>
+          </figure>
+
+          <figure class="qualitative-panel">
+            <div class="qualitative-media">
+              <video autoplay muted loop controls playsinline preload="metadata">
+                <source src="static/videos/bathroom_1_demo_cousins_+-20.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>Reconstructed cousins</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="qualitative-group" data-result-group="coffee-2" hidden>
+        <div class="qualitative-pair">
+          <figure class="qualitative-panel">
+            <div class="qualitative-media qualitative-media--image">
+              <img src="static/images/coffee_2_frame_0001.png" alt="Coffee scene capture" />
+            </div>
+            <figcaption>Input image</figcaption>
+          </figure>
+
+          <figure class="qualitative-panel">
+            <div class="qualitative-media">
+              <video muted loop controls playsinline preload="metadata">
+                <source src="static/videos/coffee_2_demo_+-30.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>Reconstructed twins</figcaption>
+          </figure>
+
+          <figure class="qualitative-panel">
+            <div class="qualitative-media">
+              <video muted loop controls playsinline preload="metadata">
+                <source src="static/videos/coffee_2_demo_cousins_+-30.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>Reconstructed cousins</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="qualitative-group" data-result-group="dining-1" hidden>
+        <div class="qualitative-pair">
+          <figure class="qualitative-panel">
+            <div class="qualitative-media qualitative-media--image">
+              <img src="static/images/dining_1_frame_0001.png" alt="Dining scene capture" />
+            </div>
+            <figcaption>Input image</figcaption>
+          </figure>
+
+          <figure class="qualitative-panel">
+            <div class="qualitative-media">
+              <video muted loop controls playsinline preload="metadata">
+                <source src="static/videos/dining_1_demo_+-20.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>Reconstructed twins</figcaption>
+          </figure>
+
+          <figure class="qualitative-panel">
+            <div class="qualitative-media">
+              <video muted loop controls playsinline preload="metadata">
+                <source src="static/videos/dining_1_demo_cousins_+-20.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>Reconstructed cousins</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="qualitative-group" data-result-group="fruits-2" hidden>
+        <div class="qualitative-pair">
+          <figure class="qualitative-panel">
+            <div class="qualitative-media qualitative-media--image">
+              <img src="static/images/fruits_2_frame_0001.png" alt="Fruits scene capture" />
+            </div>
+            <figcaption>Input image</figcaption>
+          </figure>
+
+          <figure class="qualitative-panel">
+            <div class="qualitative-media">
+              <video muted loop controls playsinline preload="metadata">
+                <source src="static/videos/fruits_2_demo_+-20.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>Reconstructed twins</figcaption>
+          </figure>
+
+          <figure class="qualitative-panel">
+            <div class="qualitative-media">
+              <video muted loop controls playsinline preload="metadata">
+                <source src="static/videos/fruits_2_demo_cousins_+-20.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>Reconstructed cousins</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="qualitative-group" data-result-group="home-coffee-4" hidden>
+        <div class="qualitative-pair">
+          <figure class="qualitative-panel">
+            <div class="qualitative-media qualitative-media--image">
+              <img src="static/images/home_coffee_4_frame_0001.png" alt="Home coffee scene capture" />
+            </div>
+            <figcaption>Input image</figcaption>
+          </figure>
+
+          <figure class="qualitative-panel">
+            <div class="qualitative-media">
+              <video muted loop controls playsinline preload="metadata">
+                <source src="static/videos/home_coffee_4_+-20.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>Reconstructed twins</figcaption>
+          </figure>
+
+          <figure class="qualitative-panel">
+            <div class="qualitative-media">
+              <video muted loop controls playsinline preload="metadata">
+                <source src="static/videos/home_coffee_4_cousins_+-20.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>Reconstructed cousins</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="qualitative-group" data-result-group="kitchen-2" hidden>
+        <div class="qualitative-pair">
+          <figure class="qualitative-panel">
+            <div class="qualitative-media qualitative-media--image">
+              <img src="static/images/kitchen_2_frame_0001.png" alt="Kitchen scene capture" />
+            </div>
+            <figcaption>Input image</figcaption>
+          </figure>
+
+          <figure class="qualitative-panel">
+            <div class="qualitative-media">
+              <video muted loop controls playsinline preload="metadata">
+                <source src="static/videos/kitchen_2_demo_+-20.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>Reconstructed twins</figcaption>
+          </figure>
+
+          <figure class="qualitative-panel">
+            <div class="qualitative-media">
+              <video muted loop controls playsinline preload="metadata">
+                <source src="static/videos/kitchen_2_demo_cousins_+-20.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>Reconstructed cousins</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="qualitative-group" data-result-group="living-3" hidden>
+        <div class="qualitative-pair">
+          <figure class="qualitative-panel">
+            <div class="qualitative-media qualitative-media--image">
+              <img src="static/images/living_3_frame_0541.png" alt="Living room scene capture" />
+            </div>
+            <figcaption>Input image</figcaption>
+          </figure>
+
+          <figure class="qualitative-panel">
+            <div class="qualitative-media">
+              <video muted loop controls playsinline preload="metadata">
+                <source src="static/videos/living_3_demo_+-10.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>Reconstructed twins</figcaption>
+          </figure>
+
+          <figure class="qualitative-panel">
+            <div class="qualitative-media">
+              <video muted loop controls playsinline preload="metadata">
+                <source src="static/videos/living_3_demo_cousins_+-10.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>Reconstructed cousins</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="qualitative-group" data-result-group="outdoor-1" hidden>
+        <div class="qualitative-pair">
+          <figure class="qualitative-panel">
+            <div class="qualitative-media qualitative-media--image">
+              <img src="static/images/outdoor_1_frame_0001.png" alt="Outdoor scene capture" />
+            </div>
+            <figcaption>Input image</figcaption>
+          </figure>
+
+          <figure class="qualitative-panel">
+            <div class="qualitative-media">
+              <video muted loop controls playsinline preload="metadata">
+                <source src="static/videos/outdoor_1_demo_+-20.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>Reconstructed twins</figcaption>
+          </figure>
+
+          <figure class="qualitative-panel">
+            <div class="qualitative-media">
+              <video muted loop controls playsinline preload="metadata">
+                <source src="static/videos/outdoor_1_demo_cousins_+-20.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>Reconstructed cousins</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="qualitative-group" data-result-group="toys-1" hidden>
+        <div class="qualitative-pair">
+          <figure class="qualitative-panel">
+            <div class="qualitative-media qualitative-media--image">
+              <img src="static/images/toys_1_frame_0001.png" alt="Toys scene capture" />
+            </div>
+            <figcaption>Input image</figcaption>
+          </figure>
+
+          <figure class="qualitative-panel">
+            <div class="qualitative-media">
+              <video muted loop controls playsinline preload="metadata">
+                <source src="static/videos/toys_1_demo_+-20.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>Reconstructed twins</figcaption>
+          </figure>
+
+          <figure class="qualitative-panel">
+            <div class="qualitative-media">
+              <video muted loop controls playsinline preload="metadata">
+                <source src="static/videos/toys_1_demo_cousins_+-20.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>Reconstructed cousins</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="qualitative-tabs" role="tablist" aria-label="Qualitative result groups">
+        <button class="qualitative-tab is-active" type="button" role="tab" aria-selected="true" data-result-target="bathroom-1">Bathroom</button>
+        <button class="qualitative-tab" type="button" role="tab" aria-selected="false" data-result-target="coffee-2">Coffee</button>
+        <button class="qualitative-tab" type="button" role="tab" aria-selected="false" data-result-target="dining-1">Dining</button>
+        <button class="qualitative-tab" type="button" role="tab" aria-selected="false" data-result-target="fruits-2">Fruits</button>
+        <button class="qualitative-tab" type="button" role="tab" aria-selected="false" data-result-target="home-coffee-4">Home Coffee</button>
+        <button class="qualitative-tab" type="button" role="tab" aria-selected="false" data-result-target="kitchen-2">Kitchen</button>
+        <button class="qualitative-tab" type="button" role="tab" aria-selected="false" data-result-target="living-3">Living</button>
+        <button class="qualitative-tab" type="button" role="tab" aria-selected="false" data-result-target="outdoor-1">Outdoor</button>
+        <button class="qualitative-tab" type="button" role="tab" aria-selected="false" data-result-target="toys-1">Toys</button>
+      </div>
     </div>
   </div>
 </section>

@@ -51,9 +51,48 @@ function wireSelect(selectId, containerId, assetMap) {
   apply();
 }
 
+function wireQualitativeResults() {
+  const root = document.querySelector("[data-qualitative-results]");
+  if (!root) return;
+
+  const tabs = Array.from(root.querySelectorAll("[data-result-target]"));
+  const groups = Array.from(root.querySelectorAll("[data-result-group]"));
+
+  const setActiveGroup = (target) => {
+    groups.forEach((group) => {
+      const isActive = group.dataset.resultGroup === target;
+      group.hidden = !isActive;
+      group.classList.toggle("is-active", isActive);
+
+      group.querySelectorAll("video").forEach((video) => {
+        if (isActive) {
+          video.currentTime = 0;
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      });
+    });
+
+    tabs.forEach((tab) => {
+      const isActive = tab.dataset.resultTarget === target;
+      tab.classList.toggle("is-active", isActive);
+      tab.setAttribute("aria-selected", String(isActive));
+    });
+  };
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => setActiveGroup(tab.dataset.resultTarget));
+  });
+
+  const activeTab = tabs.find((tab) => tab.classList.contains("is-active")) || tabs[0];
+  if (activeTab) setActiveGroup(activeTab.dataset.resultTarget);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   wireSelect("scene-select", "scene-splat-viewer", SCENE_ASSETS);
   wireSelect("object-select", "object-mesh-viewer", OBJECT_ASSETS);
+  wireQualitativeResults();
 });
 
 /* ---------- Stubs for future implementation ----------
