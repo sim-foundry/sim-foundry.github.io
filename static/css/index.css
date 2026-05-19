@@ -11,6 +11,8 @@
   --color-border: #e5e5e7;
   --color-accent: #2563eb;
   --color-accent-dark: #1d4ed8;
+  --color-stanford-red: #8C1515;
+  --color-stanford-red-dark: #6e1010;
   --color-card: #ffffff;
   --color-card-shadow: rgba(15, 23, 42, 0.06);
 
@@ -61,11 +63,7 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
   font-size: clamp(1.8rem, 3.2vw, 2.6rem);
   line-height: 1.2;
   margin: 0 0 20px;
-}
-.publication-title .subtitle {
-  font-weight: 500;
-  color: var(--color-text-muted);
-  font-size: 0.7em;
+  color: var(--color-stanford-red);
 }
 .publication-authors {
   font-size: 1.05rem;
@@ -85,13 +83,9 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
 }
 .publication-venue {
   display: inline-block;
-  padding: 4px 14px;
-  border: 1px solid var(--color-border);
-  border-radius: 999px;
-  background: var(--color-bg);
-  color: var(--color-text);
-  font-size: 0.9rem;
-  font-weight: 500;
+  color: var(--color-stanford-red);
+  font-size: 1rem;
+  font-weight: 600;
   margin: 8px 0 24px;
 }
 
