@@ -99,15 +99,20 @@
   </div>
 </section>
 
-<!-- ========================= WALKTHROUGH VIDEO ========================= -->
+<!-- ========================= PIPELINE VIDEO ========================= -->
 <section class="section" id="walkthrough">
   <div class="container">
-    <h2 class="section-title">Walkthrough Video</h2>
+    <h2 class="section-title">The SimFoundry Pipeline</h2>
     <div class="video-embed">
-      <!-- Replace with your YouTube embed URL -->
-      <div class="video-placeholder" aria-label="Walkthrough video placeholder">
-        <span>YouTube embed goes here</span>
-      </div>
+      <video
+        class="pipeline-video"
+        src="assets/videos/pipeline_vid.mp4"
+        autoplay
+        loop
+        muted
+        playsinline
+        controls
+      ></video>
     </div>
   </div>
 </section>
@@ -179,6 +184,58 @@
         <div class="viewer-hint">Drag and scroll to rotate and zoom.</div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ========================= SAM3D COMPARISON ========================= -->
+<section class="section" id="sam3d-comparison">
+  <div class="container">
+    <h2 class="section-title">Reconstructed Scene v.s. SAM3D output</h2>
+
+    <div class="content sam3d-summary">
+      <p>
+        SimFoundry recovers more accurate object meshes and poses than SAM3D,
+        especially on occluded, cluttered scenes. The pipeline
+        also generalizes across input modalities, supporting open-source
+        datasets and synthetically generated images out of the box.
+      </p>
+    </div>
+
+    <div class="viewer-grid viewer-grid--triple">
+      <div class="viewer-card">
+        <div class="viewer-card-title">Input Image</div>
+        <div class="viewer-container viewer-container--image">
+          <img id="sam3d-input-image" src="" alt="Input image" />
+          <div class="viewer-loading">Image not configured</div>
+        </div>
+      </div>
+      <div class="viewer-card">
+        <div class="viewer-card-title">SimFoundry Output</div>
+        <div class="viewer-container" id="simfoundry-glb-viewer" data-viewer-type="mesh" data-src="">
+          <div class="viewer-loading">Loading viewer…</div>
+        </div>
+        <div class="viewer-hint">Drag and scroll to rotate and zoom.</div>
+      </div>
+      <div class="viewer-card">
+        <div class="viewer-card-title">SAM3D Output</div>
+        <div class="viewer-container" id="sam3d-glb-viewer" data-viewer-type="mesh" data-src="">
+          <div class="viewer-loading">Loading viewer…</div>
+        </div>
+        <div class="viewer-hint">Drag and scroll to rotate and zoom.</div>
+      </div>
+    </div>
+
+    <div class="qualitative-tabs" id="sam3d-scene-tabs" role="tablist" aria-label="Scene">
+      <button class="qualitative-tab is-active" type="button" role="tab" aria-selected="true"  data-sam3d-target="nv_desk">Cluttered_Scene_1</button>
+      <button class="qualitative-tab"           type="button" role="tab" aria-selected="false" data-sam3d-target="bathroom_1">Cluttered_Scene_2</button>
+      <button class="qualitative-tab"           type="button" role="tab" aria-selected="false" data-sam3d-target="home_coffee_4">Cluttered_Scene_3</button>
+      <button class="qualitative-tab"           type="button" role="tab" aria-selected="false" data-sam3d-target="Gemini_1">AI_Image</button>
+      <button class="qualitative-tab"           type="button" role="tab" aria-selected="false" data-sam3d-target="OCID_2">Open_Source (OCID)</button>
+    </div>
+
+    <p class="viewer-note">
+      <strong>Note:</strong> 3D viewers are not supported on mobile. Please visit on desktop for the interactive experience.
+    </p>
   </div>
 </section>
 
