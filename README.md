@@ -9,7 +9,8 @@ index.html              # main page
 static/css/index.css    # all styles
 static/js/viewers.js    # 3D viewer wiring (currently stubbed)
 static/images/          # favicon and any static images
-assets/videos/          # walkthrough + result videos
+static/videos/<scene>/  # qualitative result videos grouped by scene
+assets/videos/          # walkthrough videos
 assets/viewers/         # splat / mesh assets for the 3D viewers
 ```
 

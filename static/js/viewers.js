@@ -309,7 +309,7 @@ function wireQualitativeResults() {
   const updateVideoMode = (group, mode, shouldPlay) => {
     group.dataset.videoMode = mode;
 
-    group.querySelectorAll("video").forEach((video) => {
+    group.querySelectorAll("video:not([data-video-static])").forEach((video) => {
       const source = video.querySelector("source");
       if (!source) return;
 
@@ -333,6 +333,10 @@ function wireQualitativeResults() {
   };
 
   groups.forEach((group) => {
+    group.querySelectorAll("video[data-playback-rate]").forEach((video) => {
+      video.playbackRate = Number(video.dataset.playbackRate) || 1;
+    });
+
     group.dataset.videoMode = group.dataset.videoMode || "normal";
 
     const toggle = document.createElement("div");
