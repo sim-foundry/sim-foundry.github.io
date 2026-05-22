@@ -304,6 +304,71 @@ function wireQualitativeResults() {
   const tabs = Array.from(root.querySelectorAll("[data-result-target]"));
   const groups = Array.from(root.querySelectorAll("[data-result-group]"));
 
+  const toSeqSrc = (src) => src.replace(/\.mp4(\?.*)?$/i, "_seq.mp4$1");
+
+  const updateVideoMode = (group, mode, shouldPlay) => {
+    group.dataset.videoMode = mode;
+
+    group.querySelectorAll("video:not([data-video-static])").forEach((video) => {
+      const source = video.querySelector("source");
+      if (!source) return;
+
+      if (!source.dataset.normalSrc) {
+        source.dataset.normalSrc = source.getAttribute("src") || "";
+        source.dataset.seqSrc = toSeqSrc(source.dataset.normalSrc);
+      }
+
+      const nextSrc = mode === "sequence" ? source.dataset.seqSrc : source.dataset.normalSrc;
+      if (source.getAttribute("src") !== nextSrc) {
+        video.pause();
+        source.setAttribute("src", nextSrc);
+        video.load();
+      }
+
+      video.currentTime = 0;
+      if (shouldPlay) {
+        video.play().catch(() => {});
+      }
+    });
+  };
+
+  groups.forEach((group) => {
+    group.querySelectorAll("video[data-playback-rate]").forEach((video) => {
+      video.playbackRate = Number(video.dataset.playbackRate) || 1;
+    });
+
+    group.dataset.videoMode = group.dataset.videoMode || "normal";
+
+    const toggle = document.createElement("div");
+    toggle.className = "qualitative-video-toggle";
+    toggle.setAttribute("role", "group");
+    toggle.setAttribute("aria-label", "Video type");
+    toggle.innerHTML = `
+      <button class="qualitative-toggle-button is-active" type="button" data-video-mode="normal" aria-pressed="true">Normal</button>
+      <button class="qualitative-toggle-button" type="button" data-video-mode="sequence" aria-pressed="false">Sequence</button>
+    `;
+
+    const pair = group.querySelector(".qualitative-pair");
+    if (pair) {
+      group.insertBefore(toggle, pair);
+    }
+
+    toggle.querySelectorAll("[data-video-mode]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const mode = button.dataset.videoMode;
+        const isActiveGroup = group.classList.contains("is-active");
+
+        toggle.querySelectorAll("[data-video-mode]").forEach((toggleButton) => {
+          const isActive = toggleButton.dataset.videoMode === mode;
+          toggleButton.classList.toggle("is-active", isActive);
+          toggleButton.setAttribute("aria-pressed", String(isActive));
+        });
+
+        updateVideoMode(group, mode, isActiveGroup);
+      });
+    });
+  });
+
   const setActiveGroup = (target) => {
     groups.forEach((group) => {
       const isActive = group.dataset.resultGroup === target;
