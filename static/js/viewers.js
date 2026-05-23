@@ -2,11 +2,13 @@
  * 3D viewer scaffolding for Sim Foundry research page.
  *
  * Viewer types:
- *   - data-viewer-type="splat" : 3D Gaussian splat scene viewer (stub)
- *   - data-viewer-type="mesh"  : GLB/GLTF object mesh viewer (three.js)
+ *   - data-viewer-type="hybrid" : Gaussian splat background + textured GLB
+ *                                  objects, driven by a scene.json manifest
+ *                                  produced by tools/build_nv_desk_scene.py.
+ *   - data-viewer-type="mesh"   : GLB/GLTF single-object viewer (three.js).
  *
- * To add a new scene/object: drop the asset under assets/viewers/ and add an
- * entry to the matching asset map below. The dropdown <option> value must
+ * To add a new scene: build a scene.json with tools/build_nv_desk_scene.py and
+ * add an entry to SCENE_MANIFESTS below. The dropdown <option> value must
  * match the asset-map key.
  */
 
@@ -15,9 +17,14 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+import * as GaussianSplats3D from "@mkkellogg/gaussian-splats-3d";
 
-const SCENE_ASSETS = {
-  // "scene-01": "assets/viewers/scene-01.splat",
+const SCENE_MANIFESTS = {
+  "nv_desk":        "assets/viewers/nv_desk/scene.json",
+  "kitchen_2_demo": "assets/viewers/kitchen_2_demo/scene.json",
+  "dining_1_demo":  "assets/viewers/dining_1_demo/scene.json",
+  "toys_1_demo":    "assets/viewers/toys_1_demo/scene.json",
+  "outdoor_1_demo": "assets/viewers/outdoor_1_demo/scene.json",
 };
 
 const OBJECT_ASSETS = {
@@ -187,11 +194,241 @@ function loadMesh(container, src, viewPreset) {
   resizeObserver.observe(container);
 }
 
+const hybridViewers = new WeakMap();
+
+function pickSplatUrl(splat) {
+  // Local dev: prefer the symlinked PLY under assets/. Production: the
+  // gitignored PLY isn't there, so use the manifest's Release URL.
+  const host = window.location.hostname;
+  const isLocal = host === "localhost" || host === "127.0.0.1" || host === "";
+  if (isLocal && splat.local_url) return splat.local_url;
+  return splat.url;
+}
+
+function lookAtFromQuaternion(camera) {
+  // OmniGibson / USD camera convention: forward = local -Z, up = local +Y.
+  // Apply the world-orientation quaternion to (0,0,-1) to get the world-frame
+  // viewing direction, then synthesize a target 1 m in front of the camera so
+  // OrbitControls has something to orbit around.
+  const q = new THREE.Quaternion(
+    camera.quaternion_xyzw[0],
+    camera.quaternion_xyzw[1],
+    camera.quaternion_xyzw[2],
+    camera.quaternion_xyzw[3],
+  );
+  const forward = new THREE.Vector3(0, 0, -1).applyQuaternion(q);
+  const pos = new THREE.Vector3().fromArray(camera.position);
+  return pos.add(forward).toArray();
+}
+
+async function loadHybridScene(container, manifestUrl) {
+  const existing = hybridViewers.get(container);
+  if (existing) {
+    existing.dispose();
+    hybridViewers.delete(container);
+  }
+
+  container.innerHTML = "";
+  const loadingEl = document.createElement("div");
+  loadingEl.className = "viewer-loading";
+  loadingEl.textContent = "Loading manifest…";
+  container.appendChild(loadingEl);
+
+  if (!manifestUrl) {
+    loadingEl.textContent = "Viewer asset not configured";
+    return;
+  }
+
+  let manifest;
+  try {
+    const res = await fetch(manifestUrl, { cache: "no-cache" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    manifest = await res.json();
+  } catch (err) {
+    console.warn("manifest fetch failed:", manifestUrl, err);
+    loadingEl.textContent = "Failed to load scene manifest";
+    return;
+  }
+
+  const splat = manifest.splat;
+  if (!splat) {
+    loadingEl.textContent = "Manifest has no splat scene";
+    return;
+  }
+
+  const camera = manifest.camera;
+  const worldUp = manifest.world_up || [0, 0, 1];
+  const initialPos = camera ? camera.position : [0, -1, 0.6];
+  const initialLookAt = camera ? lookAtFromQuaternion(camera) : [0, 0, 0];
+
+  loadingEl.textContent = "Initializing renderer…";
+
+  // Self-driven mode: the lib owns the canvas, camera, OrbitControls, and
+  // render loop. We add meshes through viewer.threeScene so the GS-vs-mesh
+  // depth composition happens in one pass.
+  //
+  // Performance knobs tuned to keep this usable on integrated Apple GPUs:
+  //   - sphericalHarmonicsDegree: 1 — view-dependent shading without the 16
+  //     coefficient/channel cost of degree 2.
+  //   - antialiased: false — splat shader AA is expensive; CSS scaling is
+  //     enough at this resolution.
+  //   - gpuAcceleratedSort kept off — the WebGPU sort path is fragile across
+  //     browsers (broke our headless WebGL fallback entirely). WebGL2 CPU
+  //     sort is plenty fast at 450k splats on a modern Mac.
+  //   - devicePixelRatio capped at 1.5 so Retina displays don't pay 4× the
+  //     fragment cost on the splat shader.
+  const splatViewer = new GaussianSplats3D.Viewer({
+    rootElement: container,
+    cameraUp: worldUp,
+    initialCameraPosition: initialPos,
+    initialCameraLookAt: initialLookAt,
+    sharedMemoryForWorkers: false,
+    gpuAcceleratedSort: false,
+    sphericalHarmonicsDegree: 1,
+    useBuiltInControls: true,
+    antialiased: false,
+    showLoadingUI: true,
+    devicePixelRatio: Math.min(window.devicePixelRatio || 1, 1.5),
+  });
+
+  let disposed = false;
+  const meshObjects = [];
+  const handle = {
+    dispose: () => {
+      if (disposed) return;
+      disposed = true;
+      try { splatViewer.dispose(); } catch (e) { /* ignore */ }
+      meshObjects.forEach((root) => {
+        root.traverse((obj) => {
+          if (obj.isMesh) {
+            obj.geometry?.dispose?.();
+            if (Array.isArray(obj.material)) obj.material.forEach((m) => m.dispose?.());
+            else obj.material?.dispose?.();
+          }
+        });
+      });
+    },
+  };
+  hybridViewers.set(container, handle);
+  // Debug hook for local verification only; harmless in production.
+  window.__hybridViewer = splatViewer;
+  window.__hybridMeshes = meshObjects;
+
+  const plyUrl = pickSplatUrl(splat);
+  try {
+    await splatViewer.addSplatScene(plyUrl, {
+      format: GaussianSplats3D.SceneFormat.Ply,
+      // Aggressive alpha-threshold drops near-transparent splats that
+      // contribute little visually but cost full fragment work.
+      splatAlphaRemovalThreshold: 20,
+      position: splat.position,
+      rotation: splat.quaternion_xyzw,
+      scale: splat.scale,
+      showLoadingUI: true,
+    });
+  } catch (err) {
+    console.warn("splat scene load failed:", plyUrl, err);
+    loadingEl.textContent = "Failed to load splat background";
+    return;
+  }
+
+  if (disposed) return;
+
+  splatViewer.start();
+
+  // PBR-textured GLBs render black without IBL or lights. The GS viewer's
+  // internal threeScene starts empty, so add an environment map + a soft
+  // directional + ambient — matches what loadMesh does for the object viewer.
+  const renderer = splatViewer.renderer;
+  if (renderer) {
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.1;
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    const envTex = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+    splatViewer.threeScene.environment = envTex;
+    pmrem.dispose();
+  }
+  splatViewer.threeScene.add(new THREE.AmbientLight(0xffffff, 0.4));
+  const sun = new THREE.DirectionalLight(0xffffff, 1.6);
+  sun.position.set(1.5, -2.0, 3.0);
+  splatViewer.threeScene.add(sun);
+
+  // Pause the render loop when the tab is hidden — biggest free GPU win for
+  // users who switch tabs/windows. (Off-screen pause via IntersectionObserver
+  // is tempting but races with initial layout and can park the viewer in a
+  // permanently-stopped state.)
+  const onHidden = () => {
+    try {
+      if (document.hidden) splatViewer.stop();
+      else splatViewer.start();
+    } catch (e) { /* lib may not implement stop in all versions */ }
+  };
+  document.addEventListener("visibilitychange", onHidden);
+  const origDispose = handle.dispose;
+  handle.dispose = () => {
+    document.removeEventListener("visibilitychange", onHidden);
+    origDispose();
+  };
+
+  // Hide the manifest-loading placeholder; the lib's own loading UI takes over
+  // for splat downloads, and meshes stream in after that.
+  if (loadingEl.parentNode === container) container.removeChild(loadingEl);
+
+  // Top-left preview-video overlay: the source capture that produced the
+  // splat/mesh reconstruction, played at a slight speed-up on loop.
+  if (manifest.preview_video?.url) {
+    const video = document.createElement("video");
+    video.src = manifest.preview_video.url;
+    video.autoplay = true;
+    video.loop = true;
+    video.muted = true;
+    video.playsInline = true;
+    video.preload = "auto";
+    video.className = "viewer-preview-video";
+    container.appendChild(video);
+    const rate = manifest.preview_video.playback_rate || 1.5;
+    const applyRate = () => { video.playbackRate = rate; };
+    video.addEventListener("loadedmetadata", applyRate);
+    applyRate();
+    video.play().catch(() => { /* autoplay blocked; ignore */ });
+  }
+
+  const loader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
+  for (const obj of manifest.objects || []) {
+    loader.load(
+      obj.url,
+      (gltf) => {
+        if (disposed) return;
+        const root = gltf.scene;
+        root.position.fromArray(obj.position);
+        root.quaternion.set(
+          obj.quaternion_xyzw[0],
+          obj.quaternion_xyzw[1],
+          obj.quaternion_xyzw[2],
+          obj.quaternion_xyzw[3],
+        );
+        root.scale.fromArray(obj.scale);
+        splatViewer.threeScene.add(root);
+        meshObjects.push(root);
+      },
+      undefined,
+      (err) => {
+        console.warn("GLB load failed:", obj.url, err);
+      },
+    );
+  }
+}
+
 function setSrc(container, src, viewPreset) {
   if (!container) return;
   container.dataset.src = src || "";
   if (container.dataset.viewerType === "mesh") {
     loadMesh(container, src, viewPreset);
+    return;
+  }
+  if (container.dataset.viewerType === "hybrid") {
+    loadHybridScene(container, src);
     return;
   }
   const loading = container.querySelector(".viewer-loading");
@@ -401,7 +638,7 @@ function wireQualitativeResults() {
 }
 
 function init() {
-  wireSelect("scene-select", "scene-splat-viewer", SCENE_ASSETS);
+  wireSelect("scene-select", "scene-splat-viewer", SCENE_MANIFESTS);
   wireSelect("object-select", "object-mesh-viewer", OBJECT_ASSETS);
   wireSam3dComparison();
   wireQualitativeResults();

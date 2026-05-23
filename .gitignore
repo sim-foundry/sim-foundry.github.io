@@ -2,11 +2,22 @@
 Thumbs.db
 node_modules/
 *.log
+__pycache__/
+*.pyc
 
 # SAM3D scene GLBs are hosted as Release assets on
 # https://github.com/sim-foundry/sim-foundry-website-assets/releases/tag/v0.1-sam3d
 # Keep local copies for development, but never push (they exceed GitHub's 100MB file limit).
 assets/viewers/sf_vs_sam3d/*/sam3d.glb
+
+# Hybrid-scene background splat PLYs. Each is 40–112 MB and several total
+# hundreds of MB; we keep them out of the repo to avoid bloating clones, and
+# host the production copies as Release assets on
+# https://github.com/sim-foundry/sim-foundry-website-assets/releases
+# The website's tools/build_scene.py (and the older build_nv_desk_scene.py)
+# symlink local source PLYs here for development. Never push.
+assets/viewers/*/splat.ply
+assets/viewers/*/*_bg.ply
 
 # Pre-remux QuickTime file; the .mp4 is what the site uses.
 assets/videos/pipeline_vid.mov

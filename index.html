@@ -19,7 +19,8 @@
 {
   "imports": {
     "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/",
+    "@mkkellogg/gaussian-splats-3d": "https://cdn.jsdelivr.net/npm/@mkkellogg/gaussian-splats-3d@0.4.7/build/gaussian-splats-3d.module.js"
   }
 }
 </script>
@@ -128,17 +129,18 @@
     <div class="viewer-controls">
       <label class="viewer-label" for="scene-select">Scene:</label>
       <select id="scene-select" class="viewer-select">
-        <option value="scene-01">Scene 1</option>
-        <option value="scene-02">Scene 2</option>
-        <option value="scene-03">Scene 3</option>
-        <option value="scene-04">Scene 4</option>
+        <option value="nv_desk">NV Desk</option>
+        <option value="kitchen_2_demo">Kitchen 2</option>
+        <option value="dining_1_demo">Dining 1</option>
+        <option value="toys_1_demo">Toys 1</option>
+        <option value="outdoor_1_demo">Outdoor 1</option>
       </select>
     </div>
 
     <div class="viewer-grid viewer-grid--single">
       <div class="viewer-card">
-        <div class="viewer-card-title">3D Gaussian Splat Reconstruction</div>
-        <div class="viewer-container" id="scene-splat-viewer" data-viewer-type="splat" data-src="">
+        <div class="viewer-card-title">Hybrid scene: 3D Gaussian Splat background + textured object meshes</div>
+        <div class="viewer-container" id="scene-splat-viewer" data-viewer-type="hybrid" data-src="">
           <div class="viewer-loading">Loading viewer…</div>
         </div>
         <div class="viewer-hint">Drag and scroll to rotate and zoom.</div>
