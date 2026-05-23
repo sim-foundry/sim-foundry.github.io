@@ -260,14 +260,20 @@ def build(scene: str, force: bool, release_tag: str, state_json: Path | None = N
             gs_scale = [float(gs_scale)] * 3
         gs_pos = list(gs_root_link["pos"])
         gs_ori = list(gs_root_link["ori"])
-        ply_release_url = (
-            f"https://github.com/sim-foundry/sim-foundry-website-assets/"
-            f"releases/download/{release_tag}/{scene}__{ply_basename}"
+        # Production fetches a gltfpack-style compressed .ksplat from
+        # sim-foundry-website-assets via raw.githubusercontent.com (CORS
+        # works there; release-asset CDN does not return CORS headers).
+        # Locally, the same .ksplat file is dropped next to the PLY for dev.
+        ksplat_basename = Path(ply_basename).with_suffix(".ksplat").name
+        ksplat_raw_url = (
+            f"https://raw.githubusercontent.com/sim-foundry/"
+            f"sim-foundry-website-assets/main/splats/"
+            f"{scene}__{ksplat_basename}"
         )
         splat = {
-            "url": ply_release_url,
-            "format": "ply",
-            "local_url": f"assets/viewers/{scene}/{ply_basename}",
+            "url": ksplat_raw_url,
+            "format": "ksplat",
+            "local_url": f"assets/viewers/{scene}/{ksplat_basename}",
             "position": gs_pos,
             "quaternion_xyzw": gs_ori,
             "scale": [float(s) for s in gs_scale],

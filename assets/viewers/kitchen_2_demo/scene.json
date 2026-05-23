@@ -7,9 +7,9 @@
     1.0
   ],
   "splat": {
-    "url": "https://github.com/sim-foundry/sim-foundry-website-assets/releases/download/v0.1-scenes/kitchen_2_demo__splat.ply",
-    "format": "ply",
-    "local_url": "assets/viewers/kitchen_2_demo/splat.ply",
+    "url": "https://raw.githubusercontent.com/sim-foundry/sim-foundry-website-assets/main/splats/kitchen_2_demo__splat.ksplat",
+    "format": "ksplat",
+    "local_url": "assets/viewers/kitchen_2_demo/splat.ksplat",
     "position": [
       -0.0023731510154902935,
       -0.6565060019493103,

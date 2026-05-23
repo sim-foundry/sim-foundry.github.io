@@ -7,9 +7,9 @@
     1.0
   ],
   "splat": {
-    "url": "https://github.com/sim-foundry/sim-foundry-website-assets/releases/download/v0.1-scenes/outdoor_1_demo__splat.ply",
-    "format": "ply",
-    "local_url": "assets/viewers/outdoor_1_demo/splat.ply",
+    "url": "https://raw.githubusercontent.com/sim-foundry/sim-foundry-website-assets/main/splats/outdoor_1_demo__splat.ksplat",
+    "format": "ksplat",
+    "local_url": "assets/viewers/outdoor_1_demo/splat.ksplat",
     "position": [
       0.13931816816329956,
       -0.8158701658248901,

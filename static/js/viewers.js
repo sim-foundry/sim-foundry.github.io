@@ -314,10 +314,18 @@ async function loadHybridScene(container, manifestUrl) {
   window.__hybridViewer = splatViewer;
   window.__hybridMeshes = meshObjects;
 
-  const plyUrl = pickSplatUrl(splat);
+  const splatUrl = pickSplatUrl(splat);
+  const FORMAT_BY_NAME = {
+    ply: GaussianSplats3D.SceneFormat.Ply,
+    ksplat: GaussianSplats3D.SceneFormat.KSplat,
+    splat: GaussianSplats3D.SceneFormat.Splat,
+  };
+  const splatFormat =
+    FORMAT_BY_NAME[(splat.format || "").toLowerCase()] ||
+    GaussianSplats3D.LoaderUtils.sceneFormatFromPath(splatUrl);
   try {
-    await splatViewer.addSplatScene(plyUrl, {
-      format: GaussianSplats3D.SceneFormat.Ply,
+    await splatViewer.addSplatScene(splatUrl, {
+      format: splatFormat,
       // Aggressive alpha-threshold drops near-transparent splats that
       // contribute little visually but cost full fragment work.
       splatAlphaRemovalThreshold: 20,
@@ -327,7 +335,7 @@ async function loadHybridScene(container, manifestUrl) {
       showLoadingUI: true,
     });
   } catch (err) {
-    console.warn("splat scene load failed:", plyUrl, err);
+    console.warn("splat scene load failed:", splatUrl, err);
     loadingEl.textContent = "Failed to load splat background";
     return;
   }
