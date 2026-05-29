@@ -10,7 +10,7 @@ controllable-digital-cousins repo and produces:
         nv_desk_bg.ply                   # symlinked from the source dir
 
 Big files (PLY > 100 MB) are gitignored locally and uploaded to
-`sim-foundry/sim-foundry-website-assets` Releases for production hosting.
+`simfoundry/sim-foundry-website-assets` Releases for production hosting.
 
 Run inside the `sam3d` env (which has `pxr`, `trimesh`, `PIL`):
     /home/cdc/miniforge3/envs/sam3d/bin/python tools/build_nv_desk_scene.py
@@ -38,7 +38,7 @@ LOCAL_PLY_PATH = OUT_DIR / "nv_desk_bg.ply"
 
 # URL the published manifest will point to for the PLY. Override with --ply-url.
 DEFAULT_PLY_URL = (
-    "https://github.com/sim-foundry/sim-foundry-website-assets/releases/"
+    "https://github.com/simfoundry/sim-foundry-website-assets/releases/"
     "download/v0.1-nv-desk/nv_desk_bg.ply"
 )
 

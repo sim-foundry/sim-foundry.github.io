@@ -35,7 +35,7 @@ const OBJECT_ASSETS = {
 // the sim-foundry-website-assets public repo. raw.githubusercontent.com serves
 // them with CORS so the in-browser GLTFLoader can fetch them.
 const SAM3D_RELEASE_BASE =
-  "https://raw.githubusercontent.com/sim-foundry/sim-foundry-website-assets/main/glb";
+  "https://raw.githubusercontent.com/simfoundry/sim-foundry-website-assets/main/glb";
 
 function sam3dEntry(key, label) {
   const base = `assets/viewers/sf_vs_sam3d/${key}`;

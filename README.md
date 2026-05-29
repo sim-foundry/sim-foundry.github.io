@@ -92,7 +92,7 @@ This:
 
 GitHub blocks individual files >100 MB. Files that cross that threshold are
 hosted as Release assets on
-[`sim-foundry/sim-foundry-website-assets`](https://github.com/sim-foundry/sim-foundry-website-assets)
+[`simfoundry/sim-foundry-website-assets`](https://github.com/simfoundry/sim-foundry-website-assets)
 and kept out of the repo via `.gitignore`. Today this covers:
 
 - `assets/viewers/sf_vs_sam3d/*/sam3d.glb` — SAM3D comparison meshes.

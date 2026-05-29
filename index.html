@@ -13,7 +13,7 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
 
-<link rel="stylesheet" href="static/css/index.css" />
+<link rel="stylesheet" href="static/css/index.css?v=11" />
 
 <script type="importmap">
 {
@@ -74,10 +74,7 @@
 <section class="section teaser">
   <div class="container">
     <figure class="teaser-figure">
-      <!-- Replace src with your teaser video / image -->
-      <div class="teaser-placeholder" aria-label="Teaser placeholder">
-        <span>Teaser video or image goes here</span>
-      </div>
+      <img src="static/images/simfoundry_pull_fig.png" alt="SimFoundry: real-to-sim-to-real cycle with object, scene, and task cousins" />
     </figure>
     <p class="figure-caption">
       One-sentence elevator pitch describing the project, with a forward-looking framing of the contribution.
@@ -91,10 +88,21 @@
     <h2 class="section-title">Abstract</h2>
     <div class="content">
       <p>
-        Write your abstract here. Describe the motivation, the problem, the
-        approach, the headline result, and the broader impact. Keep it tight
-        and concrete — a reader should know within three sentences what the
-        paper does and why it matters.
+        Training and evaluating robot policies in the real world is costly and
+        difficult to scale. We introduce SimFoundry, a modular and automated
+        system for zero-shot real-to-sim scene construction from a single image
+        or video. SimFoundry generates sim-ready digital twins and supports
+        object, scene, and task editing, enabling the automated generation of
+        diverse digital cousins. Policies trained on SimFoundry data transfer
+        zero-shot to challenging real tasks involving multi-step manipulation,
+        articulated object interaction, and bimanual interaction, and its digital
+        cousins facilitate generalization to new real-world conditions. Across 7
+        manipulation tasks and 5 policies, SimFoundry simulation evaluations
+        strongly predict real-world performance, with mean Pearson correlation
+        0.928 and mean maximum ranking violation 0.018. When evaluating
+        sim-trained policies zero-shot in the real world, policies trained with
+        object, scene, and task cousins during sim-to-real training show average
+        task success rate improvements of 17%, 21%, and 50%, respectively.
       </p>
     </div>
   </div>
@@ -102,18 +110,14 @@
 
 <!-- ========================= PIPELINE VIDEO ========================= -->
 <section class="section" id="walkthrough">
-  <div class="container">
+  <div class="container wide">
     <h2 class="section-title">The SimFoundry Pipeline</h2>
     <div class="video-embed">
-      <video
+      <img
         class="pipeline-video"
-        src="assets/videos/pipeline_vid.mp4"
-        autoplay
-        loop
-        muted
-        playsinline
-        controls
-      ></video>
+        src="static/images/Simfoundry_sys_fig_1.png"
+        alt="SimFoundry pipeline: Physical Scene Extraction, Sim Scene Generation, and Cousin Augmentation"
+      />
     </div>
   </div>
 </section>
