@@ -167,6 +167,142 @@
   </div>
 </section>
 
+<!-- ========================= SIM-TO-REAL POLICY TRAINING ========================= -->
+<section class="section" id="policy-training">
+  <div class="container">
+    <h2 class="section-title">Sim-to-Real Policy Training</h2>
+    <h3 class="subsection-title">Policies Trained on SimFoundry Data Transfer <span class="accent-red">Zero-Shot</span> to Real-World</h3>
+
+    <div class="policy-row">
+      <figure class="policy-col">
+        <div class="policy-col-header">Simulation Eval</div>
+        <div class="policy-media">
+          <video autoplay loop muted playsinline preload="metadata">
+            <source src="assets/videos/stack_dishware_sim_edited.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <div class="policy-success">Success rate: <strong>100%</strong></div>
+      </figure>
+
+      <figure class="policy-col">
+        <div class="policy-col-header">Real World Eval</div>
+        <div class="policy-media">
+          <video autoplay loop muted playsinline preload="metadata">
+            <source src="assets/videos/stack_dishware_real_edited.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <div class="policy-success">Success rate: <strong>96%</strong></div>
+      </figure>
+
+      <figure class="policy-col">
+        <div class="policy-col-header">Real World Eval (Unseen Objects)</div>
+        <div class="policy-media">
+          <video autoplay loop muted playsinline preload="metadata">
+            <source src="assets/videos/Dishware_cousin_eval_real.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <div class="policy-success policy-success--highlight">Success rate: <strong>100%</strong></div>
+      </figure>
+    </div>
+
+    <h3 class="subsection-title">SimFoundry Digital Cousins Enable Policy Generalization to <span class="accent-red">Novel Objects</span></h3>
+    <div class="cousin-row">
+      <figure class="cousin-fig">
+        <img src="static/images/wooden_drawer_cousins.png" alt="Digital twin and cousins of the wooden drawer organizer" />
+      </figure>
+      <div class="policy-media">
+        <video autoplay loop muted playsinline preload="metadata">
+          <source src="assets/videos/PAM_cousin_eval_real.mp4" type="video/mp4" />
+        </video>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= TASK COUSINS ========================= -->
+<section class="section" id="task-cousins">
+  <div class="container">
+    <h2 class="section-title">SimFoundry generates meaningful <span class="accent-red">Task Cousins</span> that facilitate policy generalization</h2>
+    <div class="stat-block">
+      <p class="subsection-title">SimFoundry data boosts real-world VLA performance from <span class="accent-red">28%</span> to <span class="accent-red">46%</span> across <span class="accent-red">13</span> tasks.</p>
+      <p class="subsection-title">SimFoundry data boosts real-world VLA performance from <span class="accent-red">0%</span> to <span class="accent-red">29%</span> on <span class="accent-red">7</span> held-out tasks (unseen even in sim).</p>
+    </div>
+    <div class="video-duo">
+      <figure class="duo-col">
+        <div class="policy-media">
+          <video autoplay loop muted playsinline preload="metadata">
+            <source src="assets/videos/task_cousins_overview.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <figcaption class="duo-caption">Sim Eval</figcaption>
+      </figure>
+      <figure class="duo-col">
+        <div class="policy-media">
+          <video autoplay loop muted playsinline preload="metadata">
+            <source src="assets/videos/task_cousin_real.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <figcaption class="duo-caption">Real Eval</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= CO-TRAINING ========================= -->
+<section class="section" id="co-training">
+  <div class="container">
+    <h2 class="section-title">Co-Training with Large Amounts of SimFoundry Sim Data and Small Amounts of Real Data Produces Even Better Policies</h2>
+
+    <figure class="barchart">
+      <div class="barchart-legend">
+        <span class="legend-item"><span class="legend-swatch swatch-sim"></span>Sim-only</span>
+        <span class="legend-item"><span class="legend-swatch swatch-real"></span>Real-only</span>
+        <span class="legend-item"><span class="legend-swatch swatch-cotrain"></span>Co-train</span>
+      </div>
+
+      <div class="barchart-body">
+        <div class="barchart-ylabel">Success rate (%)</div>
+        <div class="barchart-yaxis">
+          <span>100</span><span>80</span><span>60</span><span>40</span><span>20</span><span>0</span>
+        </div>
+        <div class="barchart-col3">
+          <div class="barchart-plot">
+            <div class="barchart-gridlines">
+              <span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <div class="barchart-cols">
+              <div class="bar-group">
+                <div class="bar-cluster">
+                  <div class="bar bar-sim" style="--v:88"><span class="bar-val">88</span></div>
+                  <div class="bar bar-real" style="--v:100"><span class="bar-val">100</span></div>
+                  <div class="bar bar-cotrain" style="--v:100"><span class="bar-val">100</span></div>
+                </div>
+              </div>
+              <div class="bar-group">
+                <div class="bar-cluster">
+                  <div class="bar bar-sim" style="--v:24"><span class="bar-val">24</span></div>
+                  <div class="bar bar-real" style="--v:60"><span class="bar-val">60</span></div>
+                  <div class="bar bar-cotrain" style="--v:92"><span class="bar-val">92</span></div>
+                </div>
+              </div>
+              <div class="bar-group">
+                <div class="bar-cluster">
+                  <div class="bar bar-sim" style="--v:20"><span class="bar-val">20</span></div>
+                  <div class="bar bar-real" style="--v:56"><span class="bar-val">56</span></div>
+                  <div class="bar bar-cotrain" style="--v:92"><span class="bar-val">92</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="barchart-xlabels">
+            <span>Stack Dishware</span><span>Store Marker</span><span>Put Away Trash</span>
+          </div>
+        </div>
+      </div>
+    </figure>
+  </div>
+</section>
+
 <!-- ========================= QUALITATIVE RESULTS ========================= -->
 <section class="section" id="results">
   <div class="container">
@@ -560,142 +696,6 @@
     <p class="viewer-note">
       <strong>Note:</strong> 3D viewers are not supported on mobile. Please visit on desktop for the interactive experience.
     </p>
-  </div>
-</section>
-
-<!-- ========================= SIM-TO-REAL POLICY TRAINING ========================= -->
-<section class="section" id="policy-training">
-  <div class="container">
-    <h2 class="section-title">Sim-to-Real Policy Training</h2>
-    <h3 class="subsection-title">Policies Trained on SimFoundry Data Transfer <span class="accent-red">Zero-Shot</span> to Real-World</h3>
-
-    <div class="policy-row">
-      <figure class="policy-col">
-        <div class="policy-col-header">Simulation Eval</div>
-        <div class="policy-media">
-          <video autoplay loop muted playsinline preload="metadata">
-            <source src="assets/videos/stack_dishware_sim_edited.mp4" type="video/mp4" />
-          </video>
-        </div>
-        <div class="policy-success">Success rate: <strong>100%</strong></div>
-      </figure>
-
-      <figure class="policy-col">
-        <div class="policy-col-header">Real World Eval</div>
-        <div class="policy-media">
-          <video autoplay loop muted playsinline preload="metadata">
-            <source src="assets/videos/stack_dishware_real_edited.mp4" type="video/mp4" />
-          </video>
-        </div>
-        <div class="policy-success">Success rate: <strong>96%</strong></div>
-      </figure>
-
-      <figure class="policy-col">
-        <div class="policy-col-header">Real World Eval (Unseen Objects)</div>
-        <div class="policy-media">
-          <video autoplay loop muted playsinline preload="metadata">
-            <source src="assets/videos/Dishware_cousin_eval_real.mp4" type="video/mp4" />
-          </video>
-        </div>
-        <div class="policy-success policy-success--highlight">Success rate: <strong>100%</strong></div>
-      </figure>
-    </div>
-
-    <h3 class="subsection-title">SimFoundry Digital Cousins Enable Policy Generalization to <span class="accent-red">Novel Objects</span></h3>
-    <div class="cousin-row">
-      <figure class="cousin-fig">
-        <img src="static/images/wooden_drawer_cousins.png" alt="Digital twin and cousins of the wooden drawer organizer" />
-      </figure>
-      <div class="policy-media">
-        <video autoplay loop muted playsinline preload="metadata">
-          <source src="assets/videos/PAM_cousin_eval_real.mp4" type="video/mp4" />
-        </video>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ========================= TASK COUSINS ========================= -->
-<section class="section" id="task-cousins">
-  <div class="container">
-    <h2 class="section-title">SimFoundry generates meaningful <span class="accent-red">Task Cousins</span> that facilitate policy generalization</h2>
-    <div class="stat-block">
-      <p class="subsection-title">SimFoundry data boosts real-world VLA performance from <span class="accent-red">28%</span> to <span class="accent-red">46%</span> across <span class="accent-red">13</span> tasks.</p>
-      <p class="subsection-title">SimFoundry data boosts real-world VLA performance from <span class="accent-red">0%</span> to <span class="accent-red">29%</span> on <span class="accent-red">7</span> held-out tasks (unseen even in sim).</p>
-    </div>
-    <div class="video-duo">
-      <figure class="duo-col">
-        <div class="policy-media">
-          <video autoplay loop muted playsinline preload="metadata">
-            <source src="assets/videos/task_cousins_overview.mp4" type="video/mp4" />
-          </video>
-        </div>
-        <figcaption class="duo-caption">Sim Eval</figcaption>
-      </figure>
-      <figure class="duo-col">
-        <div class="policy-media">
-          <video autoplay loop muted playsinline preload="metadata">
-            <source src="assets/videos/task_cousin_real.mp4" type="video/mp4" />
-          </video>
-        </div>
-        <figcaption class="duo-caption">Real Eval</figcaption>
-      </figure>
-    </div>
-  </div>
-</section>
-
-<!-- ========================= CO-TRAINING ========================= -->
-<section class="section" id="co-training">
-  <div class="container">
-    <h2 class="section-title">Co-Training with Large Amounts of SimFoundry Sim Data and Small Amounts of Real Data Produces Even Better Policies</h2>
-
-    <figure class="barchart">
-      <div class="barchart-legend">
-        <span class="legend-item"><span class="legend-swatch swatch-sim"></span>Sim-only</span>
-        <span class="legend-item"><span class="legend-swatch swatch-real"></span>Real-only</span>
-        <span class="legend-item"><span class="legend-swatch swatch-cotrain"></span>Co-train</span>
-      </div>
-
-      <div class="barchart-body">
-        <div class="barchart-ylabel">Success rate (%)</div>
-        <div class="barchart-yaxis">
-          <span>100</span><span>80</span><span>60</span><span>40</span><span>20</span><span>0</span>
-        </div>
-        <div class="barchart-col3">
-          <div class="barchart-plot">
-            <div class="barchart-gridlines">
-              <span></span><span></span><span></span><span></span><span></span><span></span>
-            </div>
-            <div class="barchart-cols">
-              <div class="bar-group">
-                <div class="bar-cluster">
-                  <div class="bar bar-sim" style="--v:88"><span class="bar-val">88</span></div>
-                  <div class="bar bar-real" style="--v:100"><span class="bar-val">100</span></div>
-                  <div class="bar bar-cotrain" style="--v:100"><span class="bar-val">100</span></div>
-                </div>
-              </div>
-              <div class="bar-group">
-                <div class="bar-cluster">
-                  <div class="bar bar-sim" style="--v:24"><span class="bar-val">24</span></div>
-                  <div class="bar bar-real" style="--v:60"><span class="bar-val">60</span></div>
-                  <div class="bar bar-cotrain" style="--v:92"><span class="bar-val">92</span></div>
-                </div>
-              </div>
-              <div class="bar-group">
-                <div class="bar-cluster">
-                  <div class="bar bar-sim" style="--v:20"><span class="bar-val">20</span></div>
-                  <div class="bar bar-real" style="--v:56"><span class="bar-val">56</span></div>
-                  <div class="bar bar-cotrain" style="--v:92"><span class="bar-val">92</span></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="barchart-xlabels">
-            <span>Stack Dishware</span><span>Store Marker</span><span>Put Away Trash</span>
-          </div>
-        </div>
-      </div>
-    </figure>
   </div>
 </section>
 
