@@ -77,7 +77,7 @@
       <img src="static/images/simfoundry_pull_fig.png" alt="SimFoundry: real-to-sim-to-real cycle with object, scene, and task cousins" />
     </figure>
     <p class="figure-caption">
-      One-sentence elevator pitch describing the project, with a forward-looking framing of the contribution.
+      SimFoundry takes a single video of a real world scene and automatically turns it into an interactive simulation environment for scalable policy training and evaluation.
     </p>
   </div>
 </section>
@@ -151,6 +151,175 @@
     <p class="viewer-note">
       <strong>Note:</strong> 3D viewers are not supported on mobile. Please visit on desktop for the interactive experience.
     </p>
+  </div>
+</section>
+
+<!-- ========================= REAL TO SIM EVAL ========================= -->
+<section class="section" id="real2sim-eval">
+  <div class="container">
+    <h2 class="section-title">Real to Sim Eval</h2>
+    <p class="section-lead">
+      Side-by-side comparison of policy execution in real world versus SimFoundry.
+    </p>
+
+    <div class="qualitative-results" data-real2sim-results>
+      <div class="qualitative-tabs" role="tablist" aria-label="Real to Sim evaluation tasks">
+        <button class="qualitative-tab is-active" type="button" role="tab" aria-selected="true" data-real2sim-target="clear-table">Clear Table</button>
+        <button class="qualitative-tab" type="button" role="tab" aria-selected="false" data-real2sim-target="marker-in-cup">Marker in Cup</button>
+        <button class="qualitative-tab" type="button" role="tab" aria-selected="false" data-real2sim-target="store-marker">Store Marker</button>
+        <button class="qualitative-tab" type="button" role="tab" aria-selected="false" data-real2sim-target="serve-fruits">Serve Fruits</button>
+        <button class="qualitative-tab" type="button" role="tab" aria-selected="false" data-real2sim-target="stack-dishware">Stack Dishware</button>
+      </div>
+
+      <div class="qualitative-group is-active" data-real2sim-group="clear-table">
+        <p class="real2sim-policy">Policy: DreamZero</p>
+        <div class="qualitative-pair qualitative-pair--dual">
+          <figure class="qualitative-panel">
+            <div class="qualitative-media">
+              <video autoplay muted loop controls playsinline preload="metadata">
+                <source src="static/videos/real2sim/Clear_Table_real.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>Real World<br><span class="success-rate">Success Rate: 16%</span></figcaption>
+          </figure>
+
+          <figure class="qualitative-panel">
+            <div class="qualitative-media">
+              <video autoplay muted loop controls playsinline preload="metadata">
+                <source src="static/videos/real2sim/Clear_Table_sim.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>SimFoundry<br><span class="success-rate">Success Rate: 28%</span></figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="qualitative-group" data-real2sim-group="marker-in-cup" hidden>
+        <p class="real2sim-policy">Policy: Gr00t N1.7</p>
+        <div class="qualitative-pair qualitative-pair--dual">
+          <figure class="qualitative-panel">
+            <div class="qualitative-media">
+              <video muted loop controls playsinline preload="metadata">
+                <source src="static/videos/real2sim/Marker_in_Cup_real.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>Real World<br><span class="success-rate">Success Rate: 88%</span></figcaption>
+          </figure>
+
+          <figure class="qualitative-panel">
+            <div class="qualitative-media">
+              <video muted loop controls playsinline preload="metadata">
+                <source src="static/videos/real2sim/Marker_in_Cup_sim.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>SimFoundry<br><span class="success-rate">Success Rate: 88%</span></figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="qualitative-group" data-real2sim-group="store-marker" hidden>
+        <p class="real2sim-policy">Policy: π<sub>0.5</sub></p>
+        <div class="qualitative-pair qualitative-pair--dual">
+          <figure class="qualitative-panel">
+            <div class="qualitative-media">
+              <video muted loop controls playsinline preload="metadata">
+                <source src="static/videos/real2sim/Store_Marker_real.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>Real World<br><span class="success-rate">Success Rate: 60%</span></figcaption>
+          </figure>
+
+          <figure class="qualitative-panel">
+            <div class="qualitative-media">
+              <video muted loop controls playsinline preload="metadata">
+                <source src="static/videos/real2sim/Store_Marker_sim.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>SimFoundry<br><span class="success-rate">Success Rate: 20%</span></figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="qualitative-group" data-real2sim-group="serve-fruits" hidden>
+        <p class="real2sim-policy">Policy: π<sub>0.5</sub></p>
+        <div class="qualitative-pair qualitative-pair--dual">
+          <figure class="qualitative-panel">
+            <div class="qualitative-media">
+              <video muted loop controls playsinline preload="metadata">
+                <source src="static/videos/real2sim/Serve_Fruits_real.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>Real World<br><span class="success-rate">Success Rate: 72%</span></figcaption>
+          </figure>
+
+          <figure class="qualitative-panel">
+            <div class="qualitative-media">
+              <video muted loop controls playsinline preload="metadata">
+                <source src="static/videos/real2sim/Serve_Fruits_sim.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>SimFoundry<br><span class="success-rate">Success Rate: 80%</span></figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="qualitative-group" data-real2sim-group="stack-dishware" hidden>
+        <p class="real2sim-policy">Policy: π<sub>0.5</sub></p>
+        <div class="qualitative-pair qualitative-pair--dual">
+          <figure class="qualitative-panel">
+            <div class="qualitative-media">
+              <video muted loop controls playsinline preload="metadata">
+                <source src="static/videos/real2sim/Stack_Dishware_real.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>Real World<br><span class="success-rate">Success Rate: 100%</span></figcaption>
+          </figure>
+
+          <figure class="qualitative-panel">
+            <div class="qualitative-media">
+              <video muted loop controls playsinline preload="metadata">
+                <source src="static/videos/real2sim/Stack_Dishware_sim.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <figcaption>SimFoundry<br><span class="success-rate">Success Rate: 64%</span></figcaption>
+          </figure>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Interactive Scatter Plot -->
+    <div class="real2sim-chart-wrapper">
+      <h3 class="chart-title">Sim vs. Real Success Rates</h3>
+      <p class="chart-subtitle">SimFoundry predictions closely track real-world performance</p>
+      
+      <div class="chart-controls">
+        <button class="chart-toggle is-active" data-method="both">Both</button>
+        <button class="chart-toggle" data-method="simfoundry">SimFoundry</button>
+        <button class="chart-toggle" data-method="polaris">Polaris</button>
+      </div>
+
+      <div class="chart-container" id="real2sim-scatter">
+        <svg id="scatter-svg" viewBox="0 0 600 500" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="chart-tooltip" id="scatter-tooltip"></div>
+      </div>
+
+      <div class="chart-legends">
+        <div class="legend-group">
+          <div class="legend-title">SimFoundry</div>
+          <div class="legend-items" id="legend-simfoundry"></div>
+        </div>
+        <div class="legend-group">
+          <div class="legend-title">Polaris</div>
+          <div class="legend-items" id="legend-polaris"></div>
+        </div>
+        <div class="legend-group">
+          <div class="legend-title">Tasks</div>
+          <div class="legend-items" id="legend-tasks"></div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -578,5 +747,6 @@
 </footer>
 
 <script type="module" src="static/js/viewers.js?v=5"></script>
+<script src="static/js/scatter-chart.js"></script>
 </body>
 </html>

@@ -417,8 +417,12 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
   gap: 20px;
   align-items: start;
 }
+.qualitative-pair--dual {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
 @media (max-width: 720px) {
-  .qualitative-pair { grid-template-columns: 1fr; }
+  .qualitative-pair,
+  .qualitative-pair--dual { grid-template-columns: 1fr; }
 }
 .qualitative-panel {
   margin: 0;
@@ -455,6 +459,18 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
   color: var(--color-text);
   background: #fafafb;
   border-bottom: 1px solid var(--color-border);
+}
+.qualitative-panel figcaption .success-rate {
+  font-weight: 500;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+.real2sim-policy {
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--color-text);
+  margin: 0 0 16px 0;
 }
 .qualitative-tabs {
   display: flex;
@@ -506,6 +522,161 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 0.9rem;
   line-height: 1.5;
+}
+
+/* ----------- Real2Sim Scatter Chart ----------- */
+.real2sim-chart-wrapper {
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid var(--color-border);
+}
+.chart-title {
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0 0 6px 0;
+  color: var(--color-text);
+}
+.chart-subtitle {
+  text-align: center;
+  font-size: 1rem;
+  color: var(--color-muted);
+  margin: 0 0 20px 0;
+}
+.chart-controls {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.chart-toggle {
+  padding: 8px 18px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.chart-toggle:hover {
+  background: var(--color-bg-alt);
+}
+.chart-toggle.is-active {
+  background: var(--color-text);
+  color: #fff;
+  border-color: var(--color-text);
+}
+.chart-container {
+  position: relative;
+  max-width: 650px;
+  margin: 0 auto;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+#scatter-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.scatter-point {
+  cursor: pointer;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+.scatter-point:hover {
+  transform: scale(1.3);
+  filter: brightness(1.1);
+}
+.chart-tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: rgba(30, 30, 30, 0.95);
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  z-index: 100;
+  max-width: 200px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+.chart-tooltip .tooltip-method {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.chart-tooltip .tooltip-method.simfoundry {
+  background: #3182bd;
+}
+.chart-tooltip .tooltip-method.polaris {
+  background: #e6550d;
+}
+.chart-tooltip .tooltip-metrics {
+  display: block;
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px solid rgba(255,255,255,0.2);
+  font-size: 0.8rem;
+  color: #adf;
+  font-family: "SF Mono", "Monaco", "Consolas", monospace;
+}
+.chart-legends {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+.legend-group {
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  min-width: 140px;
+}
+.legend-title {
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 6px;
+}
+.legend-items {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--color-muted);
+}
+.legend-item svg {
+  flex-shrink: 0;
+}
+@media (max-width: 720px) {
+  .chart-legends {
+    flex-direction: column;
+    align-items: center;
+  }
+  .legend-group {
+    width: 100%;
+    max-width: 280px;
+  }
+  .legend-items {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 /* ----------- Footer ----------- */

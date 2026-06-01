@@ -586,6 +586,44 @@ function wireSam3dComparison() {
   apply(initialTab.dataset.sam3dTarget);
 }
 
+function wireReal2SimResults() {
+  const root = document.querySelector("[data-real2sim-results]");
+  if (!root) return;
+
+  const tabs = Array.from(root.querySelectorAll("[data-real2sim-target]"));
+  const groups = Array.from(root.querySelectorAll("[data-real2sim-group]"));
+
+  const setActiveGroup = (target) => {
+    groups.forEach((group) => {
+      const isActive = group.dataset.real2simGroup === target;
+      group.hidden = !isActive;
+      group.classList.toggle("is-active", isActive);
+
+      group.querySelectorAll("video").forEach((video) => {
+        if (isActive) {
+          video.currentTime = 0;
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      });
+    });
+
+    tabs.forEach((tab) => {
+      const isActive = tab.dataset.real2simTarget === target;
+      tab.classList.toggle("is-active", isActive);
+      tab.setAttribute("aria-selected", String(isActive));
+    });
+  };
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", () => setActiveGroup(tab.dataset.real2simTarget));
+  });
+
+  const activeTab = tabs.find((tab) => tab.classList.contains("is-active")) || tabs[0];
+  if (activeTab) setActiveGroup(activeTab.dataset.real2simTarget);
+}
+
 function wireQualitativeResults() {
   const root = document.querySelector("[data-qualitative-results]");
   if (!root) return;
@@ -928,6 +966,7 @@ function init() {
   wireTabbedViewer("scene-tabs", "scene-splat-viewer", SCENE_MANIFESTS, "scene-target");
   wireInteractiveObjects();
   wireSam3dComparison();
+  wireReal2SimResults();
   wireQualitativeResults();
 }
 
