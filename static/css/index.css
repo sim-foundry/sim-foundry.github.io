@@ -564,10 +564,7 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
   font-weight: 600;
 }
 .policy-success--highlight strong {
-  color: #ffffff;
-  background: var(--color-stanford-red);
-  padding: 2px 10px;
-  border-radius: 999px;
+  color: var(--color-stanford-red);
 }
 
 /* Cousins generalization: image (left) + eval video (right) */
