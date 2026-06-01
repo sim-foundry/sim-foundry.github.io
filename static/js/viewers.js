@@ -195,7 +195,14 @@ function loadMesh(container, src, viewPreset) {
       container.appendChild(renderer.domElement);
       animate();
     },
-    undefined,
+    (xhr) => {
+      if (disposed) return;
+      if (xhr.total) {
+        loadingEl.textContent = `Loading… ${Math.round((xhr.loaded / xhr.total) * 100)}%`;
+      } else {
+        loadingEl.textContent = `Loading… ${(xhr.loaded / 1048576).toFixed(1)} MB`;
+      }
+    },
     (err) => {
       console.warn("GLB load failed:", src, err);
       loadingEl.textContent = "Failed to load viewer asset";
