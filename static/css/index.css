@@ -588,6 +588,104 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
   border-radius: var(--radius-md);
 }
 
+/* ----------- Co-training bar chart (generated, not an image) ----------- */
+.barchart { margin: 0 auto; max-width: 940px; }
+.barchart-legend {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+.legend-item { display: inline-flex; align-items: center; gap: 8px; }
+.legend-swatch { width: 16px; height: 16px; border-radius: 3px; }
+.swatch-sim { background: #3b9aff; }
+.swatch-real { background: #5cd65c; }
+.swatch-cotrain { background: #ff6f61; }
+
+.barchart-body {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  column-gap: 10px;
+  align-items: start;
+}
+.barchart-ylabel {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  height: 360px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+.barchart-yaxis {
+  height: 360px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: right;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+.barchart-col3 { min-width: 0; }
+.barchart-plot {
+  position: relative;
+  height: 360px;
+  border-left: 2px solid var(--color-border);
+  border-bottom: 2px solid var(--color-border);
+}
+.barchart-gridlines {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.barchart-gridlines span { border-top: 1px solid #eef0f3; }
+.barchart-cols { position: absolute; inset: 0; display: flex; }
+.bar-group { flex: 1; height: 100%; }
+.bar-cluster {
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 6px;
+}
+.bar {
+  position: relative;
+  width: 28px;
+  max-width: 28%;
+  height: calc(var(--v) * 1%);
+  border-radius: 3px 3px 0 0;
+  transition: height 0.6s ease-out;
+}
+.bar-sim { background: #3b9aff; }
+.bar-real { background: #5cd65c; }
+.bar-cotrain { background: #ff6f61; }
+.bar-val {
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+.barchart-xlabels { display: flex; margin-top: 8px; }
+.barchart-xlabels span {
+  flex: 1;
+  text-align: center;
+  font-size: 1rem;
+  color: var(--color-text);
+}
+@media (max-width: 720px) {
+  .bar { width: 16px; }
+  .bar-val { font-size: 0.78rem; top: -18px; }
+  .barchart-xlabels span { font-size: 0.82rem; }
+}
+
 /* ----------- BibTeX ----------- */
 .bibtex-block {
   background: #0f1219;
