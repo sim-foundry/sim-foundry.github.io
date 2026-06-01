@@ -600,6 +600,17 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
   border-radius: var(--radius-md);
 }
 
+/* Force a single subsection line (font scales with viewport to fit). */
+.subsection-title.oneline {
+  white-space: nowrap;
+  width: max-content;
+  max-width: 96vw;
+  font-size: clamp(0.7rem, 1.7vw, 1.4rem);
+}
+@media (max-width: 720px) {
+  .subsection-title.oneline { white-space: normal; width: min(1200px, 92vw); }
+}
+
 /* Keep the Task Cousins heading on one line (override base wrap/width). */
 #task-cousins .section-title {
   white-space: nowrap;
