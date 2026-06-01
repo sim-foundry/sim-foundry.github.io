@@ -13,7 +13,7 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
 
-<link rel="stylesheet" href="static/css/index.css?v=11" />
+<link rel="stylesheet" href="static/css/index.css?v=14" />
 
 <script type="importmap">
 {
@@ -130,15 +130,12 @@
       Explore the reconstructed 3D scenes interactively. Drag to rotate, scroll to zoom.
     </p>
 
-    <div class="viewer-controls">
-      <label class="viewer-label" for="scene-select">Scene:</label>
-      <select id="scene-select" class="viewer-select">
-        <option value="nv_desk">NV Desk</option>
-        <option value="kitchen_2_demo">Kitchen 2</option>
-        <option value="dining_1_demo">Dining 1</option>
-        <option value="toys_1_demo">Toys 1</option>
-        <option value="outdoor_1_demo">Outdoor 1</option>
-      </select>
+    <div class="qualitative-tabs" id="scene-tabs" role="tablist" aria-label="Scene">
+      <button class="qualitative-tab is-active" type="button" role="tab" aria-selected="true"  data-scene-target="nv_desk">NV Desk</button>
+      <button class="qualitative-tab"           type="button" role="tab" aria-selected="false" data-scene-target="kitchen_2_demo">Kitchen</button>
+      <button class="qualitative-tab"           type="button" role="tab" aria-selected="false" data-scene-target="dining_1_demo">Dining</button>
+      <button class="qualitative-tab"           type="button" role="tab" aria-selected="false" data-scene-target="toys_1_demo">Toys</button>
+      <button class="qualitative-tab"           type="button" role="tab" aria-selected="false" data-scene-target="outdoor_1_demo">Outdoor</button>
     </div>
 
     <div class="viewer-grid viewer-grid--single">
@@ -157,94 +154,6 @@
   </div>
 </section>
 
-<!-- ========================= RECONSTRUCTED OBJECTS ========================= -->
-<section class="section" id="object-viewer">
-  <div class="container">
-    <h2 class="section-title">Reconstructed Objects</h2>
-    <p class="section-lead">
-      Physics-ready object meshes recovered from real-world captures.
-    </p>
-
-    <div class="viewer-controls">
-      <label class="viewer-label" for="object-select">Object:</label>
-      <select id="object-select" class="viewer-select">
-        <option value="object-01">Object 1</option>
-        <option value="object-02">Object 2</option>
-        <option value="object-03">Object 3</option>
-        <option value="object-04">Object 4</option>
-      </select>
-    </div>
-
-    <div class="viewer-grid viewer-grid--dual">
-      <div class="viewer-card">
-        <div class="viewer-card-title">Real Capture</div>
-        <div class="viewer-container viewer-container--image">
-          <div class="viewer-loading">Object image goes here</div>
-        </div>
-      </div>
-      <div class="viewer-card">
-        <div class="viewer-card-title">Reconstructed Mesh</div>
-        <div class="viewer-container" id="object-mesh-viewer" data-viewer-type="mesh" data-src="">
-          <div class="viewer-loading">Loading viewer…</div>
-        </div>
-        <div class="viewer-hint">Drag and scroll to rotate and zoom.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ========================= SAM3D COMPARISON ========================= -->
-<section class="section" id="sam3d-comparison">
-  <div class="container">
-    <h2 class="section-title">Reconstructed Scene v.s. SAM3D output</h2>
-
-    <div class="content sam3d-summary">
-      <p>
-        SimFoundry recovers more accurate object meshes and poses than SAM3D,
-        especially on occluded, cluttered scenes. The pipeline
-        also generalizes across input modalities, supporting open-source
-        datasets and synthetically generated images out of the box.
-      </p>
-    </div>
-
-    <div class="viewer-grid viewer-grid--triple">
-      <div class="viewer-card">
-        <div class="viewer-card-title">Input Image</div>
-        <div class="viewer-container viewer-container--image">
-          <img id="sam3d-input-image" src="" alt="Input image" />
-          <div class="viewer-loading">Image not configured</div>
-        </div>
-      </div>
-      <div class="viewer-card">
-        <div class="viewer-card-title">SimFoundry Output</div>
-        <div class="viewer-container" id="simfoundry-glb-viewer" data-viewer-type="mesh" data-src="">
-          <div class="viewer-loading">Loading viewer…</div>
-        </div>
-        <div class="viewer-hint">Drag and scroll to rotate and zoom.</div>
-      </div>
-      <div class="viewer-card">
-        <div class="viewer-card-title">SAM3D Output</div>
-        <div class="viewer-container" id="sam3d-glb-viewer" data-viewer-type="mesh" data-src="">
-          <div class="viewer-loading">Loading viewer…</div>
-        </div>
-        <div class="viewer-hint">Drag and scroll to rotate and zoom.</div>
-      </div>
-    </div>
-
-    <div class="qualitative-tabs" id="sam3d-scene-tabs" role="tablist" aria-label="Scene">
-      <button class="qualitative-tab is-active" type="button" role="tab" aria-selected="true"  data-sam3d-target="nv_desk">Cluttered_Scene_1</button>
-      <button class="qualitative-tab"           type="button" role="tab" aria-selected="false" data-sam3d-target="bathroom_1">Cluttered_Scene_2</button>
-      <button class="qualitative-tab"           type="button" role="tab" aria-selected="false" data-sam3d-target="home_coffee_4">Cluttered_Scene_3</button>
-      <button class="qualitative-tab"           type="button" role="tab" aria-selected="false" data-sam3d-target="Gemini_1">AI_Image</button>
-      <button class="qualitative-tab"           type="button" role="tab" aria-selected="false" data-sam3d-target="OCID_2">Open_Source (OCID)</button>
-    </div>
-
-    <p class="viewer-note">
-      <strong>Note:</strong> 3D viewers are not supported on mobile. Please visit on desktop for the interactive experience.
-    </p>
-  </div>
-</section>
-
 <!-- ========================= QUALITATIVE RESULTS ========================= -->
 <section class="section" id="results">
   <div class="container">
@@ -254,6 +163,18 @@
     </p>
 
     <div class="qualitative-results" data-qualitative-results>
+      <div class="qualitative-tabs" role="tablist" aria-label="Qualitative result groups">
+        <button class="qualitative-tab is-active" type="button" role="tab" aria-selected="true" data-result-target="bathroom-1">Bathroom</button>
+        <button class="qualitative-tab" type="button" role="tab" aria-selected="false" data-result-target="coffee-2">Coffee</button>
+        <button class="qualitative-tab" type="button" role="tab" aria-selected="false" data-result-target="dining-1">Dining</button>
+        <button class="qualitative-tab" type="button" role="tab" aria-selected="false" data-result-target="fruits-2">Fruits</button>
+        <button class="qualitative-tab" type="button" role="tab" aria-selected="false" data-result-target="home-coffee-4">Home Coffee</button>
+        <button class="qualitative-tab" type="button" role="tab" aria-selected="false" data-result-target="kitchen-2">Kitchen</button>
+        <button class="qualitative-tab" type="button" role="tab" aria-selected="false" data-result-target="living-3">Living</button>
+        <button class="qualitative-tab" type="button" role="tab" aria-selected="false" data-result-target="outdoor-1">Outdoor</button>
+        <button class="qualitative-tab" type="button" role="tab" aria-selected="false" data-result-target="toys-1">Toys</button>
+      </div>
+
       <div class="qualitative-group is-active" data-result-group="bathroom-1">
         <div class="qualitative-pair">
           <figure class="qualitative-panel">
@@ -265,12 +186,6 @@
             <figcaption>Input video (2x)</figcaption>
           </figure>
 
-          <figure class="qualitative-panel">
-            <div class="qualitative-media qualitative-media--image">
-              <img src="static/images/bathroom_1_frame_0001.png" alt="Bathroom scene capture" />
-            </div>
-            <figcaption>Selected frame</figcaption>
-          </figure>
 
           <figure class="qualitative-panel">
             <div class="qualitative-media">
@@ -303,12 +218,6 @@
             <figcaption>Input video (2x)</figcaption>
           </figure>
 
-          <figure class="qualitative-panel">
-            <div class="qualitative-media qualitative-media--image">
-              <img src="static/images/coffee_2_frame_0001.png" alt="Coffee scene capture" />
-            </div>
-            <figcaption>Selected frame</figcaption>
-          </figure>
 
           <figure class="qualitative-panel">
             <div class="qualitative-media">
@@ -341,12 +250,6 @@
             <figcaption>Input video (2x)</figcaption>
           </figure>
 
-          <figure class="qualitative-panel">
-            <div class="qualitative-media qualitative-media--image">
-              <img src="static/images/dining_1_frame_0001.png" alt="Dining scene capture" />
-            </div>
-            <figcaption>Selected frame</figcaption>
-          </figure>
 
           <figure class="qualitative-panel">
             <div class="qualitative-media">
@@ -379,12 +282,6 @@
             <figcaption>Input video (2x)</figcaption>
           </figure>
 
-          <figure class="qualitative-panel">
-            <div class="qualitative-media qualitative-media--image">
-              <img src="static/images/fruits_2_frame_0001.png" alt="Fruits scene capture" />
-            </div>
-            <figcaption>Selected frame</figcaption>
-          </figure>
 
           <figure class="qualitative-panel">
             <div class="qualitative-media">
@@ -417,12 +314,6 @@
             <figcaption>Input video (2x)</figcaption>
           </figure>
 
-          <figure class="qualitative-panel">
-            <div class="qualitative-media qualitative-media--image">
-              <img src="static/images/home_coffee_4_frame_0001.png" alt="Home coffee scene capture" />
-            </div>
-            <figcaption>Selected frame</figcaption>
-          </figure>
 
           <figure class="qualitative-panel">
             <div class="qualitative-media">
@@ -455,12 +346,6 @@
             <figcaption>Input video (2x)</figcaption>
           </figure>
 
-          <figure class="qualitative-panel">
-            <div class="qualitative-media qualitative-media--image">
-              <img src="static/images/kitchen_2_frame_0001.png" alt="Kitchen scene capture" />
-            </div>
-            <figcaption>Selected frame</figcaption>
-          </figure>
 
           <figure class="qualitative-panel">
             <div class="qualitative-media">
@@ -493,12 +378,6 @@
             <figcaption>Input video (2x)</figcaption>
           </figure>
 
-          <figure class="qualitative-panel">
-            <div class="qualitative-media qualitative-media--image">
-              <img src="static/images/living_3_frame_0541.png" alt="Living room scene capture" />
-            </div>
-            <figcaption>Selected frame</figcaption>
-          </figure>
 
           <figure class="qualitative-panel">
             <div class="qualitative-media">
@@ -531,12 +410,6 @@
             <figcaption>Input video (2x)</figcaption>
           </figure>
 
-          <figure class="qualitative-panel">
-            <div class="qualitative-media qualitative-media--image">
-              <img src="static/images/outdoor_1_frame_0001.png" alt="Outdoor scene capture" />
-            </div>
-            <figcaption>Selected frame</figcaption>
-          </figure>
 
           <figure class="qualitative-panel">
             <div class="qualitative-media">
@@ -569,12 +442,6 @@
             <figcaption>Input video (2x)</figcaption>
           </figure>
 
-          <figure class="qualitative-panel">
-            <div class="qualitative-media qualitative-media--image">
-              <img src="static/images/toys_1_frame_0001.png" alt="Toys scene capture" />
-            </div>
-            <figcaption>Selected frame</figcaption>
-          </figure>
 
           <figure class="qualitative-panel">
             <div class="qualitative-media">
@@ -596,18 +463,90 @@
         </div>
       </div>
 
-      <div class="qualitative-tabs" role="tablist" aria-label="Qualitative result groups">
-        <button class="qualitative-tab is-active" type="button" role="tab" aria-selected="true" data-result-target="bathroom-1">Bathroom</button>
-        <button class="qualitative-tab" type="button" role="tab" aria-selected="false" data-result-target="coffee-2">Coffee</button>
-        <button class="qualitative-tab" type="button" role="tab" aria-selected="false" data-result-target="dining-1">Dining</button>
-        <button class="qualitative-tab" type="button" role="tab" aria-selected="false" data-result-target="fruits-2">Fruits</button>
-        <button class="qualitative-tab" type="button" role="tab" aria-selected="false" data-result-target="home-coffee-4">Home Coffee</button>
-        <button class="qualitative-tab" type="button" role="tab" aria-selected="false" data-result-target="kitchen-2">Kitchen</button>
-        <button class="qualitative-tab" type="button" role="tab" aria-selected="false" data-result-target="living-3">Living</button>
-        <button class="qualitative-tab" type="button" role="tab" aria-selected="false" data-result-target="outdoor-1">Outdoor</button>
-        <button class="qualitative-tab" type="button" role="tab" aria-selected="false" data-result-target="toys-1">Toys</button>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= RECONSTRUCTED OBJECTS ========================= -->
+<section class="section" id="object-viewer">
+  <div class="container">
+    <h2 class="section-title">Reconstructed Objects</h2>
+    <p class="section-lead">
+      Click an object in the real scene to view its reconstructed, physics-ready mesh.
+    </p>
+
+    <div class="qualitative-tabs" id="io-scene-tabs" role="tablist" aria-label="Scene"></div>
+
+    <div class="viewer-grid viewer-grid--dual" id="interactive-objects">
+      <div class="viewer-card">
+        <div class="viewer-card-title">Real Scene <span class="io-hint-inline">— hover and click an object</span></div>
+        <div class="viewer-container viewer-container--image io-scene" id="io-scene">
+          <img id="io-scene-image" alt="Real scene" />
+          <canvas id="io-overlay" class="io-overlay"></canvas>
+          <div class="io-tooltip" id="io-tooltip" hidden></div>
+          <div class="viewer-loading" id="io-scene-loading">Loading scene…</div>
+        </div>
+      </div>
+      <div class="viewer-card">
+        <div class="viewer-card-title">Reconstructed Mesh <span class="io-selected-label" id="io-selected-label"></span></div>
+        <div class="viewer-container" id="io-mesh-viewer" data-viewer-type="mesh" data-src="">
+          <div class="viewer-loading">Click an object to load its mesh</div>
+        </div>
+        <div class="viewer-hint">Drag and scroll to rotate and zoom.</div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ========================= SAM3D COMPARISON ========================= -->
+<section class="section" id="sam3d-comparison">
+  <div class="container">
+    <h2 class="section-title">Reconstructed Scene v.s. SAM3D output</h2>
+
+    <div class="content sam3d-summary">
+      <p>
+        SimFoundry recovers more accurate object meshes and poses than SAM3D,
+        especially on occluded, cluttered scenes. The pipeline
+        also generalizes across input modalities, supporting open-source
+        datasets and synthetically generated images out of the box.
+      </p>
+    </div>
+
+    <div class="qualitative-tabs" id="sam3d-scene-tabs" role="tablist" aria-label="Scene">
+      <button class="qualitative-tab is-active" type="button" role="tab" aria-selected="true"  data-sam3d-target="nv_desk">Cluttered_Scene_1</button>
+      <button class="qualitative-tab"           type="button" role="tab" aria-selected="false" data-sam3d-target="bathroom_1">Cluttered_Scene_2</button>
+      <button class="qualitative-tab"           type="button" role="tab" aria-selected="false" data-sam3d-target="home_coffee_4">Cluttered_Scene_3</button>
+      <button class="qualitative-tab"           type="button" role="tab" aria-selected="false" data-sam3d-target="Gemini_1">AI_Image</button>
+      <button class="qualitative-tab"           type="button" role="tab" aria-selected="false" data-sam3d-target="OCID_2">Open_Source (OCID)</button>
+    </div>
+
+    <div class="viewer-grid viewer-grid--triple">
+      <div class="viewer-card">
+        <div class="viewer-card-title">Input Image</div>
+        <div class="viewer-container viewer-container--image">
+          <img id="sam3d-input-image" src="" alt="Input image" />
+          <div class="viewer-loading">Image not configured</div>
+        </div>
+      </div>
+      <div class="viewer-card">
+        <div class="viewer-card-title">SimFoundry Output</div>
+        <div class="viewer-container" id="simfoundry-glb-viewer" data-viewer-type="mesh" data-src="">
+          <div class="viewer-loading">Loading viewer…</div>
+        </div>
+        <div class="viewer-hint">Drag and scroll to rotate and zoom.</div>
+      </div>
+      <div class="viewer-card">
+        <div class="viewer-card-title">SAM3D Output</div>
+        <div class="viewer-container" id="sam3d-glb-viewer" data-viewer-type="mesh" data-src="">
+          <div class="viewer-loading">Loading viewer…</div>
+        </div>
+        <div class="viewer-hint">Drag and scroll to rotate and zoom.</div>
+      </div>
+    </div>
+
+    <p class="viewer-note">
+      <strong>Note:</strong> 3D viewers are not supported on mobile. Please visit on desktop for the interactive experience.
+    </p>
   </div>
 </section>
 
@@ -638,6 +577,6 @@
   </div>
 </footer>
 
-<script type="module" src="static/js/viewers.js"></script>
+<script type="module" src="static/js/viewers.js?v=5"></script>
 </body>
 </html>

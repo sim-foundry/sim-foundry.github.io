@@ -1,0 +1,75 @@
+{
+  "image": "scene.png",
+  "image_size": [
+    1408,
+    736
+  ],
+  "objects": [
+    {
+      "id": "iter_0",
+      "label": "brass pocket compass",
+      "mask": "masks/iter_0.png",
+      "mesh": "objects/iter_0.glb"
+    },
+    {
+      "id": "iter_1",
+      "label": "black smartphone",
+      "mask": "masks/iter_1.png",
+      "mesh": "objects/iter_1.glb"
+    },
+    {
+      "id": "iter_2",
+      "label": "silver pen",
+      "mask": "masks/iter_2.png",
+      "mesh": "objects/iter_2.glb"
+    },
+    {
+      "id": "iter_4",
+      "label": "brown leather pouch",
+      "mask": "masks/iter_4.png",
+      "mesh": "objects/iter_4.glb"
+    },
+    {
+      "id": "iter_5",
+      "label": "beige notebook",
+      "mask": "masks/iter_5.png",
+      "mesh": "objects/iter_5.glb"
+    },
+    {
+      "id": "iter_7",
+      "label": "green succulent in pot",
+      "mask": "masks/iter_7.png",
+      "mesh": "objects/iter_7.glb"
+    },
+    {
+      "id": "iter_8",
+      "label": "silver laptop",
+      "mask": "masks/iter_8.png",
+      "mesh": "objects/iter_8.glb"
+    },
+    {
+      "id": "iter_9",
+      "label": "blue mug",
+      "mask": "masks/iter_9.png",
+      "mesh": "objects/iter_9.glb"
+    },
+    {
+      "id": "iter_10",
+      "label": "grey coaster",
+      "mask": "masks/iter_10.png",
+      "mesh": "objects/iter_10.glb"
+    },
+    {
+      "id": "iter_11",
+      "label": "black water bottle",
+      "mask": "masks/iter_11.png",
+      "mesh": "objects/iter_11.glb"
+    },
+    {
+      "id": "iter_12",
+      "label": "slotted wooden organizer",
+      "mask": "masks/iter_12.png",
+      "mesh": "objects/iter_12.glb"
+    }
+  ]
+}

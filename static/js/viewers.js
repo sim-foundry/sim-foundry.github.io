@@ -171,6 +171,24 @@ function loadMesh(container, src, viewPreset) {
       }
       controls.update();
 
+      // Generated (e.g. Hunyuan) meshes ship a base-color texture but leave
+      // metallic/roughness factors unset, which glTF defaults to fully metallic
+      // — so the albedo renders as dark shiny metal under the env map. Force
+      // textured PBR materials matte so the texture shows. Guarded by `.map`
+      // so vertex-colored meshes (no texture) are left exactly as-is.
+      root.traverse((o) => {
+        if (!o.isMesh || !o.material) return;
+        const mats = Array.isArray(o.material) ? o.material : [o.material];
+        mats.forEach((m) => {
+          if (m.map) {
+            if ("metalness" in m) m.metalness = 0;
+            if ("roughness" in m) m.roughness = 1;
+            if ("specularIntensity" in m) m.specularIntensity = 0;
+            m.needsUpdate = true;
+          }
+        });
+      });
+
       scene.add(root);
 
       if (loadingEl.parentNode === container) container.removeChild(loadingEl);
@@ -471,6 +489,32 @@ function wireSelect(selectId, containerId, assetMap) {
   apply();
 }
 
+// Side-by-side scene buttons for the hybrid splat viewer (mirrors the SAM3D
+// and qualitative tab pattern), replacing the old <select> dropdown.
+function wireTabbedViewer(tablistId, containerId, assetMap, attr) {
+  const tablist = document.getElementById(tablistId);
+  const container = document.getElementById(containerId);
+  if (!tablist || !container) return;
+
+  const tabs = Array.from(tablist.querySelectorAll(`[data-${attr}]`));
+  if (!tabs.length) return;
+
+  const key = (tab) => tab.dataset[attr.replace(/-([a-z])/g, (_, c) => c.toUpperCase())];
+
+  const apply = (target) => {
+    tabs.forEach((tab) => {
+      const on = key(tab) === target;
+      tab.classList.toggle("is-active", on);
+      tab.setAttribute("aria-selected", String(on));
+    });
+    setSrc(container, assetMap[target] || "");
+  };
+
+  tabs.forEach((tab) => tab.addEventListener("click", () => apply(key(tab))));
+  const initial = tabs.find((t) => t.classList.contains("is-active")) || tabs[0];
+  apply(key(initial));
+}
+
 function wireSam3dComparison() {
   const tablist = document.getElementById("sam3d-scene-tabs");
   const imageEl = document.getElementById("sam3d-input-image");
@@ -645,9 +689,244 @@ function wireQualitativeResults() {
   if (activeTab) setActiveGroup(activeTab.dataset.resultTarget);
 }
 
+// --- Interactive object picker -------------------------------------------
+// Left: the real (padded+resized) scene image. Each object has a binary mask
+// (in the same pixel space as the image) and a reconstructed GLB. Hovering
+// highlights the object under the cursor; clicking loads its mesh on the right.
+// A dropdown switches between scenes; each scene has its own manifest.json.
+const INTERACTIVE_SCENES = {
+  "flag_scene_1":    { label: "Clutter Table",         dir: "flag_scene_1" },
+  "home_coffee_4":   { label: "Home Coffee",           dir: "home_coffee_4" },
+  "quillen_kitchen": { label: "Kitchen",               dir: "quillen_kitchen" },
+  "bathroom_1":      { label: "Bathroom",              dir: "bathroom_1" },
+  "Gemini_1":        { label: "AI-Generated (Gemini)", dir: "Gemini_1" },
+};
+const INTERACTIVE_BASE = "assets/viewers/interactive_objects";
+
+async function wireInteractiveObjects() {
+  const root = document.getElementById("interactive-objects");
+  const tabs = document.getElementById("io-scene-tabs");
+  const imgEl = document.getElementById("io-scene-image");
+  const overlay = document.getElementById("io-overlay");
+  const sceneEl = document.getElementById("io-scene");
+  const tooltip = document.getElementById("io-tooltip");
+  const loadingEl = document.getElementById("io-scene-loading");
+  const meshContainer = document.getElementById("io-mesh-viewer");
+  const selectedLabel = document.getElementById("io-selected-label");
+  if (!root || !imgEl || !overlay || !sceneEl || !meshContainer) return;
+
+  const octx = overlay.getContext("2d");
+  const GLOW = [125, 211, 252];                   // bright edge core
+  const GLOW_SHADOW = "rgba(56, 189, 248, 0.95)"; // halo color
+
+  // Mutable per-scene state, swapped out on every scene load.
+  let W = 1, H = 1;
+  let objects = [];
+  let hovered = null;
+  let selected = null;
+  let loadToken = 0; // guards against races when scenes are switched quickly
+
+  const objectAt = (px, py) => {
+    if (px < 0 || py < 0 || px >= W || py >= H) return null;
+    const idx = py * W + px;
+    for (const o of objects) if (o.occ[idx]) return o;
+    return null;
+  };
+  const paintGlow = (o, strong) => {
+    octx.save();
+    octx.shadowColor = GLOW_SHADOW;
+    octx.shadowBlur = strong ? 30 : 18;
+    const passes = strong ? 4 : 2; // stack blurred passes into a softer glow
+    for (let k = 0; k < passes; k++) octx.drawImage(o.edge, 0, 0);
+    octx.restore();
+  };
+  const redraw = () => {
+    octx.clearRect(0, 0, W, H);
+    if (selected) paintGlow(selected, true);
+    if (hovered && hovered !== selected) paintGlow(hovered, false);
+  };
+  const toPixel = (ev) => {
+    const r = imgEl.getBoundingClientRect();
+    return [
+      Math.round((ev.clientX - r.left) / r.width * W),
+      Math.round((ev.clientY - r.top) / r.height * H),
+    ];
+  };
+
+  // Build one object's hit-test occupancy + pre-rendered glowing outline.
+  const buildObject = async (obj, base) => {
+    const maskImg = new Image();
+    maskImg.src = base + obj.mask;
+    try { await maskImg.decode(); } catch (e) { return null; }
+
+    const c = document.createElement("canvas");
+    c.width = W; c.height = H;
+    const cx = c.getContext("2d", { willReadFrequently: true });
+    cx.drawImage(maskImg, 0, 0, W, H);
+    const data = cx.getImageData(0, 0, W, H).data;
+
+    const occ = new Uint8Array(W * H);
+    let area = 0;
+    for (let i = 0; i < W * H; i++) {
+      if (data[i * 4] > 127) { occ[i] = 1; area++; }
+    }
+
+    // Outline band: occupied pixels touching a non-occupied pixel (the
+    // silhouette), dilated once so the rim stays visible when scaled down.
+    const band = new Uint8Array(W * H);
+    for (let y = 0; y < H; y++) {
+      for (let x = 0; x < W; x++) {
+        if (!occ[y * W + x]) continue;
+        let onEdge = false;
+        for (let dy = -1; dy <= 1 && !onEdge; dy++) {
+          for (let dx = -1; dx <= 1; dx++) {
+            const nx = x + dx, ny = y + dy;
+            if (nx < 0 || ny < 0 || nx >= W || ny >= H || !occ[ny * W + nx]) { onEdge = true; break; }
+          }
+        }
+        if (!onEdge) continue;
+        for (let dy = -1; dy <= 1; dy++) {
+          for (let dx = -1; dx <= 1; dx++) {
+            const nx = x + dx, ny = y + dy;
+            if (nx >= 0 && ny >= 0 && nx < W && ny < H && occ[ny * W + nx]) band[ny * W + nx] = 1;
+          }
+        }
+      }
+    }
+
+    const edge = document.createElement("canvas");
+    edge.width = W; edge.height = H;
+    const ectx = edge.getContext("2d");
+    const eimg = ectx.createImageData(W, H);
+    for (let i = 0; i < W * H; i++) {
+      if (band[i]) {
+        eimg.data[i * 4] = GLOW[0];
+        eimg.data[i * 4 + 1] = GLOW[1];
+        eimg.data[i * 4 + 2] = GLOW[2];
+        eimg.data[i * 4 + 3] = 255;
+      }
+    }
+    ectx.putImageData(eimg, 0, 0);
+
+    return { ...obj, occ, area, edge, url: base + obj.mesh };
+  };
+
+  const resetMeshViewer = () => {
+    const existing = meshViewers.get(meshContainer);
+    if (existing) { existing.dispose(); meshViewers.delete(meshContainer); }
+    meshContainer.innerHTML = '<div class="viewer-loading">Click an object to load its mesh</div>';
+  };
+
+  async function loadScene(dir) {
+    const myToken = ++loadToken;
+    const base = `${INTERACTIVE_BASE}/${dir}/`;
+
+    // Reset state + UI for the incoming scene.
+    hovered = null;
+    selected = null;
+    objects = [];
+    octx.clearRect(0, 0, overlay.width, overlay.height);
+    if (selectedLabel) selectedLabel.textContent = "";
+    resetMeshViewer();
+    if (loadingEl) { loadingEl.textContent = "Loading scene…"; loadingEl.hidden = false; }
+
+    let manifest;
+    try {
+      const res = await fetch(base + "manifest.json", { cache: "no-cache" });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      manifest = await res.json();
+    } catch (err) {
+      console.warn("interactive-objects manifest failed:", base, err);
+      if (myToken === loadToken && loadingEl) loadingEl.textContent = "Failed to load scene";
+      return;
+    }
+    if (myToken !== loadToken) return;
+
+    [W, H] = manifest.image_size || [1, 1];
+    overlay.width = W;
+    overlay.height = H;
+    const ar = `${W} / ${H}`;
+    sceneEl.style.aspectRatio = ar;
+    meshContainer.style.aspectRatio = ar;
+
+    imgEl.src = base + manifest.image;
+    try { await imgEl.decode(); } catch (e) { /* ignore */ }
+    if (myToken !== loadToken) return;
+    if (loadingEl) loadingEl.hidden = true;
+
+    const built = await Promise.all((manifest.objects || []).map((obj) => buildObject(obj, base)));
+    if (myToken !== loadToken) return; // a newer scene started while we decoded
+
+    objects = built.filter(Boolean).sort((a, b) => a.area - b.area); // smaller on top
+    redraw();
+  }
+
+  sceneEl.addEventListener("mousemove", (ev) => {
+    const [px, py] = toPixel(ev);
+    const o = objectAt(px, py);
+    if (o !== hovered) { hovered = o; redraw(); }
+    if (o) {
+      sceneEl.classList.add("io-hovering");
+      if (tooltip) {
+        tooltip.textContent = o.label;
+        tooltip.hidden = false;
+        const r = sceneEl.getBoundingClientRect();
+        tooltip.style.left = `${ev.clientX - r.left}px`;
+        tooltip.style.top = `${ev.clientY - r.top}px`;
+      }
+    } else {
+      sceneEl.classList.remove("io-hovering");
+      if (tooltip) tooltip.hidden = true;
+    }
+  });
+
+  sceneEl.addEventListener("mouseleave", () => {
+    hovered = null;
+    sceneEl.classList.remove("io-hovering");
+    if (tooltip) tooltip.hidden = true;
+    redraw();
+  });
+
+  sceneEl.addEventListener("click", (ev) => {
+    const [px, py] = toPixel(ev);
+    const o = objectAt(px, py);
+    if (!o) return;
+    selected = o;
+    redraw();
+    if (selectedLabel) selectedLabel.textContent = `— ${o.label}`;
+    loadMesh(meshContainer, o.url);
+  });
+
+  // Build the scene tab buttons and wire switching.
+  const entries = Object.values(INTERACTIVE_SCENES);
+  if (tabs) {
+    tabs.innerHTML = "";
+    entries.forEach((info, i) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "qualitative-tab" + (i === 0 ? " is-active" : "");
+      btn.setAttribute("role", "tab");
+      btn.setAttribute("aria-selected", i === 0 ? "true" : "false");
+      btn.dataset.ioTarget = info.dir;
+      btn.textContent = info.label;
+      btn.addEventListener("click", () => {
+        tabs.querySelectorAll(".qualitative-tab").forEach((t) => {
+          const on = t === btn;
+          t.classList.toggle("is-active", on);
+          t.setAttribute("aria-selected", String(on));
+        });
+        loadScene(info.dir);
+      });
+      tabs.appendChild(btn);
+    });
+  }
+
+  loadScene(entries[0].dir);
+}
+
 function init() {
-  wireSelect("scene-select", "scene-splat-viewer", SCENE_MANIFESTS);
-  wireSelect("object-select", "object-mesh-viewer", OBJECT_ASSETS);
+  wireTabbedViewer("scene-tabs", "scene-splat-viewer", SCENE_MANIFESTS, "scene-target");
+  wireInteractiveObjects();
   wireSam3dComparison();
   wireQualitativeResults();
 }

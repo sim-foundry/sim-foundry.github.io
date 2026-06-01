@@ -1,0 +1,117 @@
+{
+  "image": "scene.png",
+  "image_size": [
+    1408,
+    736
+  ],
+  "objects": [
+    {
+      "id": "iter_0",
+      "label": "wooden ruler",
+      "mask": "masks/iter_0.png",
+      "mesh": "objects/iter_0.glb"
+    },
+    {
+      "id": "iter_1",
+      "label": "orange scissors",
+      "mask": "masks/iter_1.png",
+      "mesh": "objects/iter_1.glb"
+    },
+    {
+      "id": "iter_2",
+      "label": "yellow tape measure",
+      "mask": "masks/iter_2.png",
+      "mesh": "objects/iter_2.glb"
+    },
+    {
+      "id": "iter_3",
+      "label": "blue tape roll",
+      "mask": "masks/iter_3.png",
+      "mesh": "objects/iter_3.glb"
+    },
+    {
+      "id": "iter_4",
+      "label": "orange fruit",
+      "mask": "masks/iter_4.png",
+      "mesh": "objects/iter_4.glb"
+    },
+    {
+      "id": "iter_5",
+      "label": "red plate",
+      "mask": "masks/iter_5.png",
+      "mesh": "objects/iter_5.glb"
+    },
+    {
+      "id": "iter_6",
+      "label": "purple Expo marker",
+      "mask": "masks/iter_6.png",
+      "mesh": "objects/iter_6.glb"
+    },
+    {
+      "id": "iter_7",
+      "label": "black tape dispenser",
+      "mask": "masks/iter_7.png",
+      "mesh": "objects/iter_7.glb"
+    },
+    {
+      "id": "iter_8",
+      "label": "white mini pumpkin",
+      "mask": "masks/iter_8.png",
+      "mesh": "objects/iter_8.glb"
+    },
+    {
+      "id": "iter_9",
+      "label": "white mug",
+      "mask": "masks/iter_9.png",
+      "mesh": "objects/iter_9.glb"
+    },
+    {
+      "id": "iter_10",
+      "label": "blue cube",
+      "mask": "masks/iter_10.png",
+      "mesh": "objects/iter_10.glb"
+    },
+    {
+      "id": "iter_11",
+      "label": "blue mug",
+      "mask": "masks/iter_11.png",
+      "mesh": "objects/iter_11.glb"
+    },
+    {
+      "id": "iter_12",
+      "label": "pink cup",
+      "mask": "masks/iter_12.png",
+      "mesh": "objects/iter_12.glb"
+    },
+    {
+      "id": "iter_13",
+      "label": "yellow banana",
+      "mask": "masks/iter_13.png",
+      "mesh": "objects/iter_13.glb"
+    },
+    {
+      "id": "iter_14",
+      "label": "white plate",
+      "mask": "masks/iter_14.png",
+      "mesh": "objects/iter_14.glb"
+    },
+    {
+      "id": "iter_15",
+      "label": "baked bread roll",
+      "mask": "masks/iter_15.png",
+      "mesh": "objects/iter_15.glb"
+    },
+    {
+      "id": "iter_16",
+      "label": "red Expo marker",
+      "mask": "masks/iter_16.png",
+      "mesh": "objects/iter_16.glb"
+    },
+    {
+      "id": "iter_17",
+      "label": "Jukos chocolate box",
+      "mask": "masks/iter_17.png",
+      "mesh": "objects/iter_17.glb"
+    }
+  ]
+}

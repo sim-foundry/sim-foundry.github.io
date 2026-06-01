@@ -1,0 +1,69 @@
+{
+  "image": "scene.png",
+  "image_size": [
+    1408,
+    736
+  ],
+  "objects": [
+    {
+      "id": "iter_0",
+      "label": "metal tea strainer",
+      "mask": "masks/iter_0.png",
+      "mesh": "objects/iter_0.glb"
+    },
+    {
+      "id": "iter_1",
+      "label": "white handled mug",
+      "mask": "masks/iter_1.png",
+      "mesh": "objects/iter_1.glb"
+    },
+    {
+      "id": "iter_2",
+      "label": "red coffee bag",
+      "mask": "masks/iter_2.png",
+      "mesh": "objects/iter_2.glb"
+    },
+    {
+      "id": "iter_4",
+      "label": "white patterned cup",
+      "mask": "masks/iter_4.png",
+      "mesh": "objects/iter_4.glb"
+    },
+    {
+      "id": "iter_5",
+      "label": "beige box",
+      "mask": "masks/iter_5.png",
+      "mesh": "objects/iter_5.glb"
+    },
+    {
+      "id": "iter_6",
+      "label": "silver spoon",
+      "mask": "masks/iter_6.png",
+      "mesh": "objects/iter_6.glb"
+    },
+    {
+      "id": "iter_7",
+      "label": "white bowl",
+      "mask": "masks/iter_7.png",
+      "mesh": "objects/iter_7.glb"
+    },
+    {
+      "id": "iter_8",
+      "label": "blue coffee bag",
+      "mask": "masks/iter_8.png",
+      "mesh": "objects/iter_8.glb"
+    },
+    {
+      "id": "iter_9",
+      "label": "white tumbler with lid",
+      "mask": "masks/iter_9.png",
+      "mesh": "objects/iter_9.glb"
+    },
+    {
+      "id": "iter_10",
+      "label": "silver moka pot",
+      "mask": "masks/iter_10.png",
+      "mesh": "objects/iter_10.glb"
+    }
+  ]
+}

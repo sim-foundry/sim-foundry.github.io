@@ -1,0 +1,69 @@
+{
+  "image": "scene.png",
+  "image_size": [
+    1408,
+    736
+  ],
+  "objects": [
+    {
+      "id": "iter_0",
+      "label": "orange round sponge",
+      "mask": "masks/iter_0.png",
+      "mesh": "objects/iter_0.glb"
+    },
+    {
+      "id": "iter_1",
+      "label": "yellow rectangular sponge",
+      "mask": "masks/iter_1.png",
+      "mesh": "objects/iter_1.glb"
+    },
+    {
+      "id": "iter_2",
+      "label": "metal tin",
+      "mask": "masks/iter_2.png",
+      "mesh": "objects/iter_2.glb"
+    },
+    {
+      "id": "iter_3",
+      "label": "white mug with red interior",
+      "mask": "masks/iter_3.png",
+      "mesh": "objects/iter_3.glb"
+    },
+    {
+      "id": "iter_4",
+      "label": "yellow banana",
+      "mask": "masks/iter_4.png",
+      "mesh": "objects/iter_4.glb"
+    },
+    {
+      "id": "iter_5",
+      "label": "black avocado",
+      "mask": "masks/iter_5.png",
+      "mesh": "objects/iter_5.glb"
+    },
+    {
+      "id": "iter_6",
+      "label": "white water pitcher with handle",
+      "mask": "masks/iter_6.png",
+      "mesh": "objects/iter_6.glb"
+    },
+    {
+      "id": "iter_8",
+      "label": "blue patterned plate",
+      "mask": "masks/iter_8.png",
+      "mesh": "objects/iter_8.glb"
+    },
+    {
+      "id": "iter_10",
+      "label": "clear soap dispenser",
+      "mask": "masks/iter_10.png",
+      "mesh": "objects/iter_10.glb"
+    },
+    {
+      "id": "iter_15",
+      "label": "dark bottle",
+      "mask": "masks/iter_15.png",
+      "mesh": "objects/iter_15.glb"
+    }
+  ]
+}
