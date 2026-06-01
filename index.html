@@ -13,7 +13,7 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
 
-<link rel="stylesheet" href="static/css/index.css?v=14" />
+<link rel="stylesheet" href="static/css/index.css?v=29" />
 
 <script type="importmap">
 {
@@ -35,17 +35,30 @@
     </h1>
 
     <div class="publication-authors">
-      <span class="author-block"><a href="#" target="_blank" rel="noopener">Author One</a><sup>1</sup>,</span>
-      <span class="author-block"><a href="#" target="_blank" rel="noopener">Author Two</a><sup>1</sup>,</span>
-      <span class="author-block"><a href="#" target="_blank" rel="noopener">Author Three</a><sup>2</sup>,</span>
-      <span class="author-block"><a href="#" target="_blank" rel="noopener">Author Four</a><sup>1,*</sup></span>
+      <span class="author-block">Nadun Ranawaka<sup>1,2*</sup>,</span>
+      <span class="author-block">Josiah Wong<sup>1,3*</sup>,</span>
+      <span class="author-block">Wei-Lin Pai<sup>3</sup>,</span>
+      <span class="author-block">Wei-Teng Chu<sup>3</sup>,</span>
+      <span class="author-block">Tianyuan Dai<sup>1,4</sup>,</span>
+      <span class="author-block">Masoud Moghani<sup>1,5</sup>,</span>
+      <span class="author-block">Hang Yin<sup>3</sup>,</span>
+      <span class="author-block">Yunfan Jiang<sup>1,3</sup>,</span>
+      <span class="author-block">Wesley Durbano<sup>1*</sup>,</span>
+      <span class="author-block">Brandon Huynh<sup>1*</sup>,</span>
+      <span class="author-block">Linxi Fan<sup>1</sup>,</span>
+      <span class="author-block">Danfei Xu<sup>1,2</sup>,</span>
+      <span class="author-block">Ruohan Zhang<sup>3</sup>,</span>
+      <span class="author-block">Li Fei-Fei<sup>3</sup>,</span>
+      <span class="author-block">Bowen Wen<sup>1</sup>,</span>
+      <span class="author-block">Ajay Mandlekar<sup>1&dagger;</sup>,</span>
+      <span class="author-block">Yuke Zhu<sup>1,4&dagger;</sup></span>
     </div>
 
     <div class="affiliation">
-      <sup>1</sup>Affiliation One &nbsp; <sup>2</sup>Affiliation Two
+      <sup>1</sup>NVIDIA &nbsp; <sup>2</sup>Georgia Institute of Technology &nbsp; <sup>3</sup>Stanford University &nbsp; <sup>4</sup>The University of Texas at Austin &nbsp; <sup>5</sup>University of Toronto
     </div>
     <div class="affiliation-note">
-      <sup>*</sup>Corresponding author
+      <sup>*</sup>Equal contribution. &nbsp; <sup>&dagger;</sup>Equal advising.
     </div>
 
     <div class="publication-venue">CoRL 2026</div>
@@ -111,7 +124,7 @@
 <!-- ========================= PIPELINE VIDEO ========================= -->
 <section class="section" id="walkthrough">
   <div class="container wide">
-    <h2 class="section-title">The SimFoundry Pipeline</h2>
+    <h2 class="section-title">SimFoundry Pipeline</h2>
     <div class="video-embed">
       <img
         class="pipeline-video"
@@ -125,7 +138,7 @@
 <!-- ========================= INTERACTIVE 3D SCENES ========================= -->
 <section class="section" id="scene-viewer">
   <div class="container">
-    <h2 class="section-title">Reconstructed Scenes</h2>
+    <h2 class="section-title">SimFoundry Reconstructed Scenes</h2>
     <p class="section-lead">
       Explore the reconstructed 3D scenes interactively. Drag to rotate, scroll to zoom.
     </p>
@@ -320,6 +333,139 @@
       </div>
     </div>
 
+<!-- ========================= SIM-TO-REAL POLICY TRAINING ========================= -->
+<section class="section" id="policy-training">
+  <div class="container">
+    <h2 class="section-title">Sim-to-Real Policy Training</h2>
+    <h3 class="subsection-title">Policies Trained on SimFoundry Data Transfer <span class="accent-red">Zero-Shot</span> to Real-World</h3>
+
+    <div class="policy-row">
+      <figure class="policy-col">
+        <div class="policy-col-header">Simulation Eval</div>
+        <div class="policy-media">
+          <video autoplay loop muted playsinline preload="metadata">
+            <source src="assets/videos/stack_dishware_sim_edited.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <div class="policy-success">Success rate: <strong>100%</strong></div>
+      </figure>
+
+      <figure class="policy-col">
+        <div class="policy-col-header">Real World Eval</div>
+        <div class="policy-media">
+          <video autoplay loop muted playsinline preload="metadata">
+            <source src="assets/videos/stack_dishware_real_edited.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <div class="policy-success">Success rate: <strong>96%</strong></div>
+      </figure>
+
+      <figure class="policy-col">
+        <div class="policy-col-header">Real World Eval (Unseen Objects)</div>
+        <div class="policy-media">
+          <video autoplay loop muted playsinline preload="metadata">
+            <source src="assets/videos/Dishware_cousin_eval_real.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <div class="policy-success policy-success--highlight">Success rate: <strong>100%</strong></div>
+      </figure>
+    </div>
+
+    <h3 class="subsection-title">SimFoundry Digital Cousins Enable Policy Generalization to <span class="accent-red">Novel Objects</span></h3>
+    <div class="cousin-row">
+      <figure class="cousin-fig">
+        <img src="static/images/wooden_drawer_cousins.png" alt="Digital twin and cousins of the wooden drawer organizer" />
+      </figure>
+      <div class="policy-media">
+        <video autoplay loop muted playsinline preload="metadata">
+          <source src="assets/videos/PAM_cousin_eval_real.mp4" type="video/mp4" />
+        </video>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= TASK COUSINS ========================= -->
+<section class="section" id="task-cousins">
+  <div class="container">
+    <h2 class="section-title">SimFoundry generates meaningful <span class="accent-red">Task Cousins</span> that facilitate policy generalization</h2>
+    <div class="stat-block">
+      <p class="subsection-title">SimFoundry data boosts real-world VLA performance from <span class="accent-red">28%</span> to <span class="accent-red">46%</span> across <span class="accent-red">13</span> tasks.</p>
+      <p class="subsection-title oneline">SimFoundry data boosts real-world VLA performance from <span class="accent-red">0%</span> to <span class="accent-red">29%</span> on <span class="accent-red">7</span> held-out tasks (unseen even in sim).</p>
+    </div>
+    <div class="video-duo">
+      <figure class="duo-col">
+        <div class="policy-media">
+          <video autoplay loop muted playsinline preload="metadata">
+            <source src="assets/videos/task_cousins_overview.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <figcaption class="duo-caption">Sim Eval</figcaption>
+      </figure>
+      <figure class="duo-col">
+        <div class="policy-media">
+          <video autoplay loop muted playsinline preload="metadata">
+            <source src="assets/videos/task_cousin_real.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <figcaption class="duo-caption">Real Eval</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= CO-TRAINING ========================= -->
+<section class="section" id="co-training">
+  <div class="container">
+    <h2 class="section-title">Co-Training with Large Amounts of SimFoundry Sim Data and Small Amounts of Real Data Produces Even Better Policies</h2>
+
+    <figure class="barchart">
+      <div class="barchart-legend">
+        <span class="legend-item"><span class="legend-swatch swatch-sim"></span>Sim-only</span>
+        <span class="legend-item"><span class="legend-swatch swatch-real"></span>Real-only</span>
+        <span class="legend-item"><span class="legend-swatch swatch-cotrain"></span>Co-train</span>
+      </div>
+
+      <div class="barchart-body">
+        <div class="barchart-ylabel">Success rate (%)</div>
+        <div class="barchart-yaxis">
+          <span>100</span><span>80</span><span>60</span><span>40</span><span>20</span><span>0</span>
+        </div>
+        <div class="barchart-col3">
+          <div class="barchart-plot">
+            <div class="barchart-gridlines">
+              <span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <div class="barchart-cols">
+              <div class="bar-group">
+                <div class="bar-cluster">
+                  <div class="bar bar-sim" style="--v:88"><span class="bar-val">88</span></div>
+                  <div class="bar bar-real" style="--v:100"><span class="bar-val">100</span></div>
+                  <div class="bar bar-cotrain" style="--v:100"><span class="bar-val">100</span></div>
+                </div>
+              </div>
+              <div class="bar-group">
+                <div class="bar-cluster">
+                  <div class="bar bar-sim" style="--v:24"><span class="bar-val">24</span></div>
+                  <div class="bar bar-real" style="--v:60"><span class="bar-val">60</span></div>
+                  <div class="bar bar-cotrain" style="--v:92"><span class="bar-val">92</span></div>
+                </div>
+              </div>
+              <div class="bar-group">
+                <div class="bar-cluster">
+                  <div class="bar bar-sim" style="--v:20"><span class="bar-val">20</span></div>
+                  <div class="bar bar-real" style="--v:56"><span class="bar-val">56</span></div>
+                  <div class="bar bar-cotrain" style="--v:92"><span class="bar-val">92</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="barchart-xlabels">
+            <span>Stack Dishware</span><span>Store Marker</span><span>Put Away Trash</span>
+          </div>
+        </div>
+      </div>
+    </figure>
   </div>
 </section>
 
@@ -349,7 +495,7 @@
           <figure class="qualitative-panel">
             <div class="qualitative-media">
               <video autoplay muted loop controls playsinline preload="metadata" data-video-static data-playback-rate="2">
-                <source src="static/videos/bathroom_1/input.mp4" type="video/mp4" />
+                <source src="https://raw.githubusercontent.com/sim-foundry/sim-foundry-website-assets/main/qual_videos/bathroom_1/input.mp4" type="video/mp4" />
               </video>
             </div>
             <figcaption>Input video (2x)</figcaption>
@@ -359,7 +505,7 @@
           <figure class="qualitative-panel">
             <div class="qualitative-media">
               <video autoplay muted loop controls playsinline preload="metadata">
-                <source src="static/videos/bathroom_1/bathroom_1_demo_+-20.mp4" type="video/mp4" />
+                <source src="https://raw.githubusercontent.com/sim-foundry/sim-foundry-website-assets/main/qual_videos/bathroom_1/bathroom_1_demo_+-20.mp4" type="video/mp4" />
               </video>
             </div>
             <figcaption>Reconstructed twins</figcaption>
@@ -368,7 +514,7 @@
           <figure class="qualitative-panel">
             <div class="qualitative-media">
               <video autoplay muted loop controls playsinline preload="metadata">
-                <source src="static/videos/bathroom_1/bathroom_1_demo_cousins_+-20.mp4" type="video/mp4" />
+                <source src="https://raw.githubusercontent.com/sim-foundry/sim-foundry-website-assets/main/qual_videos/bathroom_1/bathroom_1_demo_cousins_+-20.mp4" type="video/mp4" />
               </video>
             </div>
             <figcaption>Reconstructed cousins</figcaption>
@@ -381,7 +527,7 @@
           <figure class="qualitative-panel">
             <div class="qualitative-media">
               <video muted loop controls playsinline preload="metadata" data-video-static data-playback-rate="2">
-                <source src="static/videos/coffee_2/input.mp4" type="video/mp4" />
+                <source src="https://raw.githubusercontent.com/sim-foundry/sim-foundry-website-assets/main/qual_videos/coffee_2/input.mp4" type="video/mp4" />
               </video>
             </div>
             <figcaption>Input video (2x)</figcaption>
@@ -391,7 +537,7 @@
           <figure class="qualitative-panel">
             <div class="qualitative-media">
               <video muted loop controls playsinline preload="metadata">
-                <source src="static/videos/coffee_2/coffee_2_demo_+-30.mp4" type="video/mp4" />
+                <source src="https://raw.githubusercontent.com/sim-foundry/sim-foundry-website-assets/main/qual_videos/coffee_2/coffee_2_demo_+-30.mp4" type="video/mp4" />
               </video>
             </div>
             <figcaption>Reconstructed twins</figcaption>
@@ -400,7 +546,7 @@
           <figure class="qualitative-panel">
             <div class="qualitative-media">
               <video muted loop controls playsinline preload="metadata">
-                <source src="static/videos/coffee_2/coffee_2_demo_cousins_+-30.mp4" type="video/mp4" />
+                <source src="https://raw.githubusercontent.com/sim-foundry/sim-foundry-website-assets/main/qual_videos/coffee_2/coffee_2_demo_cousins_+-30.mp4" type="video/mp4" />
               </video>
             </div>
             <figcaption>Reconstructed cousins</figcaption>
@@ -413,7 +559,7 @@
           <figure class="qualitative-panel">
             <div class="qualitative-media">
               <video muted loop controls playsinline preload="metadata" data-video-static data-playback-rate="2">
-                <source src="static/videos/dining_1/input.mp4" type="video/mp4" />
+                <source src="https://raw.githubusercontent.com/sim-foundry/sim-foundry-website-assets/main/qual_videos/dining_1/input.mp4" type="video/mp4" />
               </video>
             </div>
             <figcaption>Input video (2x)</figcaption>
@@ -423,7 +569,7 @@
           <figure class="qualitative-panel">
             <div class="qualitative-media">
               <video muted loop controls playsinline preload="metadata">
-                <source src="static/videos/dining_1/dining_1_demo_+-20.mp4" type="video/mp4" />
+                <source src="https://raw.githubusercontent.com/sim-foundry/sim-foundry-website-assets/main/qual_videos/dining_1/dining_1_demo_+-20.mp4" type="video/mp4" />
               </video>
             </div>
             <figcaption>Reconstructed twins</figcaption>
@@ -432,7 +578,7 @@
           <figure class="qualitative-panel">
             <div class="qualitative-media">
               <video muted loop controls playsinline preload="metadata">
-                <source src="static/videos/dining_1/dining_1_demo_cousins_+-20.mp4" type="video/mp4" />
+                <source src="https://raw.githubusercontent.com/sim-foundry/sim-foundry-website-assets/main/qual_videos/dining_1/dining_1_demo_cousins_+-20.mp4" type="video/mp4" />
               </video>
             </div>
             <figcaption>Reconstructed cousins</figcaption>
@@ -445,7 +591,7 @@
           <figure class="qualitative-panel">
             <div class="qualitative-media">
               <video muted loop controls playsinline preload="metadata" data-video-static data-playback-rate="2">
-                <source src="static/videos/fruits_2/input.mp4" type="video/mp4" />
+                <source src="https://raw.githubusercontent.com/sim-foundry/sim-foundry-website-assets/main/qual_videos/fruits_2/input.mp4" type="video/mp4" />
               </video>
             </div>
             <figcaption>Input video (2x)</figcaption>
@@ -455,7 +601,7 @@
           <figure class="qualitative-panel">
             <div class="qualitative-media">
               <video muted loop controls playsinline preload="metadata">
-                <source src="static/videos/fruits_2/fruits_2_demo_+-20.mp4" type="video/mp4" />
+                <source src="https://raw.githubusercontent.com/sim-foundry/sim-foundry-website-assets/main/qual_videos/fruits_2/fruits_2_demo_+-20.mp4" type="video/mp4" />
               </video>
             </div>
             <figcaption>Reconstructed twins</figcaption>
@@ -464,7 +610,7 @@
           <figure class="qualitative-panel">
             <div class="qualitative-media">
               <video muted loop controls playsinline preload="metadata">
-                <source src="static/videos/fruits_2/fruits_2_demo_cousins_+-20.mp4" type="video/mp4" />
+                <source src="https://raw.githubusercontent.com/sim-foundry/sim-foundry-website-assets/main/qual_videos/fruits_2/fruits_2_demo_cousins_+-20.mp4" type="video/mp4" />
               </video>
             </div>
             <figcaption>Reconstructed cousins</figcaption>
@@ -477,7 +623,7 @@
           <figure class="qualitative-panel">
             <div class="qualitative-media">
               <video muted loop controls playsinline preload="metadata" data-video-static data-playback-rate="2">
-                <source src="static/videos/home_coffee_4/input.mp4" type="video/mp4" />
+                <source src="https://raw.githubusercontent.com/sim-foundry/sim-foundry-website-assets/main/qual_videos/home_coffee_4/input.mp4" type="video/mp4" />
               </video>
             </div>
             <figcaption>Input video (2x)</figcaption>
@@ -487,7 +633,7 @@
           <figure class="qualitative-panel">
             <div class="qualitative-media">
               <video muted loop controls playsinline preload="metadata">
-                <source src="static/videos/home_coffee_4/home_coffee_4_+-20.mp4" type="video/mp4" />
+                <source src="https://raw.githubusercontent.com/sim-foundry/sim-foundry-website-assets/main/qual_videos/home_coffee_4/home_coffee_4_+-20.mp4" type="video/mp4" />
               </video>
             </div>
             <figcaption>Reconstructed twins</figcaption>
@@ -496,7 +642,7 @@
           <figure class="qualitative-panel">
             <div class="qualitative-media">
               <video muted loop controls playsinline preload="metadata">
-                <source src="static/videos/home_coffee_4/home_coffee_4_cousins_+-20.mp4" type="video/mp4" />
+                <source src="https://raw.githubusercontent.com/sim-foundry/sim-foundry-website-assets/main/qual_videos/home_coffee_4/home_coffee_4_cousins_+-20.mp4" type="video/mp4" />
               </video>
             </div>
             <figcaption>Reconstructed cousins</figcaption>
@@ -509,7 +655,7 @@
           <figure class="qualitative-panel">
             <div class="qualitative-media">
               <video muted loop controls playsinline preload="metadata" data-video-static data-playback-rate="2">
-                <source src="static/videos/kitchen_2/input.mp4" type="video/mp4" />
+                <source src="https://raw.githubusercontent.com/sim-foundry/sim-foundry-website-assets/main/qual_videos/kitchen_2/input.mp4" type="video/mp4" />
               </video>
             </div>
             <figcaption>Input video (2x)</figcaption>
@@ -519,7 +665,7 @@
           <figure class="qualitative-panel">
             <div class="qualitative-media">
               <video muted loop controls playsinline preload="metadata">
-                <source src="static/videos/kitchen_2/kitchen_2_demo_+-20.mp4" type="video/mp4" />
+                <source src="https://raw.githubusercontent.com/sim-foundry/sim-foundry-website-assets/main/qual_videos/kitchen_2/kitchen_2_demo_+-20.mp4" type="video/mp4" />
               </video>
             </div>
             <figcaption>Reconstructed twins</figcaption>
@@ -528,7 +674,7 @@
           <figure class="qualitative-panel">
             <div class="qualitative-media">
               <video muted loop controls playsinline preload="metadata">
-                <source src="static/videos/kitchen_2/kitchen_2_demo_cousins_+-20.mp4" type="video/mp4" />
+                <source src="https://raw.githubusercontent.com/sim-foundry/sim-foundry-website-assets/main/qual_videos/kitchen_2/kitchen_2_demo_cousins_+-20.mp4" type="video/mp4" />
               </video>
             </div>
             <figcaption>Reconstructed cousins</figcaption>
@@ -541,7 +687,7 @@
           <figure class="qualitative-panel">
             <div class="qualitative-media">
               <video muted loop controls playsinline preload="metadata" data-video-static data-playback-rate="2">
-                <source src="static/videos/living_3/input.mp4" type="video/mp4" />
+                <source src="https://raw.githubusercontent.com/sim-foundry/sim-foundry-website-assets/main/qual_videos/living_3/input.mp4" type="video/mp4" />
               </video>
             </div>
             <figcaption>Input video (2x)</figcaption>
@@ -551,7 +697,7 @@
           <figure class="qualitative-panel">
             <div class="qualitative-media">
               <video muted loop controls playsinline preload="metadata">
-                <source src="static/videos/living_3/living_3_demo_+-10.mp4" type="video/mp4" />
+                <source src="https://raw.githubusercontent.com/sim-foundry/sim-foundry-website-assets/main/qual_videos/living_3/living_3_demo_+-10.mp4" type="video/mp4" />
               </video>
             </div>
             <figcaption>Reconstructed twins</figcaption>
@@ -560,7 +706,7 @@
           <figure class="qualitative-panel">
             <div class="qualitative-media">
               <video muted loop controls playsinline preload="metadata">
-                <source src="static/videos/living_3/living_3_demo_cousins_+-10.mp4" type="video/mp4" />
+                <source src="https://raw.githubusercontent.com/sim-foundry/sim-foundry-website-assets/main/qual_videos/living_3/living_3_demo_cousins_+-10.mp4" type="video/mp4" />
               </video>
             </div>
             <figcaption>Reconstructed cousins</figcaption>
@@ -573,7 +719,7 @@
           <figure class="qualitative-panel">
             <div class="qualitative-media">
               <video muted loop controls playsinline preload="metadata" data-video-static data-playback-rate="2">
-                <source src="static/videos/outdoor_1/input.mp4" type="video/mp4" />
+                <source src="https://raw.githubusercontent.com/sim-foundry/sim-foundry-website-assets/main/qual_videos/outdoor_1/input.mp4" type="video/mp4" />
               </video>
             </div>
             <figcaption>Input video (2x)</figcaption>
@@ -583,7 +729,7 @@
           <figure class="qualitative-panel">
             <div class="qualitative-media">
               <video muted loop controls playsinline preload="metadata">
-                <source src="static/videos/outdoor_1/outdoor_1_demo_+-20.mp4" type="video/mp4" />
+                <source src="https://raw.githubusercontent.com/sim-foundry/sim-foundry-website-assets/main/qual_videos/outdoor_1/outdoor_1_demo_+-20.mp4" type="video/mp4" />
               </video>
             </div>
             <figcaption>Reconstructed twins</figcaption>
@@ -592,7 +738,7 @@
           <figure class="qualitative-panel">
             <div class="qualitative-media">
               <video muted loop controls playsinline preload="metadata">
-                <source src="static/videos/outdoor_1/outdoor_1_demo_cousins_+-20.mp4" type="video/mp4" />
+                <source src="https://raw.githubusercontent.com/sim-foundry/sim-foundry-website-assets/main/qual_videos/outdoor_1/outdoor_1_demo_cousins_+-20.mp4" type="video/mp4" />
               </video>
             </div>
             <figcaption>Reconstructed cousins</figcaption>
@@ -605,7 +751,7 @@
           <figure class="qualitative-panel">
             <div class="qualitative-media">
               <video muted loop controls playsinline preload="metadata" data-video-static data-playback-rate="2">
-                <source src="static/videos/toys_1/input.mp4" type="video/mp4" />
+                <source src="https://raw.githubusercontent.com/sim-foundry/sim-foundry-website-assets/main/qual_videos/toys_1/input.mp4" type="video/mp4" />
               </video>
             </div>
             <figcaption>Input video (2x)</figcaption>
@@ -615,7 +761,7 @@
           <figure class="qualitative-panel">
             <div class="qualitative-media">
               <video muted loop controls playsinline preload="metadata">
-                <source src="static/videos/toys_1/toys_1_demo_+-20.mp4" type="video/mp4" />
+                <source src="https://raw.githubusercontent.com/sim-foundry/sim-foundry-website-assets/main/qual_videos/toys_1/toys_1_demo_+-20.mp4" type="video/mp4" />
               </video>
             </div>
             <figcaption>Reconstructed twins</figcaption>
@@ -624,7 +770,7 @@
           <figure class="qualitative-panel">
             <div class="qualitative-media">
               <video muted loop controls playsinline preload="metadata">
-                <source src="static/videos/toys_1/toys_1_demo_cousins_+-20.mp4" type="video/mp4" />
+                <source src="https://raw.githubusercontent.com/sim-foundry/sim-foundry-website-assets/main/qual_videos/toys_1/toys_1_demo_cousins_+-20.mp4" type="video/mp4" />
               </video>
             </div>
             <figcaption>Reconstructed cousins</figcaption>
@@ -746,7 +892,7 @@
   </div>
 </footer>
 
-<script type="module" src="static/js/viewers.js?v=5"></script>
+<script type="module" src="static/js/viewers.js?v=7"></script>
 <script src="static/js/scatter-chart.js"></script>
 </body>
 </html>

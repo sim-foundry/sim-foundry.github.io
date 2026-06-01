@@ -35,7 +35,7 @@ html, body {
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans);
-  font-size: 18px;
+  font-size: 21px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   overflow-x: clip;
@@ -72,19 +72,22 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
 }
 .publication-authors {
   font-size: 1.05rem;
-  margin-bottom: 8px;
+  margin: 0 auto 8px;
   line-height: 1.7;
+  max-width: 900px;
 }
 .publication-authors .author-block { margin: 0 4px; }
 .affiliation {
   color: var(--color-text-muted);
   font-size: 0.95rem;
-  margin-bottom: 4px;
+  margin: 0 auto 4px;
+  max-width: 900px;
 }
 .affiliation-note {
   color: var(--color-text-muted);
   font-size: 0.85rem;
-  margin-bottom: 12px;
+  margin: 0 auto 12px;
+  max-width: 900px;
 }
 .publication-venue {
   display: inline-block;
@@ -141,6 +144,13 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
   font-size: clamp(1.5rem, 2.4vw, 1.9rem);
   text-align: center;
   margin: 0 0 16px;
+  /* Allow titles to be wider than the (narrow) body container so long
+     headings wrap less. Centered in the viewport via the 50%/translate trick. */
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(1200px, 92vw);
+  max-width: none;
 }
 .section-lead {
   text-align: center;
@@ -198,6 +208,17 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
   display: block;
   border-radius: var(--radius-md);
   background: var(--color-bg-alt);
+}
+
+/* Pipeline section: enlarge the figure and its heading ~1.3x. The figure
+   extends 15% past the container on each side (centered); body overflow-x is
+   clipped so this never adds a horizontal scrollbar. */
+#walkthrough .video-embed {
+  width: 130%;
+  margin: 0 -15%;
+}
+#walkthrough .section-title {
+  font-size: clamp(1.95rem, 3.12vw, 2.47rem);
 }
 
 /* ----------- 3D Viewers ----------- */
@@ -510,6 +531,260 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
   background: var(--color-text);
   border-color: var(--color-text);
   color: #ffffff;
+}
+
+/* ----------- Sim-to-Real Policy Training ----------- */
+.accent-red { color: var(--color-stanford-red); }
+.subsection-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.1rem, 1.7vw, 1.4rem);
+  font-weight: 600;
+  text-align: center;
+  margin: 0 0 26px;
+  color: var(--color-text);
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(1200px, 92vw);
+  max-width: none;
+}
+.policy-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  align-items: start;
+}
+@media (max-width: 720px) {
+  .policy-row { grid-template-columns: 1fr; }
+}
+.policy-col { margin: 0; }
+.policy-col-header {
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.02rem;
+  margin-bottom: 10px;
+  color: var(--color-text);
+}
+.policy-media {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #000;
+  aspect-ratio: 16 / 9;
+}
+.policy-media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.policy-success {
+  text-align: center;
+  margin-top: 12px;
+  color: var(--color-text-muted);
+  font-size: 0.98rem;
+}
+.policy-success strong {
+  color: var(--color-text);
+  font-size: 1.15rem;
+}
+.policy-success--highlight {
+  color: var(--color-stanford-red);
+  font-weight: 600;
+}
+.policy-success--highlight strong {
+  color: var(--color-stanford-red);
+}
+
+/* Cousins generalization: image (left) + eval video (right) */
+.policy-row + .subsection-title {
+  margin-top: 48px;
+}
+.cousin-row {
+  display: grid;
+  grid-template-columns: minmax(0, 300px) 1fr;
+  gap: 28px;
+  align-items: center;
+}
+@media (max-width: 720px) {
+  .cousin-row { grid-template-columns: 1fr; }
+}
+.cousin-fig { margin: 0; }
+.cousin-fig img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+}
+
+/* Force a single subsection line (font scales with viewport to fit). */
+.subsection-title.oneline {
+  white-space: nowrap;
+  width: max-content;
+  max-width: 96vw;
+  font-size: clamp(0.7rem, 1.7vw, 1.4rem);
+}
+@media (max-width: 720px) {
+  .subsection-title.oneline { white-space: normal; width: min(1200px, 92vw); }
+}
+
+/* Keep the Task Cousins heading on one line (override base wrap/width). */
+#task-cousins .section-title {
+  white-space: nowrap;
+  width: max-content;
+  max-width: 96vw;
+  font-size: clamp(0.9rem, 2.2vw, 1.9rem);
+}
+@media (max-width: 720px) {
+  #task-cousins .section-title { white-space: normal; width: min(1200px, 92vw); }
+}
+
+/* ----------- Two videos side by side (task cousins) ----------- */
+.video-duo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+@media (max-width: 720px) {
+  .video-duo { grid-template-columns: 1fr; }
+}
+.duo-col { margin: 0; }
+.duo-caption {
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.02rem;
+  margin-top: 10px;
+  color: var(--color-text);
+}
+.stat-block {
+  margin: 0 0 28px;
+}
+
+/* ----------- Highlighted stat sentences ----------- */
+.stat-line {
+  text-align: center;
+  font-size: clamp(0.8rem, 1.7vw, 1.4rem);
+  font-weight: 600;
+  line-height: 1.5;
+  margin: 0 0 16px;
+  color: var(--color-text);
+  /* Keep each sentence on a single line, breaking out wider than the body
+     container (centered in the viewport). */
+  white-space: nowrap;
+  width: max-content;
+  max-width: 96vw;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.stat-line:last-child { margin-bottom: 0; }
+.stat-line .accent-red { font-weight: 700; }
+@media (max-width: 720px) {
+  .stat-line {
+    white-space: normal;
+    width: auto;
+    left: auto;
+    transform: none;
+  }
+}
+
+/* ----------- Co-training bar chart (generated, not an image) ----------- */
+.barchart { margin: 0 auto; max-width: 940px; }
+.barchart-legend {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+.legend-item { display: inline-flex; align-items: center; gap: 8px; }
+.legend-swatch { width: 16px; height: 16px; border-radius: 3px; }
+.swatch-sim { background: #3b9aff; }
+.swatch-real { background: #5cd65c; }
+.swatch-cotrain { background: #ff6f61; }
+
+.barchart-body {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  column-gap: 10px;
+  align-items: start;
+}
+.barchart-ylabel {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  height: 360px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+.barchart-yaxis {
+  height: 360px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: right;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+.barchart-col3 { min-width: 0; }
+.barchart-plot {
+  position: relative;
+  height: 360px;
+  border-left: 2px solid var(--color-border);
+  border-bottom: 2px solid var(--color-border);
+}
+.barchart-gridlines {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.barchart-gridlines span { border-top: 1px solid #eef0f3; }
+.barchart-cols { position: absolute; inset: 0; display: flex; }
+.bar-group { flex: 1; height: 100%; }
+.bar-cluster {
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 6px;
+}
+.bar {
+  position: relative;
+  width: 28px;
+  max-width: 28%;
+  height: calc(var(--v) * 1%);
+  border-radius: 3px 3px 0 0;
+  transition: height 0.6s ease-out;
+}
+.bar-sim { background: #3b9aff; }
+.bar-real { background: #5cd65c; }
+.bar-cotrain { background: #ff6f61; }
+.bar-val {
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+.barchart-xlabels { display: flex; margin-top: 8px; }
+.barchart-xlabels span {
+  flex: 1;
+  text-align: center;
+  font-size: 1rem;
+  color: var(--color-text);
+}
+@media (max-width: 720px) {
+  .bar { width: 16px; }
+  .bar-val { font-size: 0.78rem; top: -18px; }
+  .barchart-xlabels span { font-size: 0.82rem; }
 }
 
 /* ----------- BibTeX ----------- */
