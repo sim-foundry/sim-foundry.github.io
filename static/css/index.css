@@ -24,7 +24,7 @@
   --radius-lg: 14px;
 
   --container-max: clamp(760px, 50vw, 1280px);
-  --container-narrow: clamp(760px, 55vw, 1200px);
+  --container-narrow: clamp(760px, 70vw, 1500px);
 }
 
 * { box-sizing: border-box; }
