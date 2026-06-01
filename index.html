@@ -13,7 +13,7 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
 
-<link rel="stylesheet" href="static/css/index.css?v=29" />
+<link rel="stylesheet" href="static/css/index.css?v=30" />
 
 <script type="importmap">
 {
@@ -690,6 +690,67 @@
           <div class="viewer-loading">Loading viewer…</div>
         </div>
         <div class="viewer-hint">Drag and scroll to rotate and zoom.</div>
+      </div>
+    </div>
+
+    <div class="metric-charts">
+      <div class="metric-panels">
+        <div class="metric-panel">
+          <div class="metric-panel-title">Easy Scene</div>
+          <div class="metric-plot">
+            <div class="metric-cluster">
+              <div class="mbar mbar-sam" style="--v:43.0"><span>0.0081</span></div>
+              <div class="mbar mbar-zs" style="--v:22.3"><span>0.0042</span></div>
+              <div class="mbar mbar-tuned" style="--v:13.8"><span>0.0026</span></div>
+            </div>
+            <div class="metric-cluster">
+              <div class="mbar mbar-sam" style="--v:85.0"><span>0.0160</span></div>
+              <div class="mbar mbar-zs" style="--v:31.9"><span>0.0060</span></div>
+              <div class="mbar mbar-tuned" style="--v:21.8"><span>0.0041</span></div>
+            </div>
+          </div>
+          <div class="metric-xrow"><span>Chamfer Distance (m) &darr;</span><span>Position Error (m) &darr;</span></div>
+        </div>
+
+        <div class="metric-panel">
+          <div class="metric-panel-title">Medium Scene</div>
+          <div class="metric-plot">
+            <div class="metric-cluster">
+              <div class="mbar mbar-sam" style="--v:41.1"><span>0.0087</span></div>
+              <div class="mbar mbar-zs" style="--v:22.2"><span>0.0047</span></div>
+              <div class="mbar mbar-tuned" style="--v:15.6"><span>0.0033</span></div>
+            </div>
+            <div class="metric-cluster">
+              <div class="mbar mbar-sam" style="--v:85.0"><span>0.0180</span></div>
+              <div class="mbar mbar-zs" style="--v:35.9"><span>0.0076</span></div>
+              <div class="mbar mbar-tuned" style="--v:26.9"><span>0.0057</span></div>
+            </div>
+          </div>
+          <div class="metric-xrow"><span>Chamfer Distance (m) &darr;</span><span>Position Error (m) &darr;</span></div>
+        </div>
+
+        <div class="metric-panel">
+          <div class="metric-panel-title">Hard Scene</div>
+          <div class="metric-plot">
+            <div class="metric-cluster">
+              <div class="mbar mbar-sam" style="--v:34.0"><span>0.0088</span></div>
+              <div class="mbar mbar-zs" style="--v:35.2"><span>0.0091</span></div>
+              <div class="mbar mbar-tuned" style="--v:15.1"><span>0.0039</span></div>
+            </div>
+            <div class="metric-cluster">
+              <div class="mbar mbar-sam" style="--v:85.0"><span>0.0220</span></div>
+              <div class="mbar mbar-zs" style="--v:69.5"><span>0.0180</span></div>
+              <div class="mbar mbar-tuned" style="--v:28.2"><span>0.0073</span></div>
+            </div>
+          </div>
+          <div class="metric-xrow"><span>Chamfer Distance (m) &darr;</span><span>Position Error (m) &darr;</span></div>
+        </div>
+      </div>
+
+      <div class="metric-legend">
+        <span class="legend-item"><span class="legend-swatch swatch-sam"></span>SAM3D Zero-Shot</span>
+        <span class="legend-item"><span class="legend-swatch swatch-zs"></span>SimFoundry Zero-Shot</span>
+        <span class="legend-item"><span class="legend-swatch swatch-tuned"></span>SimFoundry Tuned</span>
       </div>
     </div>
 
