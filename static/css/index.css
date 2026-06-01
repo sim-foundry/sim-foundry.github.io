@@ -72,19 +72,22 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
 }
 .publication-authors {
   font-size: 1.05rem;
-  margin-bottom: 8px;
+  margin: 0 auto 8px;
   line-height: 1.7;
+  max-width: 900px;
 }
 .publication-authors .author-block { margin: 0 4px; }
 .affiliation {
   color: var(--color-text-muted);
   font-size: 0.95rem;
-  margin-bottom: 4px;
+  margin: 0 auto 4px;
+  max-width: 900px;
 }
 .affiliation-note {
   color: var(--color-text-muted);
   font-size: 0.85rem;
-  margin-bottom: 12px;
+  margin: 0 auto 12px;
+  max-width: 900px;
 }
 .publication-venue {
   display: inline-block;
