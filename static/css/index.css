@@ -974,6 +974,104 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
   color: #adf;
   font-family: "SF Mono", "Monaco", "Consolas", monospace;
 }
+
+/* Metrics Comparison Bar Charts */
+.metrics-comparison {
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 1px solid var(--color-border);
+}
+.metrics-title {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 6px 0;
+  color: var(--color-text);
+}
+.metrics-subtitle {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+  margin: 0 0 24px 0;
+}
+.metrics-bars {
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+.metric-chart {
+  flex: 1;
+  max-width: 320px;
+  min-width: 260px;
+}
+.metric-label {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--color-text);
+  margin-bottom: 12px;
+  text-align: center;
+}
+.metric-arrow {
+  font-weight: 700;
+  margin-left: 4px;
+}
+.metric-arrow--up {
+  color: #2e7d32;
+}
+.metric-arrow--down {
+  color: #2e7d32;
+}
+.metric-bar-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.metric-bar-row {
+  display: grid;
+  grid-template-columns: 90px 1fr 50px;
+  align-items: center;
+  gap: 10px;
+}
+.metric-bar-name {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  text-align: right;
+}
+.metric-bar-track {
+  height: 28px;
+  background: var(--color-bg-alt);
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+}
+.metric-bar {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  width: 0;
+}
+.metric-bar--sf {
+  background: linear-gradient(90deg, #6baed6, #3182bd);
+}
+.metric-bar--pol {
+  background: linear-gradient(90deg, #fdae6b, #e6550d);
+}
+.metric-bar-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text);
+  font-family: "SF Mono", "Monaco", "Consolas", monospace;
+}
+@media (max-width: 600px) {
+  .metrics-bars {
+    flex-direction: column;
+    align-items: center;
+  }
+  .metric-chart {
+    width: 100%;
+  }
+}
 .chart-legends {
   display: flex;
   justify-content: center;

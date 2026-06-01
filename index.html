@@ -331,6 +331,54 @@
           <div class="legend-items" id="legend-tasks"></div>
         </div>
       </div>
+
+      <!-- Metrics Comparison Bar Charts -->
+      <div class="metrics-comparison">
+        <h3 class="metrics-title">Evaluation Metrics Comparison</h3>
+        <p class="metrics-subtitle">Higher Pearson r and lower MMRV indicate better sim-to-real correlation</p>
+        
+        <div class="metrics-bars">
+          <div class="metric-chart">
+            <div class="metric-label">Average Pearson r <span class="metric-arrow metric-arrow--up">↑</span></div>
+            <div class="metric-bar-group">
+              <div class="metric-bar-row">
+                <span class="metric-bar-name">SimFoundry</span>
+                <div class="metric-bar-track">
+                  <div class="metric-bar metric-bar--sf" id="bar-r-sf"></div>
+                </div>
+                <span class="metric-bar-value" id="val-r-sf"></span>
+              </div>
+              <div class="metric-bar-row">
+                <span class="metric-bar-name">Polaris</span>
+                <div class="metric-bar-track">
+                  <div class="metric-bar metric-bar--pol" id="bar-r-pol"></div>
+                </div>
+                <span class="metric-bar-value" id="val-r-pol"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="metric-chart">
+            <div class="metric-label">Average MMRV <span class="metric-arrow metric-arrow--down">↓</span></div>
+            <div class="metric-bar-group">
+              <div class="metric-bar-row">
+                <span class="metric-bar-name">SimFoundry</span>
+                <div class="metric-bar-track">
+                  <div class="metric-bar metric-bar--sf" id="bar-mmrv-sf"></div>
+                </div>
+                <span class="metric-bar-value" id="val-mmrv-sf"></span>
+              </div>
+              <div class="metric-bar-row">
+                <span class="metric-bar-name">Polaris</span>
+                <div class="metric-bar-track">
+                  <div class="metric-bar metric-bar--pol" id="bar-mmrv-pol"></div>
+                </div>
+                <span class="metric-bar-value" id="val-mmrv-pol"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
 <!-- ========================= SIM-TO-REAL POLICY TRAINING ========================= -->

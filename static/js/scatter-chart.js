@@ -543,6 +543,65 @@ class ScatterChart {
   }
 }
 
+function computeAverageMetrics() {
+  const avgMetrics = { simfoundry: { r: 0, mmrv: 0 }, polaris: { r: 0, mmrv: 0 } };
+  
+  for (const method of ["simfoundry", "polaris"]) {
+    const tasks = Object.keys(TASK_METRICS[method]);
+    let sumR = 0, sumMMRV = 0, countR = 0, countMMRV = 0;
+    
+    for (const task of tasks) {
+      const m = TASK_METRICS[method][task];
+      if (m.r !== null) { sumR += m.r; countR++; }
+      if (m.mmrv !== null) { sumMMRV += m.mmrv; countMMRV++; }
+    }
+    
+    avgMetrics[method].r = countR > 0 ? sumR / countR : 0;
+    avgMetrics[method].mmrv = countMMRV > 0 ? sumMMRV / countMMRV : 0;
+  }
+  
+  return avgMetrics;
+}
+
+function renderMetricsBars() {
+  const avg = computeAverageMetrics();
+  
+  const barRSf = document.getElementById("bar-r-sf");
+  const barRPol = document.getElementById("bar-r-pol");
+  const valRSf = document.getElementById("val-r-sf");
+  const valRPol = document.getElementById("val-r-pol");
+  
+  const barMmrvSf = document.getElementById("bar-mmrv-sf");
+  const barMmrvPol = document.getElementById("bar-mmrv-pol");
+  const valMmrvSf = document.getElementById("val-mmrv-sf");
+  const valMmrvPol = document.getElementById("val-mmrv-pol");
+  
+  if (!barRSf || !barRPol) return;
+  
+  // Pearson r: scale 0-1 to 0-100%
+  const rSf = avg.simfoundry.r;
+  const rPol = avg.polaris.r;
+  
+  valRSf.textContent = rSf.toFixed(3);
+  valRPol.textContent = rPol.toFixed(3);
+  
+  // MMRV: scale 0-1 to 0-100% (but lower is better)
+  const mmrvSf = avg.simfoundry.mmrv;
+  const mmrvPol = avg.polaris.mmrv;
+  
+  valMmrvSf.textContent = mmrvSf.toFixed(3);
+  valMmrvPol.textContent = mmrvPol.toFixed(3);
+  
+  // Animate bars after a short delay
+  setTimeout(() => {
+    barRSf.style.width = `${Math.max(rSf, 0) * 100}%`;
+    barRPol.style.width = `${Math.max(rPol, 0) * 100}%`;
+    barMmrvSf.style.width = `${Math.min(mmrvSf, 1) * 100}%`;
+    barMmrvPol.style.width = `${Math.min(mmrvPol, 1) * 100}%`;
+  }, 100);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   new ScatterChart("scatter-svg", "scatter-tooltip");
+  renderMetricsBars();
 });
