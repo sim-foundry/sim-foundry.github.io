@@ -557,14 +557,35 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
   font-size: 1.15rem;
 }
 .policy-success--highlight {
-  color: var(--color-accent);
+  color: var(--color-stanford-red);
   font-weight: 600;
 }
 .policy-success--highlight strong {
   color: #ffffff;
-  background: var(--color-accent);
+  background: var(--color-stanford-red);
   padding: 2px 10px;
   border-radius: 999px;
+}
+
+/* Cousins generalization: image (left) + eval video (right) */
+.policy-row + .subsection-title {
+  margin-top: 48px;
+}
+.cousin-row {
+  display: grid;
+  grid-template-columns: minmax(0, 300px) 1fr;
+  gap: 28px;
+  align-items: center;
+}
+@media (max-width: 720px) {
+  .cousin-row { grid-template-columns: 1fr; }
+}
+.cousin-fig { margin: 0; }
+.cousin-fig img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
 }
 
 /* ----------- BibTeX ----------- */
