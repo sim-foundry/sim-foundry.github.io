@@ -200,6 +200,17 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
   background: var(--color-bg-alt);
 }
 
+/* Pipeline section: enlarge the figure and its heading ~1.3x. The figure
+   extends 15% past the container on each side (centered); body overflow-x is
+   clipped so this never adds a horizontal scrollbar. */
+#walkthrough .video-embed {
+  width: 130%;
+  margin: 0 -15%;
+}
+#walkthrough .section-title {
+  font-size: clamp(1.95rem, 3.12vw, 2.47rem);
+}
+
 /* ----------- 3D Viewers ----------- */
 #scene-viewer,
 #object-viewer {
