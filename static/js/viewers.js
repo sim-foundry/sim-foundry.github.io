@@ -12,12 +12,152 @@
  * match the asset-map key.
  */
 
-import * as THREE from "three";
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
-import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
-import * as GaussianSplats3D from "@mkkellogg/gaussian-splats-3d";
+// The three.js + Gaussian-splat stack is the single heaviest payload on the
+// page. Rather than statically importing it (which would download/parse it on
+// first paint for every visitor, including mobile users who can't use the 3D
+// viewers at all), we lazily dynamic-import it the first time a 3D viewer is
+// actually about to initialize. See ensureLibs() / whenVisible().
+let THREE, OrbitControls, GLTFLoader, KTX2Loader, MeshoptDecoder, RoomEnvironment, GaussianSplats3D;
+let _libsPromise = null;
+
+// Basis Universal transcoder for KTX2 textures. The GLBs are gltfpack-compressed
+// (EXT_meshopt_compression geometry + KHR_texture_basisu / ETC1S textures), so
+// GLTFLoader needs both a MeshoptDecoder and a KTX2Loader wired up to decode
+// them. The transcoder ships with the same pinned three.js version on the CDN.
+const BASIS_TRANSCODER_PATH =
+  "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/libs/basis/";
+let _ktx2Loader = null;
+
+function ensureLibs() {
+  if (!_libsPromise) {
+    _libsPromise = Promise.all([
+      import("three"),
+      import("three/addons/controls/OrbitControls.js"),
+      import("three/addons/loaders/GLTFLoader.js"),
+      import("three/addons/loaders/KTX2Loader.js"),
+      import("three/addons/libs/meshopt_decoder.module.js"),
+      import("three/addons/environments/RoomEnvironment.js"),
+      import("@mkkellogg/gaussian-splats-3d"),
+    ]).then(([three, oc, gl, ktx, md, re, gs]) => {
+      THREE = three;
+      OrbitControls = oc.OrbitControls;
+      GLTFLoader = gl.GLTFLoader;
+      KTX2Loader = ktx.KTX2Loader;
+      MeshoptDecoder = md.MeshoptDecoder;
+      RoomEnvironment = re.RoomEnvironment;
+      GaussianSplats3D = gs;
+    });
+  }
+  return _libsPromise;
+}
+
+// Build a GLTFLoader that can decode meshopt geometry + KTX2 textures. The
+// KTX2Loader is shared across viewers but must detectSupport() against the
+// renderer that will display the mesh so it transcodes to a GPU-supported
+// format. Vertex-colored GLBs with no textures simply never invoke it.
+function makeGltfLoader(renderer) {
+  if (!_ktx2Loader) {
+    _ktx2Loader = new KTX2Loader().setTranscoderPath(BASIS_TRANSCODER_PATH);
+  }
+  if (renderer) _ktx2Loader.detectSupport(renderer);
+  return new GLTFLoader()
+    .setMeshoptDecoder(MeshoptDecoder)
+    .setKTX2Loader(_ktx2Loader);
+}
+
+// True when the device can't meaningfully use the WebGL 3D viewers (the page
+// already tells these users to visit on desktop). We skip initializing them
+// entirely so phones never download three.js, the splat lib, or the GLBs.
+const IS_MOBILE =
+  typeof window !== "undefined" &&
+  window.matchMedia &&
+  window.matchMedia("(max-width: 768px), (hover: none) and (pointer: coarse)").matches;
+
+// Run `cb` once the element scrolls near the viewport. Falls back to running
+// immediately where IntersectionObserver isn't available.
+function whenVisible(el, cb, { rootMargin = "300px" } = {}) {
+  if (!el) return;
+  if (typeof IntersectionObserver === "undefined") {
+    cb();
+    return;
+  }
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          io.disconnect();
+          cb();
+          return;
+        }
+      }
+    },
+    { rootMargin },
+  );
+  io.observe(el);
+}
+
+// Copy any pending `<source data-src>` URLs onto the live `src` attribute and
+// (re)load the element. Videos ship without a real `src` so the browser never
+// fetches them until they're actually needed.
+function hydrateVideo(video) {
+  if (!video) return;
+  let changed = false;
+  video.querySelectorAll("source[data-src]").forEach((source) => {
+    if (!source.getAttribute("src")) {
+      source.setAttribute("src", source.dataset.src);
+      changed = true;
+    }
+  });
+  if (changed) {
+    video.load();
+    // load() resets playbackRate to 1, so reapply the requested rate (used by
+    // the 2x input clips) once the new source has metadata.
+    const rate = Number(video.dataset.playbackRate);
+    if (rate && rate !== 1) {
+      const applyRate = () => { video.playbackRate = rate; };
+      applyRate();
+      video.addEventListener("loadedmetadata", applyRate, { once: true });
+    }
+  }
+}
+
+// Replace a 3D viewer's loading placeholder with a desktop-only notice.
+function showMobileNotice(container) {
+  if (!container) return;
+  const el = container.querySelector(".viewer-loading") || container;
+  el.textContent = "3D viewer available on desktop";
+  el.style.display = "";
+}
+
+// Standalone (non-tabbed) videos marked with `data-lazy-autoplay`: hydrate and
+// play them when scrolled into view, pause when they leave. This keeps the
+// large policy/task-cousin clips from buffering on initial load.
+function wireLazyAutoplayVideos() {
+  const videos = Array.from(document.querySelectorAll("video[data-lazy-autoplay]"));
+  if (!videos.length) return;
+  if (typeof IntersectionObserver === "undefined") {
+    videos.forEach((video) => {
+      hydrateVideo(video);
+      video.play().catch(() => {});
+    });
+    return;
+  }
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const video = entry.target;
+        if (entry.isIntersecting) {
+          hydrateVideo(video);
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      });
+    },
+    { rootMargin: "200px" },
+  );
+  videos.forEach((video) => io.observe(video));
+}
 
 const SCENE_MANIFESTS = {
   "nv_desk":        "assets/viewers/nv_desk/scene.json",
@@ -57,8 +197,14 @@ const SAM3D_COMPARISON_ASSETS = {
 };
 
 const meshViewers = new WeakMap();
+const meshLoadTokens = new WeakMap();
 
-function loadMesh(container, src, viewPreset) {
+async function loadMesh(container, src, viewPreset) {
+  // Guards against races when libs/assets are still downloading and a newer
+  // load (e.g. a fast tab switch) is requested for the same container.
+  const token = (meshLoadTokens.get(container) || 0) + 1;
+  meshLoadTokens.set(container, token);
+
   const existing = meshViewers.get(container);
   if (existing) {
     existing.dispose();
@@ -75,6 +221,15 @@ function loadMesh(container, src, viewPreset) {
     loadingEl.textContent = "Viewer asset not configured";
     return;
   }
+
+  try {
+    await ensureLibs();
+  } catch (e) {
+    loadingEl.textContent = "Failed to load 3D engine";
+    console.warn("ensureLibs failed:", e);
+    return;
+  }
+  if (meshLoadTokens.get(container) !== token) return;
 
   const width = container.clientWidth || 1;
   const height = container.clientHeight || 1;
@@ -136,7 +291,7 @@ function loadMesh(container, src, viewPreset) {
   };
   meshViewers.set(container, handle);
 
-  new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).load(
+  makeGltfLoader(renderer).load(
     src,
     (gltf) => {
       if (disposed) return;
@@ -261,6 +416,14 @@ async function loadHybridScene(container, manifestUrl) {
 
   if (!manifestUrl) {
     loadingEl.textContent = "Viewer asset not configured";
+    return;
+  }
+
+  try {
+    await ensureLibs();
+  } catch (e) {
+    loadingEl.textContent = "Failed to load 3D engine";
+    console.warn("ensureLibs failed:", e);
     return;
   }
 
@@ -427,7 +590,7 @@ async function loadHybridScene(container, manifestUrl) {
     video.play().catch(() => { /* autoplay blocked; ignore */ });
   }
 
-  const loader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
+  const loader = makeGltfLoader(renderer);
   for (const obj of manifest.objects || []) {
     loader.load(
       obj.url,
@@ -517,9 +680,15 @@ function wireTabbedViewer(tablistId, containerId, assetMap, attr) {
     setSrc(container, assetMap[target] || "");
   };
 
+  if (IS_MOBILE) {
+    showMobileNotice(container);
+    return;
+  }
+
   tabs.forEach((tab) => tab.addEventListener("click", () => apply(key(tab))));
   const initial = tabs.find((t) => t.classList.contains("is-active")) || tabs[0];
-  apply(key(initial));
+  // Defer the (heavy) initial load until the viewer scrolls near the viewport.
+  whenVisible(container, () => apply(key(initial)));
 }
 
 function wireSam3dComparison() {
@@ -585,12 +754,23 @@ function wireSam3dComparison() {
     setSrc(samContainer, entry.sam3d || "", viewPreset);
   };
 
+  if (IS_MOBILE) {
+    showMobileNotice(simContainer);
+    showMobileNotice(samContainer);
+    if (imageLoading) {
+      imageLoading.textContent = "View on desktop";
+      imageLoading.style.display = "";
+    }
+    return;
+  }
+
   tabs.forEach((tab) => {
     tab.addEventListener("click", () => apply(tab.dataset.sam3dTarget));
   });
 
   const initialTab = tabs.find((tab) => tab.classList.contains("is-active")) || tabs[0];
-  apply(initialTab.dataset.sam3dTarget);
+  // Defer the (heavy) initial load until the comparison scrolls near the viewport.
+  whenVisible(simContainer, () => apply(initialTab.dataset.sam3dTarget));
 }
 
 function wireReal2SimResults() {
@@ -608,6 +788,7 @@ function wireReal2SimResults() {
 
       group.querySelectorAll("video").forEach((video) => {
         if (isActive) {
+          hydrateVideo(video);
           video.currentTime = 0;
           video.play().catch(() => {});
         } else {
@@ -628,7 +809,10 @@ function wireReal2SimResults() {
   });
 
   const activeTab = tabs.find((tab) => tab.classList.contains("is-active")) || tabs[0];
-  if (activeTab) setActiveGroup(activeTab.dataset.real2simTarget);
+  // Don't buffer the active clip until the section scrolls near the viewport.
+  if (activeTab) {
+    whenVisible(root, () => setActiveGroup(activeTab.dataset.real2simTarget));
+  }
 }
 
 function wireQualitativeResults() {
@@ -648,7 +832,9 @@ function wireQualitativeResults() {
       if (!source) return;
 
       if (!source.dataset.normalSrc) {
-        source.dataset.normalSrc = source.getAttribute("src") || "";
+        // Real URL lives in data-src until the clip is hydrated; fall back to a
+        // live src for already-hydrated sources.
+        source.dataset.normalSrc = source.dataset.src || source.getAttribute("src") || "";
         source.dataset.seqSrc = toSeqSrc(source.dataset.normalSrc);
       }
 
@@ -711,6 +897,7 @@ function wireQualitativeResults() {
 
       group.querySelectorAll("video").forEach((video) => {
         if (isActive) {
+          hydrateVideo(video);
           video.currentTime = 0;
           video.play().catch(() => {});
         } else {
@@ -731,7 +918,10 @@ function wireQualitativeResults() {
   });
 
   const activeTab = tabs.find((tab) => tab.classList.contains("is-active")) || tabs[0];
-  if (activeTab) setActiveGroup(activeTab.dataset.resultTarget);
+  // Don't buffer the active clip until the section scrolls near the viewport.
+  if (activeTab) {
+    whenVisible(root, () => setActiveGroup(activeTab.dataset.resultTarget));
+  }
 }
 
 // --- Interactive object picker -------------------------------------------
@@ -759,6 +949,15 @@ async function wireInteractiveObjects() {
   const meshContainer = document.getElementById("io-mesh-viewer");
   const selectedLabel = document.getElementById("io-selected-label");
   if (!root || !imgEl || !overlay || !sceneEl || !meshContainer) return;
+
+  if (IS_MOBILE) {
+    if (loadingEl) {
+      loadingEl.textContent = "Interactive viewer available on desktop";
+      loadingEl.hidden = false;
+    }
+    showMobileNotice(meshContainer);
+    return;
+  }
 
   const octx = overlay.getContext("2d");
   const GLOW = [125, 211, 252];                   // bright edge core
@@ -966,10 +1165,12 @@ async function wireInteractiveObjects() {
     });
   }
 
-  loadScene(entries[0].dir);
+  // Defer the initial scene download until the picker scrolls near the viewport.
+  whenVisible(root, () => loadScene(entries[0].dir));
 }
 
 function init() {
+  wireLazyAutoplayVideos();
   wireTabbedViewer("scene-tabs", "scene-splat-viewer", SCENE_MANIFESTS, "scene-target");
   wireInteractiveObjects();
   wireSam3dComparison();

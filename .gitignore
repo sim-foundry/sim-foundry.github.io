@@ -23,3 +23,6 @@ assets/viewers/*/*_bg.ksplat
 
 # Pre-remux QuickTime file; the .mp4 is what the site uses.
 assets/videos/pipeline_vid.mov
+
+# native gltfpack binary used by tools/optimize/compress_glbs.sh
+tools/optimize/bin/
