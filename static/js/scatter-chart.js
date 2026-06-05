@@ -416,7 +416,7 @@ class ScatterChart {
       <strong>${TASK_LABELS[p.task]}</strong><br>
       <span class="tooltip-method ${p.method}">${methodLabel}</span> · ${MODEL_LABELS[p.model]}<br>
       Real: ${p.real}% · Sim: ${p.sim}%<br>
-      <span class="tooltip-metrics">r = ${rStr} · MMRV = ${mmrvStr}</span>
+      <span class="tooltip-metrics">r = ${rStr}<br>MMRV = ${mmrvStr}</span>
     `;
     this.tooltip.style.opacity = "1";
     this.tooltip.style.visibility = "hidden";

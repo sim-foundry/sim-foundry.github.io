@@ -190,7 +190,7 @@ function sam3dEntry(key, label) {
 
 const SAM3D_COMPARISON_ASSETS = {
   "OCID_2":        sam3dEntry("OCID_2",        "OCID 2"),
-  "nv_desk":       sam3dEntry("nv_desk",       "NV Desk"),
+  "nv_desk":       sam3dEntry("nv_desk",       "Desk"),
   "bathroom_1":    sam3dEntry("bathroom_1",    "Bathroom"),
   "Gemini_1":      sam3dEntry("Gemini_1",      "Gemini 1"),
   "home_coffee_4": sam3dEntry("home_coffee_4", "Home Coffee 4"),
