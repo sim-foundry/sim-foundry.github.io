@@ -57,7 +57,20 @@ Net repo effect: 874 MB -> ~401 MB so far (GLB only).
 Sample SSIM (vs original): main-repo clips >=0.985; toughest splat-render qual clip 0.973
 at 10.9x — visually fine for looping motion. `_seq` variants preserved (same names).
 
-NOTE: external qual_videos live in sim-foundry-website-assets and are served to the live
+~~NOTE: external qual_videos live in sim-foundry-website-assets and are served to the live
 site from raw.githubusercontent @ main. The compressed versions are on branch
 `optimize-assets` (NOT pushed) — the live site keeps serving originals until that branch
-is reviewed + published.
+is reviewed + published.~~
+
+---
+
+## Update — 2026-06-04: single-repo consolidation
+
+The compressed qual_videos were published, all page videos were re-encoded and
+moved around, and finally the entire `sim-foundry-website-assets` repo content
+(`glb/`, `splats/`, `videos/`, `qual_videos/`, ~370 MB compressed) was vendored
+back into this repo with relative same-origin paths. Tracked site content is
+now ~500 MB — under the 1 GB Pages limit, which is what originally forced the
+two-repo split. The external assets repo is no longer referenced and has been
+retired; the uncompressed originals (raw `sam3d.glb`, full-res PLYs) exist only
+on the dev machine (see README "Big files").

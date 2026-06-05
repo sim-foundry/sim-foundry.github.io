@@ -7,12 +7,20 @@ Static research project page for the [sim-foundry](https://github.com/sim-foundr
 ```
 index.html              # main page
 static/css/index.css    # all styles
-static/js/viewers.js    # 3D viewer wiring (currently stubbed)
+static/js/viewers.js    # 3D viewer wiring (lazy-loads three.js + splat lib)
+static/js/scatter-chart.js  # sim-vs-real scatter plot
 static/images/          # favicon and any static images
-static/videos/<scene>/  # qualitative result videos grouped by scene
-assets/videos/          # walkthrough videos
-assets/viewers/         # splat / mesh assets for the 3D viewers
+videos/                 # policy / task-cousin / real2sim eval videos
+qual_videos/<scene>/    # qualitative result videos grouped by scene
+glb/                    # SAM3D comparison meshes (meshopt-compressed)
+splats/                 # Gaussian-splat backgrounds (.ksplat)
+assets/viewers/         # per-scene manifests + object GLBs for the 3D viewers
+tools/                  # scene build + asset optimization tooling
 ```
+
+Everything is served same-origin from this repo (no external asset host).
+Tracked content is ~500 MB — keep an eye on the 1 GB GitHub Pages limit when
+adding media, and run the `tools/optimize/` compressors on anything new.
 
 ## Local preview
 
@@ -24,31 +32,15 @@ python3 -m http.server 8000
 # open http://localhost:8000
 ```
 
-## Deploy to GitHub Pages under `sim-foundry`
+## Deployment
 
-You have two options under the `sim-foundry` org:
+The repo is `sim-foundry/sim-foundry.github.io`; everything pushed to `main`
+is served as-is at <https://sim-foundry.github.io> (no build step). All asset
+paths are relative, so the site also works from any project-page URL prefix.
 
-### Option A — Org landing site at `sim-foundry.github.io`
-
-Create a repo named **exactly** `sim-foundry.github.io` under the org. Anything on its default branch is served at `https://sim-foundry.github.io`.
-
-```bash
-cd /home/cdc/sim-foundry-website
-git init
-git add .
-git commit -m "Initial research page"
-git branch -M main
-git remote add origin git@github.com:sim-foundry/sim-foundry.github.io.git
-git push -u origin main
-```
-
-Then in **Settings → Pages**: source = `main` branch, `/ (root)`.
-
-### Option B — Project page at `sim-foundry.github.io/<repo-name>`
-
-Create a repo with any name (e.g. `research-page`) under the org and push to it the same way. In **Settings → Pages**, pick the `main` branch and `/ (root)`. Site will be served at `https://sim-foundry.github.io/<repo-name>/`.
-
-> If you go with Option B, edit the `static/css/index.css` and `index.html` asset paths only if you use absolute paths — current paths are all relative, so it'll work either way.
+An `anonymous` branch holds the scrubbed double-blind variant of the site
+(authors/affiliations removed, identifying names like `nv_desk` renamed); its
+snapshot is deployed separately under an anonymous account.
 
 ## Filling in the 3D viewers
 
@@ -88,32 +80,29 @@ This:
 4. Symlinks the source PLY into `assets/viewers/nv_desk/nv_desk_bg.ply` for
    local preview (the symlink target is the gitignored full-resolution file).
 
-## Big-file hosting (>100 MB)
+## Big files (>100 MB) and local-only originals
 
-GitHub blocks individual files >100 MB. Files that cross that threshold are
-hosted as Release assets on
-[`simfoundry/sim-foundry-website-assets`](https://github.com/simfoundry/sim-foundry-website-assets)
-and kept out of the repo via `.gitignore`. Today this covers:
+GitHub blocks individual files >100 MB, so the repo only carries the
+**compressed** production assets (gltfpack meshopt GLBs in `glb/` and
+`assets/viewers/*/objects/`, `.ksplat` splats in `splats/`, CRF28 videos).
+The uncompressed originals are gitignored and live only on the dev machine:
 
-- `assets/viewers/sf_vs_sam3d/*/sam3d.glb` — SAM3D comparison meshes.
-- `assets/viewers/nv_desk/nv_desk_bg.ply` — 3D Gaussian Splat background.
+- `assets/viewers/sf_vs_sam3d/*/sam3d.glb` — raw SAM3D comparison meshes (70–240 MB each).
+- `assets/viewers/*/​*_bg.ply` / `splat.ply` — full-resolution Gaussian-splat PLYs
+  (symlinked from the source scene repo by the build tools).
 
-The manifest stores both a `local_url` (gitignored symlink, used on
-`localhost`) and a Release `url` (used in production); `pickSplatUrl()` in
-`viewers.js` chooses based on `window.location.hostname`.
+Keep backups of those originals — they are not recoverable from this repo.
 
-To publish a new big asset:
+Scene manifests store both a `local_url` (gitignored local file, used on
+`localhost`) and a relative `url` into `splats/` (used in production);
+`pickSplatUrl()` in `viewers.js` chooses based on `window.location.hostname`.
 
-1. Draft a Release on `sim-foundry-website-assets` with a tag like
-   `v0.1-nv-desk` and attach the file.
-2. Update the `--ply-url` (or equivalent) when rebuilding the manifest, or
-   edit the manifest's `splat.url` directly.
+To add a new big asset: compress it first (`tools/optimize/compress_glbs.sh`,
+`tools/optimize/compress_videos.sh`, or `.ply -> .ksplat` via the splat lib)
+and commit only the compressed artifact.
 
-## Sections you'll want to fill in next
+## Remaining placeholders
 
-- **Hero**: project title, subtitle, author list, affiliations, venue, and the PDF / arXiv / video / code button links.
-- **Teaser**: replace the placeholder div with a `<video>` or `<img>`.
-- **Abstract**: replace the placeholder paragraph.
-- **Walkthrough video**: replace the placeholder with a YouTube `<iframe>`.
-- **Qualitative results**: replace each `.result-placeholder` with a `<video>` or `<img>`.
-- **BibTeX**: update the citation block.
+- **Hero buttons**: PDF / arXiv / Video links still point to `#`.
+- **BibTeX**: citation block still has placeholder authors/keys.
+- **Abstract**: present in the HTML but commented out.
