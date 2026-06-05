@@ -1,10 +1,10 @@
 # Optimization baseline — 2026-06-03T20:43Z
 
-## Main repo (sim-foundry.github.io)
+## Main repo (ANON.github.io)
 Total (excl .git): 874M
 
 ### Local GLBs by group
-assets/viewers/nv_desk/objects                89M
+assets/viewers/desk_1/objects                89M
 assets/viewers/kitchen_2_demo/objects         53M
 assets/viewers/dining_1_demo/objects          46M
 assets/viewers/toys_1_demo/objects            39M
@@ -18,7 +18,7 @@ main repo: 22 files, 287M
 
 ### Images: 83 files, 17M
 
-## External repo (sim-foundry-website-assets)
+## External repo (website-assets)
 glb: 5 files, 106M
 qual_videos: 81 files, 611M
 splats: 49M
@@ -57,7 +57,7 @@ Net repo effect: 874 MB -> ~401 MB so far (GLB only).
 Sample SSIM (vs original): main-repo clips >=0.985; toughest splat-render qual clip 0.973
 at 10.9x — visually fine for looping motion. `_seq` variants preserved (same names).
 
-~~NOTE: external qual_videos live in sim-foundry-website-assets and are served to the live
+~~NOTE: external qual_videos live in website-assets and are served to the live
 site from raw.githubusercontent @ main. The compressed versions are on branch
 `optimize-assets` (NOT pushed) — the live site keeps serving originals until that branch
 is reviewed + published.~~
@@ -67,7 +67,7 @@ is reviewed + published.~~
 ## Update — 2026-06-04: single-repo consolidation
 
 The compressed qual_videos were published, all page videos were re-encoded and
-moved around, and finally the entire `sim-foundry-website-assets` repo content
+moved around, and finally the entire `website-assets` repo content
 (`glb/`, `splats/`, `videos/`, `qual_videos/`, ~370 MB compressed) was vendored
 back into this repo with relative same-origin paths. Tracked site content is
 now ~500 MB — under the 1 GB Pages limit, which is what originally forced the

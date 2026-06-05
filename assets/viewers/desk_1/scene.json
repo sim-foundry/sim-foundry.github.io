@@ -1,15 +1,15 @@
 {
   "version": 1,
-  "scene": "nv_desk",
+  "scene": "desk_1",
   "world_up": [
     0.0,
     0.0,
     1.0
   ],
   "splat": {
-    "url": "splats/nv_desk__nv_desk_bg.ksplat",
+    "url": "splats/desk_1__desk_1_bg.ksplat",
     "format": "ksplat",
-    "local_url": "assets/viewers/nv_desk/nv_desk_bg.ksplat",
+    "local_url": "assets/viewers/desk_1/desk_1_bg.ksplat",
     "position": [
       -0.06300720572471619,
       -0.12969858944416046,
@@ -31,7 +31,7 @@
     {
       "name": "tape_dispenser_with_tape_admixx_7",
       "category": "tape_dispenser_with_tape",
-      "url": "assets/viewers/nv_desk/objects/tape_dispenser_with_tape_admixx.glb",
+      "url": "assets/viewers/desk_1/objects/tape_dispenser_with_tape_admixx.glb",
       "position": [
         0.810174822807312,
         -0.16203652322292328,
@@ -52,7 +52,7 @@
     {
       "name": "teal_plate_qdudop_16",
       "category": "teal_plate",
-      "url": "assets/viewers/nv_desk/objects/teal_plate_qdudop.glb",
+      "url": "assets/viewers/desk_1/objects/teal_plate_qdudop.glb",
       "position": [
         0.5432934761047363,
         0.3593527376651764,
@@ -73,7 +73,7 @@
     {
       "name": "yellow_bowl_hmtriz_18",
       "category": "yellow_bowl",
-      "url": "assets/viewers/nv_desk/objects/yellow_bowl_hmtriz.glb",
+      "url": "assets/viewers/desk_1/objects/yellow_bowl_hmtriz.glb",
       "position": [
         0.7077859044075012,
         0.18790853023529053,
@@ -94,7 +94,7 @@
     {
       "name": "white_bottle_wzdaet_14",
       "category": "white_bottle",
-      "url": "assets/viewers/nv_desk/objects/white_bottle_wzdaet.glb",
+      "url": "assets/viewers/desk_1/objects/white_bottle_wzdaet.glb",
       "position": [
         0.5722522735595703,
         0.38613513112068176,
@@ -115,7 +115,7 @@
     {
       "name": "white_spray_bottle_clfkib_6",
       "category": "white_spray_bottle",
-      "url": "assets/viewers/nv_desk/objects/white_spray_bottle_clfkib.glb",
+      "url": "assets/viewers/desk_1/objects/white_spray_bottle_clfkib.glb",
       "position": [
         0.724606990814209,
         -0.3319712281227112,
@@ -136,7 +136,7 @@
     {
       "name": "blue_cup_syvtml_19",
       "category": "blue_cup",
-      "url": "assets/viewers/nv_desk/objects/blue_cup_syvtml.glb",
+      "url": "assets/viewers/desk_1/objects/blue_cup_syvtml.glb",
       "position": [
         0.6118975877761841,
         0.5440990924835205,
@@ -157,7 +157,7 @@
     {
       "name": "black_eraser_nxvbgd_8",
       "category": "black_eraser",
-      "url": "assets/viewers/nv_desk/objects/black_eraser_nxvbgd.glb",
+      "url": "assets/viewers/desk_1/objects/black_eraser_nxvbgd.glb",
       "position": [
         0.6073025465011597,
         -0.3559471666812897,
@@ -178,7 +178,7 @@
     {
       "name": "orange_marker_exeoom_4",
       "category": "orange_marker",
-      "url": "assets/viewers/nv_desk/objects/orange_marker_exeoom.glb",
+      "url": "assets/viewers/desk_1/objects/orange_marker_exeoom.glb",
       "position": [
         0.4174373149871826,
         0.11998026072978973,
@@ -199,7 +199,7 @@
     {
       "name": "yellow_tennis_ball_awiuca_0",
       "category": "yellow_tennis_ball",
-      "url": "assets/viewers/nv_desk/objects/yellow_tennis_ball_awiuca.glb",
+      "url": "assets/viewers/desk_1/objects/yellow_tennis_ball_awiuca.glb",
       "position": [
         0.3690192997455597,
         -0.12167666107416153,
@@ -220,7 +220,7 @@
     {
       "name": "blue_marker_ouwlrh_3",
       "category": "blue_marker",
-      "url": "assets/viewers/nv_desk/objects/blue_marker_ouwlrh.glb",
+      "url": "assets/viewers/desk_1/objects/blue_marker_ouwlrh.glb",
       "position": [
         0.6125710606575012,
         -0.3544726073741913,
@@ -241,7 +241,7 @@
     {
       "name": "green_pear_qovthm_17",
       "category": "green_pear",
-      "url": "assets/viewers/nv_desk/objects/green_pear_qovthm.glb",
+      "url": "assets/viewers/desk_1/objects/green_pear_qovthm.glb",
       "position": [
         0.7170695662498474,
         0.19232626259326935,
@@ -262,7 +262,7 @@
     {
       "name": "black_marker_uzfkdu_12",
       "category": "black_marker",
-      "url": "assets/viewers/nv_desk/objects/black_marker_uzfkdu.glb",
+      "url": "assets/viewers/desk_1/objects/black_marker_uzfkdu.glb",
       "position": [
         0.8196122050285339,
         -0.00978165678679943,
@@ -283,7 +283,7 @@
     {
       "name": "blue_scissors_rxikjq_9",
       "category": "blue_scissors",
-      "url": "assets/viewers/nv_desk/objects/blue_scissors_rxikjq.glb",
+      "url": "assets/viewers/desk_1/objects/blue_scissors_rxikjq.glb",
       "position": [
         0.6774330139160156,
         -0.09462587535381317,
@@ -304,7 +304,7 @@
     {
       "name": "black_pen_selodu_11",
       "category": "black_pen",
-      "url": "assets/viewers/nv_desk/objects/black_pen_selodu.glb",
+      "url": "assets/viewers/desk_1/objects/black_pen_selodu.glb",
       "position": [
         0.8070517778396606,
         -0.055503323674201965,
@@ -325,7 +325,7 @@
     {
       "name": "red_bottle_xycgwr_15",
       "category": "red_bottle",
-      "url": "assets/viewers/nv_desk/objects/red_bottle_xycgwr.glb",
+      "url": "assets/viewers/desk_1/objects/red_bottle_xycgwr.glb",
       "position": [
         0.5729240775108337,
         0.3401387631893158,
@@ -346,7 +346,7 @@
     {
       "name": "orange_cup_iljebh_20",
       "category": "orange_cup",
-      "url": "assets/viewers/nv_desk/objects/orange_cup_iljebh.glb",
+      "url": "assets/viewers/desk_1/objects/orange_cup_iljebh.glb",
       "position": [
         0.7285340428352356,
         0.44916877150535583,
@@ -367,7 +367,7 @@
     {
       "name": "wooden_organizer_with_drawer_vmufpr_13",
       "category": "wooden_organizer_with_drawer",
-      "url": "assets/viewers/nv_desk/objects/wooden_organizer_with_drawer_vmufpr.glb?v=2",
+      "url": "assets/viewers/desk_1/objects/wooden_organizer_with_drawer_vmufpr.glb?v=2",
       "position": [
         0.7420105338096619,
         -0.09736767411231995,
@@ -388,7 +388,7 @@
     {
       "name": "red_marker_qzbrph_5",
       "category": "red_marker",
-      "url": "assets/viewers/nv_desk/objects/red_marker_qzbrph.glb",
+      "url": "assets/viewers/desk_1/objects/red_marker_qzbrph.glb",
       "position": [
         0.4387088418006897,
         0.18107561767101288,
@@ -409,7 +409,7 @@
     {
       "name": "toy_burger_sdzcvw_10",
       "category": "toy_burger",
-      "url": "assets/viewers/nv_desk/objects/toy_burger_sdzcvw.glb",
+      "url": "assets/viewers/desk_1/objects/toy_burger_sdzcvw.glb",
       "position": [
         0.5238990187644958,
         0.34715428948402405,
@@ -430,7 +430,7 @@
     {
       "name": "colorful_stand_xmhhxj_2",
       "category": "colorful_stand",
-      "url": "assets/viewers/nv_desk/objects/colorful_stand_xmhhxj.glb",
+      "url": "assets/viewers/desk_1/objects/colorful_stand_xmhhxj.glb",
       "position": [
         0.4780862629413605,
         -0.21946324408054352,
@@ -451,7 +451,7 @@
     {
       "name": "baseball_xamsjn_1",
       "category": "baseball",
-      "url": "assets/viewers/nv_desk/objects/baseball_xamsjn.glb",
+      "url": "assets/viewers/desk_1/objects/baseball_xamsjn.glb",
       "position": [
         0.48147299885749817,
         -0.21789970993995667,
@@ -484,7 +484,7 @@
     ]
   },
   "preview_video": {
-    "url": "assets/viewers/nv_desk/preview.mp4",
+    "url": "assets/viewers/desk_1/preview.mp4",
     "playback_rate": 1.5
   }
 }

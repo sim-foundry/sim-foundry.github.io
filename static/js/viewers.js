@@ -4,10 +4,10 @@
  * Viewer types:
  *   - data-viewer-type="hybrid" : Gaussian splat background + textured GLB
  *                                  objects, driven by a scene.json manifest
- *                                  produced by tools/build_nv_desk_scene.py.
+ *                                  produced by tools/build_desk_1_scene.py.
  *   - data-viewer-type="mesh"   : GLB/GLTF single-object viewer (three.js).
  *
- * To add a new scene: build a scene.json with tools/build_nv_desk_scene.py and
+ * To add a new scene: build a scene.json with tools/build_desk_1_scene.py and
  * add an entry to SCENE_MANIFESTS below. The dropdown <option> value must
  * match the asset-map key.
  */
@@ -204,7 +204,7 @@ function wireChartGrowAnimations() {
 }
 
 const SCENE_MANIFESTS = {
-  "nv_desk":        "assets/viewers/nv_desk/scene.json",
+  "desk_1":        "assets/viewers/desk_1/scene.json",
   "kitchen_2_demo": "assets/viewers/kitchen_2_demo/scene.json",
   "dining_1_demo":  "assets/viewers/dining_1_demo/scene.json",
   "toys_1_demo":    "assets/viewers/toys_1_demo/scene.json",
@@ -232,7 +232,7 @@ function sam3dEntry(key, label) {
 
 const SAM3D_COMPARISON_ASSETS = {
   "OCID_2":        sam3dEntry("OCID_2",        "OCID 2"),
-  "nv_desk":       sam3dEntry("nv_desk",       "Desk"),
+  "desk_1":       sam3dEntry("desk_1",       "Desk"),
   "bathroom_1":    sam3dEntry("bathroom_1",    "Bathroom"),
   "Gemini_1":      sam3dEntry("Gemini_1",      "Gemini 1"),
   "home_coffee_4": sam3dEntry("home_coffee_4", "Home Coffee 4"),

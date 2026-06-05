@@ -1,4 +1,4 @@
-"""Re-export the nv_desk wooden organizer GLB with its drawers baked open.
+"""Re-export the desk_1 wooden organizer GLB with its drawers baked open.
 
 The per-object asset USD is articulated (3 prismatic drawer joints, axis +X in
 the object-local frame). `usd_to_glb.convert` bakes the *rest* state (drawers
@@ -8,7 +8,7 @@ SAM3D-comparison simfoundry output), we translate each drawer link's visual
 mesh by `+X * joint_pos` before flattening.
 
 Run inside the USD env:
-    /home/cdc/miniforge3/envs/sam3d/bin/python tools/bake_organizer_drawers.py
+    python tools/bake_organizer_drawers.py
 """
 from pathlib import Path
 import numpy as np
@@ -18,12 +18,12 @@ from pxr import Usd
 
 from usd_to_glb import _iter_visual_meshes, _extract_mesh, _resolve_diffuse_texture
 
-USD = Path("/home/cdc/controllable-digital-cousins/assets/scenes/nv_desk/objects/"
+USD = Path("/path/to/digital-cousins/assets/scenes/desk_1/objects/"
            "wooden_organizer_with_drawer/vmufpr/usd/vmufpr.usd")
-OUT = Path("assets/viewers/nv_desk/objects/wooden_organizer_with_drawer_vmufpr.glb")
+OUT = Path("assets/viewers/desk_1/objects/wooden_organizer_with_drawer_vmufpr.glb")
 
 # Drawer joint positions from the canonical scene the website builds from:
-# assets/scenes/nv_desk/nv_desk_scene_state_latest_with_gs.json
+# assets/scenes/desk_1/desk_1_scene_state_latest_with_gs.json
 # (state.registry.object_registry.wooden_organizer_with_drawer_vmufpr_13.joint_pos).
 # Only the top/wide drawer (drawer_1) is open; the lower two stay closed. Axis
 # is +X in the object-local frame (localRot0 identity, root identity).

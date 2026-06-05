@@ -1,6 +1,6 @@
 # Sim Foundry — Research Website
 
-Static research project page for the [sim-foundry](https://github.com/sim-foundry) GitHub organization. Layout is modeled on [PointWorld](https://point-world.github.io) with 3D viewer placeholders modeled on [PolaRiS](https://polaris-evals.github.io).
+Static research project page (anonymized for double-blind review).
 
 ## File layout
 
@@ -27,20 +27,15 @@ adding media, and run the `tools/optimize/` compressors on anything new.
 GitHub Pages serves the repo as-is, no build step. To preview locally:
 
 ```bash
-cd /home/cdc/sim-foundry-website
+cd /path/to/website
 python3 -m http.server 8000
 # open http://localhost:8000
 ```
 
 ## Deployment
 
-The repo is `sim-foundry/sim-foundry.github.io`; everything pushed to `main`
-is served as-is at <https://sim-foundry.github.io> (no build step). All asset
-paths are relative, so the site also works from any project-page URL prefix.
-
-An `anonymous` branch holds the scrubbed double-blind variant of the site
-(authors/affiliations removed, identifying names like `nv_desk` renamed); its
-snapshot is deployed separately under an anonymous account.
+Everything pushed to `main` is served as-is by GitHub Pages (no build step).
+All asset paths are relative, so the site works from any URL prefix.
 
 ## Filling in the 3D viewers
 
@@ -52,11 +47,11 @@ There are two viewer kinds wired up in `static/js/viewers.js`:
   objects, composited in one canvas via
   [@mkkellogg/gaussian-splats-3d](https://github.com/mkkellogg/GaussianSplats3D).
   Driven by a `scene.json` manifest produced from an OmniGibson scene-state
-  JSON; see the `nv_desk` build below.
+  JSON; see the `desk_1` build below.
 
-### Hybrid scene (`nv_desk`)
+### Hybrid scene (`desk_1`)
 
-The hybrid viewer reads `assets/viewers/nv_desk/scene.json`, which contains:
+The hybrid viewer reads `assets/viewers/desk_1/scene.json`, which contains:
 
 - `splat`: PLY URL + the world-frame `position`/`quaternion_xyzw`/`scale` to
   apply to the splat (taken from the `gs_background` USDObject in the
@@ -68,16 +63,16 @@ The hybrid viewer reads `assets/viewers/nv_desk/scene.json`, which contains:
 To regenerate after the source scene changes:
 
 ```bash
-/home/cdc/miniforge3/envs/sam3d/bin/python tools/build_nv_desk_scene.py
+python tools/build_desk_1_scene.py
 ```
 
 This:
 
-1. Reads `controllable-digital-cousins/assets/scenes/nv_desk/nv_desk_scene_state_latest_with_gs.json`.
+1. Reads `controllable-digital-cousins/assets/scenes/desk_1/desk_1_scene_state_latest_with_gs.json`.
 2. Runs `tools/usd_to_glb.py` on each object USD it references, writing
-   textured GLBs to `assets/viewers/nv_desk/objects/`.
-3. Writes `assets/viewers/nv_desk/scene.json`.
-4. Symlinks the source PLY into `assets/viewers/nv_desk/nv_desk_bg.ply` for
+   textured GLBs to `assets/viewers/desk_1/objects/`.
+3. Writes `assets/viewers/desk_1/scene.json`.
+4. Symlinks the source PLY into `assets/viewers/desk_1/desk_1_bg.ply` for
    local preview (the symlink target is the gitignored full-resolution file).
 
 ## Big files (>100 MB) and local-only originals

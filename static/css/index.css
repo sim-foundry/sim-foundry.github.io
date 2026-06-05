@@ -1,6 +1,5 @@
 /* =====================================================
-   Sim Foundry — research page styles
-   Inspired by point-world.github.io and polaris-evals.github.io
+   SimFoundry — research page styles
    ===================================================== */
 
 :root {
@@ -11,8 +10,8 @@
   --color-border: #e5e5e7;
   --color-accent: #2563eb;
   --color-accent-dark: #1d4ed8;
-  --color-stanford-red: #8C1515;
-  --color-stanford-red-dark: #6e1010;
+  --color-accent-red: #8C1515;
+  --color-accent-red-dark: #6e1010;
   --color-card: #ffffff;
   --color-card-shadow: rgba(15, 23, 42, 0.06);
 
@@ -68,7 +67,7 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
   font-size: clamp(1.5rem, 2.8vw, 2.2rem);
   line-height: 1.2;
   margin: 0 0 20px;
-  color: var(--color-stanford-red);
+  color: var(--color-accent-red);
   /* Break out wider than the hero column and cap the font so the explicit
      <br> split renders as a clean two lines across desktop widths. */
   position: relative;
@@ -98,7 +97,7 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
 }
 .publication-venue {
   display: inline-block;
-  color: var(--color-stanford-red);
+  color: var(--color-accent-red);
   font-size: 1rem;
   font-weight: 600;
   margin: 8px 0 24px;
@@ -570,7 +569,7 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
 }
 
 /* ----------- Sim-to-Real Policy Training ----------- */
-.accent-red { color: var(--color-stanford-red); }
+.accent-red { color: var(--color-accent-red); }
 .subsection-title {
   font-family: var(--font-serif);
   font-size: clamp(1.1rem, 1.7vw, 1.4rem);
@@ -632,11 +631,11 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
   font-size: 1.15rem;
 }
 .policy-success--highlight {
-  color: var(--color-stanford-red);
+  color: var(--color-accent-red);
   font-weight: 600;
 }
 .policy-success--highlight strong {
-  color: var(--color-stanford-red);
+  color: var(--color-accent-red);
 }
 
 /* Cousins generalization: image (left) + eval video (right) */
@@ -724,7 +723,7 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
   font-size: 2.5rem;
   font-weight: 700;
   line-height: 1;
-  color: var(--color-stanford-red);
+  color: var(--color-accent-red);
 }
 .stat-bar-row {
   display: grid;
@@ -753,7 +752,7 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
   transition: width 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 .stat-bar--base { background: #b9bec7; }
-.stat-bar--boost { background: var(--color-stanford-red); }
+.stat-bar--boost { background: var(--color-accent-red); }
 @media (max-width: 720px) {
   .stat-cards { grid-template-columns: 1fr; }
 }

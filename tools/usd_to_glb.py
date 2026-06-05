@@ -5,7 +5,7 @@ pipeline: one Xform per object, a `visuals` Xform containing UsdGeomMeshes
 bound to a single UsdPreviewSurface material with a `diffuseColor` texture.
 
 Run inside an env with `pxr`, `trimesh`, `PIL`:
-    /home/cdc/miniforge3/envs/sam3d/bin/python tools/usd_to_glb.py <in.usd> <out.glb>
+    python tools/usd_to_glb.py <in.usd> <out.glb>
 """
 from __future__ import annotations
 import argparse

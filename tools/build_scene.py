@@ -4,21 +4,21 @@ Auto-discovers the scene state JSON and background PLY under
 `controllable-digital-cousins/assets/scenes/<scene>/`, runs `usd_to_glb.py` on
 every object USD referenced, and writes:
 
-    sim-foundry-website/assets/viewers/<scene>/
+    website/assets/viewers/<scene>/
         scene.json                       # manifest the viewer fetches
         objects/<category>_<variant>.glb # one GLB per unique object USD
         <ply-basename>.ply               # symlinked from the source
 
 The PLY is gitignored locally (large) and expected to be hosted on the
-sim-foundry-website-assets Release that matches `--release-tag`.
+website-assets Release that matches `--release-tag`.
 
 USD paths inside the scene state JSON often point at the original capture
-machine's filesystem (e.g. `/home/wpai/.../assets/scenes/<scene>/...`); this
+machine's filesystem (e.g. `/path/to/.../assets/scenes/<scene>/...`); this
 script rewrites those to the local scene root so the converter can resolve
 them.
 
 Run inside the `sam3d` env (which has `pxr`, `trimesh`, `PIL`):
-    /home/cdc/miniforge3/envs/sam3d/bin/python tools/build_scene.py --scene kitchen_2
+    python tools/build_scene.py --scene kitchen_2
 """
 from __future__ import annotations
 import argparse
@@ -32,8 +32,8 @@ THIS_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(THIS_DIR))
 from usd_to_glb import convert as usd_to_glb_convert  # noqa: E402
 
-SOURCE_SCENES_ROOT = Path("/home/cdc/controllable-digital-cousins/assets/scenes")
-SOURCE_VIDEO_ROOT = Path("/home/cdc/controllable-digital-cousins/Data/Scene_Video")
+SOURCE_SCENES_ROOT = Path("/path/to/digital-cousins/assets/scenes")
+SOURCE_VIDEO_ROOT = Path("/path/to/digital-cousins/Data/Scene_Video")
 WEBSITE_DIR = THIS_DIR.parent
 
 # Anything matching this prefix in the scene state JSON's usd_path values gets
@@ -41,7 +41,7 @@ WEBSITE_DIR = THIS_DIR.parent
 FOREIGN_SCENE_PATH_RE = re.compile(
     r"^/home/[^/]+/controllable-digital-cousins[_a-zA-Z0-9-]*/assets/scenes/"
 )
-LOCAL_SCENES_PREFIX = "/home/cdc/controllable-digital-cousins/assets/scenes/"
+LOCAL_SCENES_PREFIX = "/path/to/digital-cousins/assets/scenes/"
 
 # Object poses come from `_scene_state_latest.json`. If that file lacks the
 # `gs_background` entry (the splat transform), we additionally consult
@@ -131,8 +131,8 @@ def _remap_path(path_str: str, scene_dir: Path) -> str:
     """Resolve a USD path string into a local absolute path.
 
     Handles three forms found across scene state JSONs:
-      - Foreign absolute (`/home/wpai/.../assets/scenes/<scene>/...`)
-      - Local absolute  (`/home/cdc/.../assets/scenes/<scene>/...`)
+      - Foreign absolute (`/path/to/.../assets/scenes/<scene>/...`)
+      - Local absolute  (`/path/to/.../assets/scenes/<scene>/...`)
       - Relative        (`objects/foo/bar.usd` or `../../mesh_backgrounds/...`)
     """
     if not path_str:
@@ -241,7 +241,7 @@ def build(scene: str, force: bool, release_tag: str, state_json: Path | None = N
         })
 
     # gs_background → splat transform. Prefer the primary state JSON; fall
-    # back to the *_with_gs sibling if the primary doesn't carry it (nv_desk
+    # back to the *_with_gs sibling if the primary doesn't carry it (desk_1
     # case where the latest checkpoint didn't include the GS object).
     splat = None
     gs_args = None
@@ -261,7 +261,7 @@ def build(scene: str, force: bool, release_tag: str, state_json: Path | None = N
         gs_pos = list(gs_root_link["pos"])
         gs_ori = list(gs_root_link["ori"])
         # Production fetches a gltfpack-style compressed .ksplat from
-        # sim-foundry-website-assets via raw.githubusercontent.com (CORS
+        # website-assets via raw.githubusercontent.com (CORS
         # works there; release-asset CDN does not return CORS headers).
         # Locally, the same .ksplat file is dropped next to the PLY for dev.
         ksplat_basename = Path(ply_basename).with_suffix(".ksplat").name

@@ -1,19 +1,19 @@
-"""Build the nv_desk hybrid-viewer assets and manifest.
+"""Build the desk_1 hybrid-viewer assets and manifest.
 
 Reads the canonical OmniGibson scene state at
-`assets/scenes/nv_desk/nv_desk_scene_state_latest_with_gs.json` from the
+`assets/scenes/desk_1/desk_1_scene_state_latest_with_gs.json` from the
 controllable-digital-cousins repo and produces:
 
-    sim-foundry-website/assets/viewers/nv_desk/
+    website/assets/viewers/desk_1/
         scene.json                       # manifest the viewer fetches
         objects/<category>_<variant>.glb # one GLB per unique object USD
-        nv_desk_bg.ply                   # symlinked from the source dir
+        desk_1_bg.ply                   # symlinked from the source dir
 
 Big files (PLY > 100 MB) are gitignored locally and uploaded to
-`simfoundry/sim-foundry-website-assets` Releases for production hosting.
+`simfoundry/website-assets` Releases for production hosting.
 
 Run inside the `sam3d` env (which has `pxr`, `trimesh`, `PIL`):
-    /home/cdc/miniforge3/envs/sam3d/bin/python tools/build_nv_desk_scene.py
+    python tools/build_desk_1_scene.py
 """
 from __future__ import annotations
 import argparse
@@ -26,20 +26,20 @@ THIS_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(THIS_DIR))
 from usd_to_glb import convert as usd_to_glb_convert  # noqa: E402
 
-SOURCE_SCENE_DIR = Path("/home/cdc/controllable-digital-cousins/assets/scenes/nv_desk")
-SCENE_STATE_JSON = SOURCE_SCENE_DIR / "nv_desk_scene_state_latest_with_gs.json"
-SOURCE_PLY = SOURCE_SCENE_DIR / "background_3dgs" / "nv_desk_bg.ply"
+SOURCE_SCENE_DIR = Path("/path/to/digital-cousins/assets/scenes/desk_1")
+SCENE_STATE_JSON = SOURCE_SCENE_DIR / "desk_1_scene_state_latest_with_gs.json"
+SOURCE_PLY = SOURCE_SCENE_DIR / "background_3dgs" / "desk_1_bg.ply"
 
 WEBSITE_DIR = THIS_DIR.parent
-OUT_DIR = WEBSITE_DIR / "assets" / "viewers" / "nv_desk"
+OUT_DIR = WEBSITE_DIR / "assets" / "viewers" / "desk_1"
 OBJECTS_DIR = OUT_DIR / "objects"
 MANIFEST_PATH = OUT_DIR / "scene.json"
-LOCAL_PLY_PATH = OUT_DIR / "nv_desk_bg.ply"
+LOCAL_PLY_PATH = OUT_DIR / "desk_1_bg.ply"
 
 # URL the published manifest will point to for the PLY. Override with --ply-url.
 DEFAULT_PLY_URL = (
-    "https://github.com/simfoundry/sim-foundry-website-assets/releases/"
-    "download/v0.1-nv-desk/nv_desk_bg.ply"
+    "https://github.com/ANON/website-assets/releases/"
+    "download/v0.1-nv-desk/desk_1_bg.ply"
 )
 
 
@@ -94,7 +94,7 @@ def build(scene_state_path: Path, force: bool, ply_url: str) -> None:
 
         glb_name = _glb_filename(usd_path)
         glb_path = OBJECTS_DIR / glb_name
-        rel_url = f"assets/viewers/nv_desk/objects/{glb_name}"
+        rel_url = f"assets/viewers/desk_1/objects/{glb_name}"
 
         if usd_path_str in converted_cache:
             # Same USD already converted under a different object instance.
@@ -132,7 +132,7 @@ def build(scene_state_path: Path, force: bool, ply_url: str) -> None:
         splat = {
             "url": ply_url,
             "format": "ply",
-            "local_url": "assets/viewers/nv_desk/nv_desk_bg.ply",
+            "local_url": "assets/viewers/desk_1/desk_1_bg.ply",
             "position": gs_pos,
             "quaternion_xyzw": gs_ori,
             "scale": [float(s) for s in gs_scale],
