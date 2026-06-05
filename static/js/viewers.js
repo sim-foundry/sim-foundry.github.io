@@ -215,11 +215,9 @@ const OBJECT_ASSETS = {
   // "object-01": "assets/viewers/object-01.glb",
 };
 
-// SAM3D GLBs are gltfpack-compressed (EXT_meshopt_compression) and hosted in
-// the sim-foundry-website-assets public repo. raw.githubusercontent.com serves
-// them with CORS so the in-browser GLTFLoader can fetch them.
-const SAM3D_RELEASE_BASE =
-  "https://raw.githubusercontent.com/sim-foundry/sim-foundry-website-assets/main/glb";
+// SAM3D GLBs are gltfpack-compressed (EXT_meshopt_compression), served from
+// the site's own glb/ directory.
+const SAM3D_RELEASE_BASE = "glb";
 
 function sam3dEntry(key, label) {
   const base = `assets/viewers/sf_vs_sam3d/${key}`;

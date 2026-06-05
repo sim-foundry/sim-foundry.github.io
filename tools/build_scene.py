@@ -265,11 +265,8 @@ def build(scene: str, force: bool, release_tag: str, state_json: Path | None = N
         # works there; release-asset CDN does not return CORS headers).
         # Locally, the same .ksplat file is dropped next to the PLY for dev.
         ksplat_basename = Path(ply_basename).with_suffix(".ksplat").name
-        ksplat_raw_url = (
-            f"https://raw.githubusercontent.com/sim-foundry/"
-            f"sim-foundry-website-assets/main/splats/"
-            f"{scene}__{ksplat_basename}"
-        )
+        # Served from the site's own splats/ directory (same origin).
+        ksplat_raw_url = f"splats/{scene}__{ksplat_basename}"
         splat = {
             "url": ksplat_raw_url,
             "format": "ksplat",
