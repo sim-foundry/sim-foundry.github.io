@@ -159,6 +159,50 @@ function wireLazyAutoplayVideos() {
   videos.forEach((video) => io.observe(video));
 }
 
+// Count `[data-countup]` numbers (e.g. "46%") up from zero, keeping any
+// non-numeric suffix. Runs alongside the bar-grow transition below.
+function animateCountUps(root) {
+  root.querySelectorAll("[data-countup]").forEach((el) => {
+    const target = parseFloat(el.textContent);
+    if (!isFinite(target)) return;
+    const suffix = el.textContent.replace(/^[\d.]+/, "");
+    const duration = 900;
+    const start = performance.now();
+    const tick = (now) => {
+      const t = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 3); // ease-out, matches the bar curve
+      el.textContent = Math.round(target * eased) + suffix;
+      if (t < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  });
+}
+
+// Charts marked with `data-chart-grow` start zeroed out and grow to their
+// real values the first time they scroll into view. Skipped (charts render
+// fully grown) for reduced-motion users and, via whenVisible's fallback,
+// where IntersectionObserver isn't available.
+function wireChartGrowAnimations() {
+  const charts = Array.from(document.querySelectorAll("[data-chart-grow]"));
+  if (!charts.length) return;
+  const reduceMotion =
+    window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduceMotion) return;
+  charts.forEach((chart) => {
+    chart.classList.add("chart-grow-pending");
+    whenVisible(
+      chart,
+      () => {
+        // Commit the zeroed layout before releasing it so the change animates.
+        void chart.offsetHeight;
+        chart.classList.remove("chart-grow-pending");
+        animateCountUps(chart);
+      },
+      { rootMargin: "-80px 0px" },
+    );
+  });
+}
+
 const SCENE_MANIFESTS = {
   "nv_desk":        "assets/viewers/nv_desk/scene.json",
   "kitchen_2_demo": "assets/viewers/kitchen_2_demo/scene.json",
@@ -1103,7 +1147,19 @@ async function wireInteractiveObjects() {
 
     objects = built.filter(Boolean).sort((a, b) => a.area - b.area); // smaller on top
     redraw();
+
+    // Pre-select a fixed default (the largest object — visually prominent and
+    // stable across reloads) so the mesh viewer starts populated instead of
+    // waiting for the user's first click.
+    if (objects.length) selectObject(objects[objects.length - 1]);
   }
+
+  const selectObject = (o) => {
+    selected = o;
+    redraw();
+    if (selectedLabel) selectedLabel.textContent = `— ${o.label}`;
+    loadMesh(meshContainer, o.url);
+  };
 
   sceneEl.addEventListener("mousemove", (ev) => {
     const [px, py] = toPixel(ev);
@@ -1135,10 +1191,7 @@ async function wireInteractiveObjects() {
     const [px, py] = toPixel(ev);
     const o = objectAt(px, py);
     if (!o) return;
-    selected = o;
-    redraw();
-    if (selectedLabel) selectedLabel.textContent = `— ${o.label}`;
-    loadMesh(meshContainer, o.url);
+    selectObject(o);
   });
 
   // Build the scene tab buttons and wire switching.
@@ -1171,6 +1224,7 @@ async function wireInteractiveObjects() {
 
 function init() {
   wireLazyAutoplayVideos();
+  wireChartGrowAnimations();
   wireTabbedViewer("scene-tabs", "scene-splat-viewer", SCENE_MANIFESTS, "scene-target");
   wireInteractiveObjects();
   wireSam3dComparison();

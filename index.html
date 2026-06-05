@@ -13,7 +13,7 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet" />
 
-<link rel="stylesheet" href="static/css/index.css?v=38" />
+<link rel="stylesheet" href="static/css/index.css?v=40" />
 
 <script type="importmap">
 {
@@ -608,7 +608,7 @@
           <figure class="qualitative-panel">
             <div class="qualitative-media">
               <video muted loop controls playsinline preload="none">
-                <source data-src="static/videos/real2sim/Stack_Dishware_sim.mp4" type="video/mp4" />
+                <source data-src="static/videos/real2sim/Stack_Dishware_sim.mp4?v=2" type="video/mp4" />
               </video>
             </div>
             <figcaption>SimFoundry<br><span class="success-rate">Success Rate: 64%</span></figcaption>
@@ -740,7 +740,7 @@
     <h3 class="subsection-title">SimFoundry Digital Cousins Enable Policy Generalization to <span class="accent-red">Novel Objects</span></h3>
     <div class="cousin-row">
       <figure class="cousin-fig">
-        <img src="static/images/wooden_drawer_cousins.png" alt="Digital twin and cousins of the wooden drawer organizer" />
+        <img src="static/images/wooden_drawer_cousins.png?v=3" alt="Digital twin and cousins of the wooden drawer organizer" />
       </figure>
       <div class="policy-media">
         <video loop muted playsinline preload="none" data-lazy-autoplay>
@@ -756,8 +756,45 @@
   <div class="container">
     <h2 class="section-title">SimFoundry generates meaningful <span class="accent-red">Task Cousins</span> that facilitate policy generalization</h2>
     <div class="stat-block">
-      <p class="subsection-title">SimFoundry data boosts real-world VLA performance from <span class="accent-red">28%</span> to <span class="accent-red">46%</span> across <span class="accent-red">13</span> tasks.</p>
-      <p class="subsection-title oneline">SimFoundry data boosts real-world VLA performance from <span class="accent-red">0%</span> to <span class="accent-red">29%</span> on <span class="accent-red">7</span> held-out tasks (unseen even in sim).</p>
+      <p class="stat-lead">SimFoundry data boosts real-world VLA performance</p>
+      <div class="stat-cards" data-chart-grow>
+        <div class="stat-card">
+          <div class="stat-card-title">Across <span class="accent-red">13</span> tasks</div>
+          <div class="stat-compare">
+            <span class="stat-from">28%</span>
+            <span class="stat-arrow" aria-hidden="true">&rarr;</span>
+            <span class="stat-to" data-countup>46%</span>
+          </div>
+          <div class="stat-bars">
+            <div class="stat-bar-row">
+              <span class="stat-bar-label">w/o SimFoundry</span>
+              <div class="stat-bar-track"><div class="stat-bar stat-bar--base" style="--v:28"></div></div>
+            </div>
+            <div class="stat-bar-row">
+              <span class="stat-bar-label">w/ SimFoundry</span>
+              <div class="stat-bar-track"><div class="stat-bar stat-bar--boost" style="--v:46"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-title">On <span class="accent-red">7</span> held-out tasks <span class="stat-card-note">(unseen even in sim)</span></div>
+          <div class="stat-compare">
+            <span class="stat-from">0%</span>
+            <span class="stat-arrow" aria-hidden="true">&rarr;</span>
+            <span class="stat-to" data-countup>29%</span>
+          </div>
+          <div class="stat-bars">
+            <div class="stat-bar-row">
+              <span class="stat-bar-label">w/o SimFoundry</span>
+              <div class="stat-bar-track"><div class="stat-bar stat-bar--base" style="--v:0"></div></div>
+            </div>
+            <div class="stat-bar-row">
+              <span class="stat-bar-label">w/ SimFoundry</span>
+              <div class="stat-bar-track"><div class="stat-bar stat-bar--boost" style="--v:29"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="video-duo">
       <figure class="duo-col">
@@ -783,9 +820,9 @@
 <!-- ========================= CO-TRAINING ========================= -->
 <section class="section" id="co-training">
   <div class="container">
-    <h2 class="section-title">Co-Training with Large Amounts of SimFoundry Sim Data and Small Amounts of Real Data Produces Even Better Policies</h2>
+    <h2 class="section-title">Co-Training SimFoundry Sim Data and Small Amounts of Real Data Produces Even Better Policies</h2>
 
-    <figure class="barchart">
+    <figure class="barchart" data-chart-grow>
       <div class="barchart-legend">
         <span class="legend-item"><span class="legend-swatch swatch-sim"></span>Sim-only</span>
         <span class="legend-item"><span class="legend-swatch swatch-real"></span>Real-only</span>
@@ -912,7 +949,7 @@
       </div>
     </div>
 
-    <div class="metric-charts">
+    <div class="metric-charts" data-chart-grow>
       <div class="metric-panels">
         <div class="metric-panel">
           <div class="metric-panel-title">Easy Scene</div>
@@ -1006,7 +1043,7 @@
   </div>
 </footer>
 
-<script type="module" src="static/js/viewers.js?v=9"></script>
+<script type="module" src="static/js/viewers.js?v=10"></script>
 <script src="static/js/scatter-chart.js"></script>
 </body>
 </html>

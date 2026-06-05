@@ -660,8 +660,8 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
 }
 .cousin-fig {
   position: absolute;
-  top: 12px;
-  bottom: 12px;
+  top: 28px;
+  bottom: 28px;
   left: 12px;
   margin: 0;
   z-index: 2;
@@ -670,23 +670,92 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
   display: block;
   height: 100%;
   width: auto;
-  border-radius: 8px;
-  border: 2px solid rgba(255, 255, 255, 0.9);
-  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.45);
+  /* transparent cutout floats over the video; shadow follows the object shapes */
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.55));
 }
 @media (max-width: 720px) {
-  .cousin-fig { top: 8px; bottom: 8px; left: 8px; }
+  .cousin-fig { top: 16px; bottom: 16px; left: 8px; }
 }
 
-/* Force a single subsection line (font scales with viewport to fit). */
-.subsection-title.oneline {
-  white-space: nowrap;
-  width: max-content;
-  max-width: 96vw;
-  font-size: clamp(0.7rem, 1.7vw, 1.4rem);
+/* ----------- Stat cards (task-cousins section) ----------- */
+.stat-lead {
+  text-align: center;
+  font-size: clamp(1rem, 1.9vw, 1.45rem);
+  font-weight: 600;
+  margin: 0 0 18px;
 }
+.stat-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  max-width: 940px;
+  margin: 0 auto;
+}
+.stat-card {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 2px 10px var(--color-card-shadow);
+  padding: 18px 24px 22px;
+  text-align: center;
+}
+.stat-card-title {
+  font-weight: 600;
+  /* Keep titles like "On 7 held-out tasks (unseen even in sim)" on one line:
+     no wrapping, font scales down with the viewport instead. */
+  white-space: nowrap;
+  font-size: clamp(0.72rem, 1.15vw, 1rem);
+}
+.stat-card-note { font-size: 0.8em; color: var(--color-text-muted); font-weight: 500; }
+.stat-compare {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 12px;
+  margin: 6px 0 14px;
+}
+.stat-from {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+.stat-arrow { font-size: 1.5rem; color: var(--color-text-muted); }
+.stat-to {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-stanford-red);
+}
+.stat-bar-row {
+  display: grid;
+  grid-template-columns: 8.2em 1fr;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+.stat-bar-label {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  text-align: right;
+  white-space: nowrap;
+}
+.stat-bar-track {
+  height: 12px;
+  background: #eef0f3;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.stat-bar {
+  height: 100%;
+  width: calc(var(--v) * 1%);
+  min-width: 4px; /* keep the 0% baseline visible as a sliver */
+  border-radius: inherit;
+  transition: width 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.stat-bar--base { background: #b9bec7; }
+.stat-bar--boost { background: var(--color-stanford-red); }
 @media (max-width: 720px) {
-  .subsection-title.oneline { white-space: normal; width: min(1200px, 92vw); }
+  .stat-cards { grid-template-columns: 1fr; }
 }
 
 /* Keep the Task Cousins heading on one line (override base wrap/width). */
@@ -776,7 +845,7 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
 .barchart-ylabel {
   writing-mode: vertical-rl;
   transform: rotate(180deg);
-  height: 360px;
+  height: 260px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -784,7 +853,7 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
   font-size: 0.9rem;
 }
 .barchart-yaxis {
-  height: 360px;
+  height: 260px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -795,7 +864,7 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
 .barchart-col3 { min-width: 0; }
 .barchart-plot {
   position: relative;
-  height: 360px;
+  height: 260px;
   border-left: 2px solid var(--color-border);
   border-bottom: 2px solid var(--color-border);
 }
@@ -822,11 +891,11 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
   max-width: 28%;
   height: calc(var(--v) * 1%);
   border-radius: 3px 3px 0 0;
-  transition: height 0.6s ease-out;
+  transition: height 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 .bar-sim { background: #3b9aff; }
-.bar-real { background: #5cd65c; }
-.bar-cotrain { background: #ff6f61; }
+.bar-real { background: #5cd65c; transition-delay: 0.15s; }
+.bar-cotrain { background: #ff6f61; transition-delay: 0.3s; }
 .bar-val {
   position: absolute;
   top: -22px;
@@ -835,7 +904,17 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
   font-size: 0.95rem;
   font-weight: 600;
   color: var(--color-text);
+  transition: opacity 0.35s ease 0.9s;
 }
+
+/* First-view grow animation: JS marks `[data-chart-grow]` charts as pending
+   on load and releases them when they scroll into view, so bars rise from
+   zero to their real values. Without JS the static rules above apply. */
+.chart-grow-pending .bar { height: 0; }
+.chart-grow-pending .bar-val { opacity: 0; transition: none; }
+.chart-grow-pending .stat-bar { width: 0; min-width: 0; }
+.chart-grow-pending .mbar { height: 0; }
+.chart-grow-pending .mbar span { opacity: 0; transition: none; }
 .barchart-xlabels { display: flex; margin-top: 8px; }
 .barchart-xlabels span {
   flex: 1;
@@ -887,6 +966,7 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
   max-width: 34px;
   height: calc(var(--v) * 1%);
   border-radius: 3px 3px 0 0;
+  transition: height 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 .mbar span {
   position: absolute;
@@ -896,6 +976,7 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
   font-size: 0.6rem;
   white-space: nowrap;
   color: var(--color-text);
+  transition: opacity 0.35s ease 0.9s;
 }
 .mbar-sam { background: #3b9aff; }
 .mbar-zs { background: #5cd65c; }
