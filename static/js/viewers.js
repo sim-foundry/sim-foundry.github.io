@@ -419,12 +419,43 @@ async function loadMesh(container, src, viewPreset) {
 const hybridViewers = new WeakMap();
 
 function pickSplatUrl(splat) {
-  // Local dev: prefer the symlinked PLY under assets/. Production: the
-  // gitignored PLY isn't there, so use the manifest's Release URL.
-  const host = window.location.hostname;
-  const isLocal = host === "localhost" || host === "127.0.0.1" || host === "";
-  if (isLocal && splat.local_url) return splat.local_url;
-  return splat.url;
+  // The splat files now live in this repo (splats/…) and are served
+  // same-origin in both dev and production, so always use the manifest `url`.
+  // `local_url` is a legacy symlink pointing outside the repo root; most dev
+  // servers refuse to follow it, which manifested as an endless "initializing".
+  return splat.url || splat.local_url;
+}
+
+// Download a URL to an ArrayBuffer while reporting progress. Warming the HTTP
+// cache up front means GaussianSplats3D's own fetch resolves from cache, and it
+// sidesteps progressive/range loading (which hangs on static servers that don't
+// support HTTP range requests). `onPct` gets an integer 0–100, or null when the
+// total size is unknown.
+async function fetchWithProgress(url, onPct) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const total = Number(res.headers.get("content-length")) || 0;
+  if (!res.body || !res.body.getReader) {
+    onPct(null);
+    return res.arrayBuffer();
+  }
+  const reader = res.body.getReader();
+  const chunks = [];
+  let received = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    chunks.push(value);
+    received += value.length;
+    onPct(total ? Math.round((received / total) * 100) : null);
+  }
+  const buf = new Uint8Array(received);
+  let offset = 0;
+  for (const chunk of chunks) {
+    buf.set(chunk, offset);
+    offset += chunk.length;
+  }
+  return buf.buffer;
 }
 
 function lookAtFromQuaternion(camera) {
@@ -453,10 +484,28 @@ async function loadHybridScene(container, manifestUrl) {
   container.innerHTML = "";
   const loadingEl = document.createElement("div");
   loadingEl.className = "viewer-loading";
-  loadingEl.textContent = "Loading manifest…";
+  loadingEl.textContent = "";
   container.appendChild(loadingEl);
 
+  // Loading circle + label, shown until the interactive viewer is ready.
+  const spinner = document.createElement("div");
+  spinner.className = "viewer-spinner";
+  container.appendChild(spinner);
+  const spinnerLabel = document.createElement("div");
+  spinnerLabel.className = "viewer-spinner-label";
+  spinnerLabel.textContent = "Initializing interactive viewer…";
+  container.appendChild(spinnerLabel);
+  const removeSpinner = () => {
+    if (spinner.parentNode === container) container.removeChild(spinner);
+    if (spinnerLabel.parentNode === container) container.removeChild(spinnerLabel);
+  };
+
+  // Created once the manifest is known; plays full-cover while the splat/mesh
+  // assets stream in, then shrinks to its resting top-left spot when ready.
+  let previewVideo = null;
+
   if (!manifestUrl) {
+    removeSpinner();
     loadingEl.textContent = "Viewer asset not configured";
     return;
   }
@@ -464,6 +513,7 @@ async function loadHybridScene(container, manifestUrl) {
   try {
     await ensureLibs();
   } catch (e) {
+    removeSpinner();
     loadingEl.textContent = "Failed to load 3D engine";
     console.warn("ensureLibs failed:", e);
     return;
@@ -476,12 +526,33 @@ async function loadHybridScene(container, manifestUrl) {
     manifest = await res.json();
   } catch (err) {
     console.warn("manifest fetch failed:", manifestUrl, err);
+    removeSpinner();
     loadingEl.textContent = "Failed to load scene manifest";
     return;
   }
 
+  // Start the source-capture preview right away so something is on screen
+  // (and playing) while the heavy splat/mesh assets download.
+  if (manifest.preview_video?.url) {
+    previewVideo = document.createElement("video");
+    previewVideo.src = manifest.preview_video.url;
+    previewVideo.autoplay = true;
+    previewVideo.loop = true;
+    previewVideo.muted = true;
+    previewVideo.playsInline = true;
+    previewVideo.preload = "auto";
+    previewVideo.className = "viewer-preview-video is-cover";
+    container.appendChild(previewVideo);
+    const rate = manifest.preview_video.playback_rate || 1.5;
+    const applyRate = () => { previewVideo.playbackRate = rate; };
+    previewVideo.addEventListener("loadedmetadata", applyRate);
+    applyRate();
+    previewVideo.play().catch(() => { /* autoplay blocked; ignore */ });
+  }
+
   const splat = manifest.splat;
   if (!splat) {
+    removeSpinner();
     loadingEl.textContent = "Manifest has no splat scene";
     return;
   }
@@ -491,7 +562,7 @@ async function loadHybridScene(container, manifestUrl) {
   const initialPos = camera ? camera.position : [0, -1, 0.6];
   const initialLookAt = camera ? lookAtFromQuaternion(camera) : [0, 0, 0];
 
-  loadingEl.textContent = "Initializing renderer…";
+  loadingEl.textContent = "";
 
   // Self-driven mode: the lib owns the canvas, camera, OrbitControls, and
   // render loop. We add meshes through viewer.threeScene so the GS-vs-mesh
@@ -517,7 +588,7 @@ async function loadHybridScene(container, manifestUrl) {
     sphericalHarmonicsDegree: 1,
     useBuiltInControls: true,
     antialiased: false,
-    showLoadingUI: true,
+    showLoadingUI: false,
     devicePixelRatio: Math.min(window.devicePixelRatio || 1, 1.5),
   });
 
@@ -553,7 +624,33 @@ async function loadHybridScene(container, manifestUrl) {
   const splatFormat =
     FORMAT_BY_NAME[(splat.format || "").toLowerCase()] ||
     GaussianSplats3D.LoaderUtils.sceneFormatFromPath(splatUrl);
+  // Prefetch the splat ourselves so we can show a real download %, and so the
+  // library's load resolves from the HTTP cache instead of progressively
+  // range-requesting (which stalls on static servers without range support).
+  const setLabel = (text) => {
+    if (spinnerLabel.parentNode === container) spinnerLabel.textContent = text;
+  };
   try {
+    await fetchWithProgress(splatUrl, (pct) => {
+      setLabel(pct === null ? "Loading scene…" : `Loading scene… ${pct}%`);
+    });
+  } catch (err) {
+    console.warn("splat prefetch failed:", splatUrl, err);
+    removeSpinner();
+    loadingEl.textContent = "Failed to load splat background";
+    return;
+  }
+  if (disposed) return;
+  setLabel("Initializing interactive viewer…");
+
+  // Watchdog: if addSplatScene never settles (e.g. the sort worker never
+  // signals ready), surface that instead of spinning forever.
+  const watchdog = setTimeout(() => {
+    console.warn("[hybrid] addSplatScene still pending after 15s:", splatUrl);
+    setLabel("Still initializing… (see console)");
+  }, 15000);
+  try {
+    console.log("[hybrid] addSplatScene start:", splatUrl, splatFormat);
     await splatViewer.addSplatScene(splatUrl, {
       format: splatFormat,
       // Aggressive alpha-threshold drops near-transparent splats that
@@ -562,35 +659,47 @@ async function loadHybridScene(container, manifestUrl) {
       position: splat.position,
       rotation: splat.quaternion_xyzw,
       scale: splat.scale,
-      showLoadingUI: true,
+      showLoadingUI: false,
+      // Single cached download instead of progressive range requests.
+      progressiveLoad: false,
     });
+    console.log("[hybrid] addSplatScene resolved:", splatUrl);
   } catch (err) {
     console.warn("splat scene load failed:", splatUrl, err);
+    clearTimeout(watchdog);
+    removeSpinner();
     loadingEl.textContent = "Failed to load splat background";
     return;
   }
+  clearTimeout(watchdog);
 
   if (disposed) return;
 
-  splatViewer.start();
-
-  // PBR-textured GLBs render black without IBL or lights. The GS viewer's
-  // internal threeScene starts empty, so add an environment map + a soft
-  // directional + ambient — matches what loadMesh does for the object viewer.
+  // Everything past here is best-effort: once the splat is in, the viewer is
+  // usable, so a failure in renderer tweaks/lights must not strand the spinner.
   const renderer = splatViewer.renderer;
-  if (renderer) {
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.1;
-    const pmrem = new THREE.PMREMGenerator(renderer);
-    const envTex = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-    splatViewer.threeScene.environment = envTex;
-    pmrem.dispose();
+  try {
+    splatViewer.start();
+
+    // PBR-textured GLBs render black without IBL or lights. The GS viewer's
+    // internal threeScene starts empty, so add an environment map + a soft
+    // directional + ambient — matches what loadMesh does for the object viewer.
+    if (renderer) {
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.1;
+      const pmrem = new THREE.PMREMGenerator(renderer);
+      const envTex = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+      splatViewer.threeScene.environment = envTex;
+      pmrem.dispose();
+    }
+    splatViewer.threeScene.add(new THREE.AmbientLight(0xffffff, 0.4));
+    const sun = new THREE.DirectionalLight(0xffffff, 1.6);
+    sun.position.set(1.5, -2.0, 3.0);
+    splatViewer.threeScene.add(sun);
+  } catch (err) {
+    console.warn("[hybrid] post-load setup failed (continuing):", err);
   }
-  splatViewer.threeScene.add(new THREE.AmbientLight(0xffffff, 0.4));
-  const sun = new THREE.DirectionalLight(0xffffff, 1.6);
-  sun.position.set(1.5, -2.0, 3.0);
-  splatViewer.threeScene.add(sun);
 
   // Pause the render loop when the tab is hidden — biggest free GPU win for
   // users who switch tabs/windows. (Off-screen pause via IntersectionObserver
@@ -609,28 +718,17 @@ async function loadHybridScene(container, manifestUrl) {
     origDispose();
   };
 
-  // Hide the manifest-loading placeholder; the lib's own loading UI takes over
-  // for splat downloads, and meshes stream in after that.
+  // Interactive viewer is ready: drop the loading placeholder + spinner, and
+  // shrink the preview video from full-cover down to its resting top-left spot.
   if (loadingEl.parentNode === container) container.removeChild(loadingEl);
-
-  // Top-left preview-video overlay: the source capture that produced the
-  // splat/mesh reconstruction, played at a slight speed-up on loop.
-  if (manifest.preview_video?.url) {
-    const video = document.createElement("video");
-    video.src = manifest.preview_video.url;
-    video.autoplay = true;
-    video.loop = true;
-    video.muted = true;
-    video.playsInline = true;
-    video.preload = "auto";
-    video.className = "viewer-preview-video";
-    container.appendChild(video);
-    const rate = manifest.preview_video.playback_rate || 1.5;
-    const applyRate = () => { video.playbackRate = rate; };
-    video.addEventListener("loadedmetadata", applyRate);
-    applyRate();
-    video.play().catch(() => { /* autoplay blocked; ignore */ });
-  }
+  const revealViewer = () => {
+    if (disposed) return;
+    removeSpinner();
+    if (previewVideo) previewVideo.classList.remove("is-cover");
+  };
+  // Wait for the first splat render to land before uncovering, so the handoff
+  // from video to live viewer doesn't flash an empty canvas.
+  requestAnimationFrame(() => requestAnimationFrame(revealViewer));
 
   const loader = makeGltfLoader(renderer);
   for (const obj of manifest.objects || []) {
