@@ -165,6 +165,35 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
   max-width: 720px;
   margin: 0 auto 28px;
 }
+
+/* Full-width gray "takeaway" band used as a section break. */
+.takeaway {
+  background: #e4e6ea;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  padding: 48px 24px;
+}
+.takeaway-eyebrow {
+  display: block;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  margin: 0 0 10px;
+}
+.takeaway-text {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: clamp(1.5rem, 2.8vw, 2.1rem);
+  line-height: 1.4;
+  color: var(--color-text);
+}
+.takeaway-text .accent-red { color: var(--color-stanford-red); }
 .content p {
   margin: 0 0 1em;
   text-align: justify;
@@ -752,6 +781,11 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
   font-size: clamp(0.72rem, 1.15vw, 1rem);
 }
 .stat-card-note { font-size: 0.8em; color: var(--color-text-muted); font-weight: 500; }
+.stat-card-footnote {
+  margin-top: 14px;
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
 .stat-compare {
   display: flex;
   align-items: baseline;
@@ -1176,16 +1210,19 @@ a:hover { color: var(--color-accent-dark); text-decoration: underline; }
   padding-top: 32px;
   border-top: 1px solid var(--color-border);
 }
+.sam3d-heading {
+  margin-top: 56px;
+}
 .metrics-title {
   text-align: center;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: 600;
   margin: 0 0 6px 0;
   color: var(--color-text);
 }
 .metrics-subtitle {
   text-align: center;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--color-muted);
   margin: 0 0 24px 0;
 }
