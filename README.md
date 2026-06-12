@@ -1,4 +1,4 @@
-# Sim Foundry — Research Website
+# SimFoundry — Research Website
 
 Static research project page for the [sim-foundry](https://github.com/sim-foundry) GitHub organization. Layout is modeled on [PointWorld](https://point-world.github.io) with 3D viewer placeholders modeled on [PolaRiS](https://polaris-evals.github.io).
 

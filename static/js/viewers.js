@@ -1,5 +1,5 @@
 /**
- * 3D viewer scaffolding for Sim Foundry research page.
+ * 3D viewer scaffolding for SimFoundry research page.
  *
  * Viewer types:
  *   - data-viewer-type="hybrid" : Gaussian splat background + textured GLB
